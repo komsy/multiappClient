@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/layouts/grid_layout.dart';
-import 'package:multiapp/common/widgets/products/product_cards/product_card_vertical.dart';
-import 'package:multiapp/features/shop/controllers/products/all_products_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/layouts/grid_layout.dart';
+import 'package:easyapp/common/widgets/products/product_cards/product_card_vertical.dart';
+import 'package:easyapp/features/shop/controllers/products/all_products_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 class MSortableProducts extends StatelessWidget {
   const MSortableProducts({

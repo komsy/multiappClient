@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/device/device_utility.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
 
 class MRatingProgressIndicator extends StatelessWidget {
   const MRatingProgressIndicator({

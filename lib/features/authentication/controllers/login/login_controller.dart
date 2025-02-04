@@ -5,14 +5,14 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/env.dart';
-import 'package:multiapp/features/personalization/controllers/user_controller.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/helpers/network_manager.dart';
-import 'package:multiapp/utils/popups/full_screen_loader.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/env.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/helpers/network_manager.dart';
+import 'package:easyapp/utils/popups/full_screen_loader.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 
 class LoginController extends GetxController{

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/features/personalization/controllers/settings_controller.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/validators/validation.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/validators/validation.dart';
 
 
 class AddAppSettingsScreen extends StatelessWidget {
@@ -36,6 +36,11 @@ class AddAppSettingsScreen extends StatelessWidget {
               //   validator: (value) => MValidator.validateEmptyText('Document Series', value),
               //   decoration: const InputDecoration(prefixIcon: Icon(Iconsax.document), labelText: 'Document Series')),
               // const SizedBox(height: MSizes.spaceBtwInputFields),
+              TextFormField( 
+                controller: controller.locationId,
+                validator: (value) => MValidator.validateEmptyText('Location', value),
+                decoration: const InputDecoration(prefixIcon: Icon(Iconsax.location), labelText: 'Default Location')),
+              const SizedBox(height: MSizes.spaceBtwInputFields),
               TextFormField( 
                 controller: controller.defaultCustomer,
                 validator: (value) => MValidator.validateEmptyText('Default Customer', value),

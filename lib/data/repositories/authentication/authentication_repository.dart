@@ -1,12 +1,11 @@
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/features/authentication/screens/login/login.dart';
-import 'package:multiapp/features/authentication/screens/onboarding/onboarding.dart';
-import 'package:multiapp/navigation_menu.dart';
-import 'package:multiapp/utils/local_storage/storage_utility.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/features/authentication/screens/login/login.dart';
+import 'package:easyapp/features/authentication/screens/onboarding/onboarding.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/local_storage/storage_utility.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 class AuthenticationRepository extends GetxController {
@@ -20,6 +19,7 @@ class AuthenticationRepository extends GetxController {
   // RxString isRSP  = ''.obs;
   RxBool isRetailPrice = false.obs;
   RxString appKey  = ''.obs;
+  RxString apiURL  = ''.obs;
   RxBool isQuantityPrice  = false.obs;
   //Variables
   final deviceStorage = GetStorage();
@@ -50,7 +50,7 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   // Retrieve the JWT token from local storage
   final jwtToken = deviceStorage.read('jwt_token') ?? "";
   if (jwtToken.isEmpty) {
-    print("No JWT token found in local storage.");
+    // print("No JWT token found in local storage.");
     return null;
   }
 
@@ -65,6 +65,7 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   // Update the observable value based on the 'IsRSP' field
   isRetailPrice.value = (isRsp == 1); // Assume 1 indicates true (retail price)
   appKey.value = setting['appKey'];
+  apiURL.value = setting['APIURL'];
 
   final decodedToken = JWT.decode(jwtToken);
 

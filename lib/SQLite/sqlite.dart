@@ -1,14 +1,14 @@
-import 'package:multiapp/env.dart';
-import 'package:multiapp/features/authentication/models/user/user_model.dart';
-import 'package:multiapp/features/personalization/models/Setting_model.dart';
-import 'package:multiapp/features/shop/models/credit_customer_model.dart';
-import 'package:multiapp/features/shop/models/customer_model.dart';
-import 'package:multiapp/features/shop/models/order_item_model.dart';
-import 'package:multiapp/features/shop/models/order_model.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/models/product_packing_price.dart';
-import 'package:multiapp/features/shop/models/product_unit_converter.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/env.dart';
+import 'package:easyapp/features/authentication/models/user/user_model.dart';
+import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/shop/models/credit_customer_model.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/features/shop/models/order_item_model.dart';
+import 'package:easyapp/features/shop/models/order_model.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/models/product_packing_price.dart';
+import 'package:easyapp/features/shop/models/product_unit_converter.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
@@ -28,10 +28,22 @@ class LocalDatabase {
   static Database? _database;
   final Uuid uuid = const Uuid();
 
+  // String createAppKey() {
+  //   // Generate a new UUID (Version 4 by default)
+  //   return uuid.v4().toUpperCase();
+  // }
   String createAppKey() {
-    // Generate a new UUID (Version 4 by default)
-    return uuid.v4().toUpperCase();
-  }
+  // var uuid = const Uuid();
+  String baseKey = uuid.v4().toUpperCase().substring(0, 8); // Truncate to 8 characters
+
+  // Get current time
+  final now = DateTime.now();
+  String formattedTime = '${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
+
+  // Concatenate key with time
+  //950ED57B155134
+  return "$baseKey$formattedTime";
+}
 
   /// Hashes a password using SHA-256
   String hashPassword(String password) {
@@ -217,6 +229,8 @@ class LocalDatabase {
         email TEXT NOT NULL,
         password TEXT NOT NULL,
         status INTEGER NOT NULL,
+        userStatus INTEGER NOT NULL,
+        licStatus INTEGER NOT NULL,
         refreshToken TEXT,
         role varchar(10) NOT NULL,
         createdAt TEXT NOT NULL
@@ -318,11 +332,13 @@ class LocalDatabase {
 
     await db.insert("userMst", {
       "username": "admin",
-      "email": "admin@gmail.com",
+      "email": "admin@multitech.co.ke",
       "password": hashedPassword,
       "refreshToken": "",
       "role": "user",
       "status": 1,
+      "userStatus": 1,
+      "licStatus": 1,
       "createdAt": createdAt,
     });
   }

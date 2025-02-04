@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:multiapp/bindings/general_bindings.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
-import 'package:multiapp/utils/theme/theme.dart';
+import 'package:easyapp/bindings/general_bindings.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/theme/theme.dart';
 
 import 'routes/app_routes.dart';
 

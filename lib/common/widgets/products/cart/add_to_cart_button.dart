@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/screens/product_details/product_detail.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/enums.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/screens/product_details/product_detail.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/enums.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 class ProductCardAddToCartButton extends StatelessWidget {
   const ProductCardAddToCartButton({super.key, required this.product});

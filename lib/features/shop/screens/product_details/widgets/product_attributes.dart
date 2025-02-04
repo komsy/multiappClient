@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/containers/rounded_container.dart';
-import 'package:multiapp/common/widgets/texts/product_price_text.dart';
-import 'package:multiapp/common/widgets/texts/product_title_text.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/products/variation_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/common/widgets/containers/rounded_container.dart';
+import 'package:easyapp/common/widgets/texts/product_price_text.dart';
+import 'package:easyapp/common/widgets/texts/product_title_text.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/variation_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 import '../../../../../common/widgets/chips/rounded_choice_chips.dart';
 import '../../../../../utils/constants/sizes.dart';

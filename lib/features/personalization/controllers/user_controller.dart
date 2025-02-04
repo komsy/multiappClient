@@ -1,16 +1,18 @@
+import 'package:easyapp/data/provider/api_provider.dart';
+import 'package:easyapp/data/services/API/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/popups/full_screen_loader.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/popups/full_screen_loader.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../authentication/models/user/user_model.dart';
 
 class UserController extends GetxController{
   static UserController get instance => Get.find();
-
+final apiProvider = ApiProvider();
   final hidePassword = true.obs; //Observable for hiding/showing 
   final profileLoading = true.obs; 
   final isLoading = true.obs; 
@@ -76,7 +78,9 @@ class UserController extends GetxController{
         MFullScreenLoader.stopLoading();
         return;
       }
-      
+      //send data to API
+      final checkAppUser= await apiProvider.checkAppUser(userName.text.trim(),email.text.trim());
+ 
       String hashedPassword = LocalDatabase.instance.hashPassword(password.text.trim());
 
       //Update user's first & last name in the sqlite firestore
@@ -86,9 +90,11 @@ class UserController extends GetxController{
         password: hashedPassword,
         role: "user",
         status: 1,
+        userStatus: (checkAppUser['userStatus'] == true) ? 1 : 0,
+        licStatus: (checkAppUser['licStatus'] == true) ? 1 : 0,
         createdAt: DateTime.now().toIso8601String(),
       );
-      
+
       // print("users saving data ${users.userName}, ${users.email}, ${users.password}");
 
       await db.insertUser(users);
@@ -96,7 +102,7 @@ class UserController extends GetxController{
       //Remove loader
       MFullScreenLoader.stopLoading();
 
-      //Show success message
+      // //Show success message
       MLoaders.successSnackBar(title: 'Congratulations', message: 'Your Profile settings has been saved successfully. Kindly login with the new credentials.');
     
       //Reset fields
@@ -113,7 +119,7 @@ class UserController extends GetxController{
       MFullScreenLoader.stopLoading();
 
       //Show some generic error to the user
-      MLoaders.errorSnackBar(title: 'App Setting not found', message: e.toString());
+      MLoaders.errorSnackBar(title: 'Error', message: e.toString());
     }
   }
  //Fn to reset form fields

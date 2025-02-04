@@ -1,6 +1,6 @@
 
 import 'package:flutter/widgets.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 
 class MShadowStyle {
   static final verticalProductShadow = BoxShadow(

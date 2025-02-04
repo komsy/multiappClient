@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/screens/cart/cart.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/screens/cart/cart.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 
 class MCartCounterIcon extends StatelessWidget {
   const MCartCounterIcon({

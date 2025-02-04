@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/device/device_utility.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 class MAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MAppBar({super.key, this.title, this.showBackArrow = false, this.leadingIcon, this.leadingOnPressed, this.actions});

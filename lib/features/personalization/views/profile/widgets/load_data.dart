@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/list_tiles/downloads_menu_tile.dart';
-import 'package:multiapp/common/widgets/list_tiles/settings_menu_tile.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/data/services/API/api_services.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/list_tiles/downloads_menu_tile.dart';
+import 'package:easyapp/common/widgets/list_tiles/settings_menu_tile.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/data/services/API/api_services.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:get/get.dart';
 
 

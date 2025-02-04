@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 import '../../constants/sizes.dart';
 
 class MTextFormFieldTheme {

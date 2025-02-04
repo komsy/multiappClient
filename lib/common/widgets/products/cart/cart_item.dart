@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/texts/product_title_text.dart';
-import 'package:multiapp/features/shop/models/cart_item_model.dart';
+import 'package:easyapp/common/widgets/texts/product_title_text.dart';
+import 'package:easyapp/features/shop/models/cart_item_model.dart';
 
 class MCartItem extends StatelessWidget {
   const MCartItem({super.key, required this.cartItem});

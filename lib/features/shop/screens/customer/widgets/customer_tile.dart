@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/texts/product_title_text.dart';
-import 'package:multiapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/common/widgets/texts/product_title_text.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
 
 class MCustomerMenuTile extends StatelessWidget {
   const MCustomerMenuTile(

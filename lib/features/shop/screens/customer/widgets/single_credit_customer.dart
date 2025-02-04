@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/features/shop/controllers/credit_customer_controller.dart';
-import 'package:multiapp/features/shop/models/credit_customer_model.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
+import 'package:easyapp/features/shop/models/credit_customer_model.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 import '../../../../../common/widgets/containers/rounded_container.dart';
 
 class MSingleCrCustomer extends StatelessWidget {

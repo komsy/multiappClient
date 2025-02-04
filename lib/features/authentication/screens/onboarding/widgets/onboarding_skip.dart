@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/features/authentication/controllers/onboarding/onboarding_controller.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/device/device_utility.dart';
+import 'package:easyapp/features/authentication/controllers/onboarding/onboarding_controller.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
 
 class OnBoardingskip extends StatelessWidget {
   const OnBoardingskip({

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/features/shop/models/payment_method_model.dart';
-import 'package:multiapp/features/shop/screens/checkout/widgets/payment_tile.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/shop/models/payment_method_model.dart';
+import 'package:easyapp/features/shop/screens/checkout/widgets/payment_tile.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 class CheckoutController extends GetxController {
   static CheckoutController get instance => Get.find();

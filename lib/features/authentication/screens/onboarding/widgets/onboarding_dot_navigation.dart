@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/features/authentication/controllers/onboarding/onboarding_controller.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/device/device_utility.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/features/authentication/controllers/onboarding/onboarding_controller.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 

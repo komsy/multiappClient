@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/utils/local_storage/storage_utility.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/utils/local_storage/storage_utility.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 class FavouritesController extends GetxController{
   static FavouritesController get instance => Get.find();

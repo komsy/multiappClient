@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/features/personalization/controllers/settings_controller.dart';
-import 'package:multiapp/features/personalization/views/profile/widgets/profile_menu.dart';
-import 'package:multiapp/features/personalization/views/settings/widgets/add_app_settings.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
+import 'package:easyapp/features/personalization/views/profile/widgets/profile_menu.dart';
+import 'package:easyapp/features/personalization/views/settings/widgets/add_app_settings.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 
 class AppSettingsScreen extends StatelessWidget {
   const AppSettingsScreen({super.key});
@@ -64,40 +64,51 @@ class AppSettingsScreen extends StatelessWidget {
                     // Copy the app key to the clipboard
                     Clipboard.setData(ClipboardData(text: controller.setting.value.appKey));
                     // Show a snackbar to notify the user
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(
-                    //     content: Text('App Key copied to successfully!'),
-                    //     duration: Duration(seconds: 2),
-                    //     backgroundColor: MColors.success,
-                    //   ),
-                    // );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('App Key copied successfully!'),
+                        duration: Duration(seconds: 1),
+                        backgroundColor: MColors.success,
+                      ),
+                    );
                   },
-                  title: 'App Key',
+                  title: 'App Key :',
                   icon: Iconsax.copy,
                   value: controller.setting.value.appKey,
                 ),
 
                 MProfileMenu(
-                    onPressed: () {},
-                    title: 'API URL',
-                    showIcon: false,
+                    onPressed: () {
+                    // Copy the app key to the clipboard
+                      Clipboard.setData(ClipboardData(text: controller.setting.value.apiUrl));
+                      // Show a snackbar to notify the user
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Api URL copied successfully!'),
+                          duration: Duration(seconds: 1),
+                          backgroundColor: MColors.success,
+                        ),
+                      );
+                    },
+                    title: 'API URL :',
+                  icon: Iconsax.copy,
                     value: controller.setting.value.apiUrl),
 
-                MProfileMenu(
-                    onPressed: () {},
-                    title: 'Doc Series',
-                    showIcon: false,
-                    value: controller.setting.value.docSeries),
+                // MProfileMenu(
+                //     onPressed: () {},
+                //     title: 'Doc Series',
+                //     showIcon: false,
+                //     value: controller.setting.value.docSeries),
 
                 MProfileMenu(
                     onPressed: () {},
-                    title: 'Doc Number',
+                    title: 'Location :',
                     showIcon: false,
-                    value: controller.setting.value.docNo.toString()),
+                    value: controller.setting.value.locationId.toString()),
 
                 MProfileMenu(
                     onPressed: () {},
-                    title: 'Def Customer',
+                    title: 'Default Customer :',
                     showIcon: false,
                     value: controller.setting.value.defaultCustomer.toString()),
               ],

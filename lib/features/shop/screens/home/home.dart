@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
-import 'package:multiapp/common/widgets/shimmers/vertical_product_shimmer.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/features/shop/controllers/customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/screens/home/widgets/home_appbar.dart';
+import 'package:easyapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
+import 'package:easyapp/common/widgets/shimmers/vertical_product_shimmer.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/shop/controllers/customer_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/screens/home/widgets/home_appbar.dart';
 
 import '../../../../common/widgets/containers/search_container.dart';
 import '../../../../common/widgets/layouts/grid_layout.dart';

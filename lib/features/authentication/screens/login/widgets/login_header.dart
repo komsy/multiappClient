@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 
 

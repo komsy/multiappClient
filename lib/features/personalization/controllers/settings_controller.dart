@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/personalization/models/Setting_model.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/popups/full_screen_loader.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/popups/full_screen_loader.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'dart:developer'; 
 
 class SettingsController extends GetxController {
   static SettingsController get instance => Get.find();
   // Initialize the database instance here
   final LocalDatabase db = LocalDatabase.instance;
+    final userController = UserController.instance;
 
   //Variables
   final isLoading = false.obs;
@@ -22,6 +24,7 @@ class SettingsController extends GetxController {
   final defaultCustomer = TextEditingController();
   final apiKey = TextEditingController();
   final docSeries = TextEditingController();
+  final locationId = TextEditingController();
   GlobalKey<FormState> settingsFormKey = GlobalKey<FormState>();
 
 
@@ -68,7 +71,7 @@ class SettingsController extends GetxController {
         MFullScreenLoader.stopLoading();
         return;
       }
-      log("setting ${setting.value.isRSP}" );
+      // log("setting ${setting.value.isRSP}" );
       //Update user's first & last name in the sqlite firestore
       final settings = SettingModel(
         appKey: AuthenticationRepository.instance.appKey.value,
@@ -76,6 +79,7 @@ class SettingsController extends GetxController {
         defaultCustomer: defaultCustomer.text.trim(),
         apiUrl: apiUrl.text.trim(),
         docSeries: docSeries.text.trim() ,
+        locationId: locationId.text.trim(),
         docNo:setting.value.docNo,
         isRSP:AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
         createdAt: DateTime.now().toIso8601String(),
@@ -97,6 +101,13 @@ class SettingsController extends GetxController {
       //Redirect 
       // Get.off(() => const NavigationMenu());
       // Navigator.of(Get.context!).pop();
+      //check if username is changed redirect or logout
+      // if(userController.user.value.userName == "admin"){
+      //   MLoaders.warningSnackBar(title: 'Error', message: 'Kindly update your username!');
+      //   Get.to(() => const ChangeName());
+      // } else {
+      //   logout
+      // }
       AuthenticationRepository.instance.logout();
     } catch (e) {
       //Remove loader

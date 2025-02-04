@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
-import 'package:multiapp/utils/helpers/pricing_calculator.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/helpers/pricing_calculator.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 

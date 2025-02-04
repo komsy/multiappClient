@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 import '../../../utils/constants/enums.dart';
 
 class MRoundedImage extends StatelessWidget {

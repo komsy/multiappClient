@@ -1,8 +1,7 @@
-
 import 'package:get/get.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
 
 class AllProductsController extends GetxController {
   static AllProductsController get instance => Get.find();

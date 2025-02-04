@@ -1,4 +1,4 @@
-package com.multiapp.clients
+package com.easyapp.clients
 
 import io.flutter.embedding.android.FlutterActivity
 

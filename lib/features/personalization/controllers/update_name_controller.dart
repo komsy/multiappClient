@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/features/personalization/controllers/user_controller.dart';
-import 'package:multiapp/features/personalization/views/profile/profile.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
+import 'package:easyapp/features/personalization/views/profile/profile.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../../utils/constants/image_strings.dart';
-import '../../../utils/helpers/network_manager.dart';
 import '../../../utils/popups/full_screen_loader.dart';
 
 class UpdateNameController extends GetxController{

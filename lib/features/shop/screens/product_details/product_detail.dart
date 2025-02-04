@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/screens/product_details/widgets/bottom_add_to_cart_widget.dart';
-import 'package:multiapp/features/shop/screens/product_details/widgets/product_meta_data.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/screens/product_details/widgets/bottom_add_to_cart_widget.dart';
+import 'package:easyapp/features/shop/screens/product_details/widgets/product_meta_data.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 import 'widgets/product_attributes.dart';
 import 'widgets/product_detail_image_slider.dart';
 import 'widgets/rating_share_widget.dart';

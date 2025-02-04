@@ -1,4 +1,4 @@
-name: multiapp
+name: easyapp
 description: "Multiapp Order App."
 publish_to: 'none' 
 version: 1.0.0+1

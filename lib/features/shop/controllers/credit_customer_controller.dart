@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/common/widgets/loaders/circular_loader.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/features/shop/models/credit_customer_model.dart';
-import 'package:multiapp/features/shop/screens/customer/widgets/single_credit_customer.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/helpers/cloud_helper_functions.dart';
-import 'package:multiapp/utils/popups/full_screen_loader.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/common/widgets/loaders/circular_loader.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/shop/models/credit_customer_model.dart';
+import 'package:easyapp/features/shop/screens/customer/widgets/single_credit_customer.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
+import 'package:easyapp/utils/popups/full_screen_loader.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'dart:developer';
 import 'dart:async';
 
-import 'package:multiapp/utils/validators/validation.dart';
+import 'package:easyapp/utils/validators/validation.dart';
 
 class CreditCustomerController extends GetxController {
   static CreditCustomerController get instance => Get.find();

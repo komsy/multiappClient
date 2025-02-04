@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/products/cart/cart_menu_icon.dart';
-import 'package:multiapp/common/widgets/shimmers/shimmer.dart';
-import 'package:multiapp/features/personalization/controllers/user_controller.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/products/cart/cart_menu_icon.dart';
+import 'package:easyapp/common/widgets/shimmers/shimmer.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 
 class MHomeAppBar extends StatelessWidget {
   const MHomeAppBar({

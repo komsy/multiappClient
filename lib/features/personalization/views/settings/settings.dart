@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
-import 'package:multiapp/common/widgets/list_tiles/settings_menu_tile.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/data/services/API/api_services.dart';
-import 'package:multiapp/features/personalization/controllers/settings_controller.dart';
-import 'package:multiapp/features/personalization/views/settings/widgets/app_settings.dart';
-import 'package:multiapp/features/shop/screens/cart/cart.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
+import 'package:easyapp/common/widgets/list_tiles/settings_menu_tile.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/data/services/API/api_services.dart';
+import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
+import 'package:easyapp/features/personalization/views/settings/widgets/app_settings.dart';
+import 'package:easyapp/features/shop/screens/cart/cart.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 import '../../../../common/widgets/list_tiles/user_profile_tile.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
@@ -23,7 +23,6 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final apiService = Get.put(MAPIService()); 
     final controller = Get.put(SettingsController());
-   
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -51,7 +50,9 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: MSizes.spaceBtwItems/2),
 
                 MSettingsMenuTile(icon: Iconsax.shopping_cart, title: "My Cart", subTitle: "Add & Remove Products", onTap: () => Get.to(() => const CartScreen()) ),
-                MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", onTap: () => Get.to(() => const AppSettingsScreen())),
+                MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", 
+                onTap: () =>Get.to(() => const AppSettingsScreen())),
+                
                 // MSettingsMenuTile(
                 //     icon: Iconsax.money,
                 //     title: "Pricing",

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/credit_customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/favourites_controller.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/favourites_controller.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../models/product_model.dart';
 import 'dart:developer';

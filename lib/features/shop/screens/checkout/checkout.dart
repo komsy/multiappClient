@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/containers/rounded_container.dart';
-import 'package:multiapp/common/widgets/products/cart/naration_widget.dart';
-import 'package:multiapp/common/widgets/products/cart/customer_widget.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/order_controller.dart';
-import 'package:multiapp/features/shop/screens/cart/widgets/cart_items.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/helpers/pricing_calculator.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/common/widgets/containers/rounded_container.dart';
+import 'package:easyapp/common/widgets/products/cart/naration_widget.dart';
+import 'package:easyapp/common/widgets/products/cart/customer_widget.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
+import 'package:easyapp/features/shop/screens/cart/widgets/cart_items.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/helpers/pricing_calculator.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../../../common/widgets/appbar/appbar.dart';
 import '../../../../utils/constants/sizes.dart';

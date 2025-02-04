@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/containers/rounded_container.dart';
-import 'package:multiapp/common/widgets/texts/section_heading.dart';
-import 'package:multiapp/features/shop/controllers/products/checkout_controller.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/common/widgets/containers/rounded_container.dart';
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/shop/controllers/products/checkout_controller.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 import '../../../../../utils/constants/sizes.dart';
 

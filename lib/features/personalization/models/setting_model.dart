@@ -6,6 +6,7 @@ class SettingModel {
   String apiKey;
   String docSeries;
   String defaultCustomer;
+  String locationId;
   int docNo;
   int isRSP;
     String createdAt;
@@ -17,6 +18,7 @@ class SettingModel {
     this.apiKey = '',
     this.docSeries = '',
     this.defaultCustomer = 'Cash Sale',
+    this.locationId ='00',
     this.docNo = 0,
     this.isRSP = 0,
     this.createdAt ='',
@@ -34,6 +36,7 @@ class SettingModel {
       'APIKey': apiKey,
       'docSeries': docSeries,
       'defaultCustomer': defaultCustomer,
+      'locationId': locationId,
       'docNo': docNo,
       'IsRSP': isRSP,
       'createdAt': createdAt,
@@ -49,6 +52,7 @@ class SettingModel {
       apiKey: data['APIKey'] ?? '',
       docSeries: data['docSeries'] ?? '',
       defaultCustomer: data['defaultCustomer'] ?? 'Cash Sale',
+      locationId: data['locationId'] ?? '00',
       docNo: data['docNo'] ?? 0,
       isRSP: data['IsRSP'] ?? 0,
       createdAt: data['createdAt'] ?? '',

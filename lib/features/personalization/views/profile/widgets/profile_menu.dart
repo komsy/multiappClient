@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 class MProfileMenu extends StatelessWidget {
   const MProfileMenu({
@@ -20,8 +20,8 @@ class MProfileMenu extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical:  MSizes.spaceBtwItems / 1.5),
         child: Row(
           children: [
-            Expanded(flex:2, child: Text(title, style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
-            Expanded(flex:5, child: Text(value, style: Theme.of(context).textTheme.bodyMedium, overflow: TextOverflow.ellipsis)),
+            Expanded(flex:2, child: Text(title, style: Theme.of(context).textTheme.bodySmall, overflow: TextOverflow.clip)),
+            Expanded(flex:5, child: Text(value, style: Theme.of(context).textTheme.bodyMedium, overflow: TextOverflow.clip)),
             showIcon ? Expanded(child: Icon(icon, size: 18)) : const SizedBox.shrink(),
           ],
         ),

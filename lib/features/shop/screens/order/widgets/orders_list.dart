@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/containers/rounded_container.dart';
-import 'package:multiapp/common/widgets/loaders/animation_loader.dart';
-import 'package:multiapp/features/shop/controllers/products/order_controller.dart';
-import 'package:multiapp/features/shop/screens/order/widgets/order_items.dart';
-import 'package:multiapp/navigation_menu.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/helpers/cloud_helper_functions.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/common/widgets/containers/rounded_container.dart';
+import 'package:easyapp/common/widgets/loaders/animation_loader.dart';
+import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
+import 'package:easyapp/features/shop/screens/order/widgets/order_items.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 class MOrderListItems extends StatelessWidget {
   const MOrderListItems({super.key});

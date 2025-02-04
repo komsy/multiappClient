@@ -1,18 +1,18 @@
 // import 'dart:math';
 
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/provider/api_provider.dart';
-import 'package:multiapp/env.dart';
-import 'package:multiapp/features/shop/controllers/customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/models/customer_model.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/models/product_packing_price.dart';
-import 'package:multiapp/features/shop/models/product_unit_converter.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/provider/api_provider.dart';
+import 'package:easyapp/env.dart';
+import 'package:easyapp/features/shop/controllers/customer_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/models/product_packing_price.dart';
+import 'package:easyapp/features/shop/models/product_unit_converter.dart';
 import 'dart:developer';
 
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 class MAPIService extends GetxController {
   static MAPIService get instance => Get.find();
@@ -49,8 +49,10 @@ class MAPIService extends GetxController {
       List<dynamic> apiProducts = await apiProvider.getAPIData(Env.productApiUrl);
       
       noOfProductItems.value = apiProducts.length;
-      print('api products: $apiProducts');
-
+      // print('api products: $apiProducts');
+      if (apiProducts.isEmpty) {
+        throw Exception("No product data found");
+      }
       // Truncate the product table before inserting new data, if needed
       // await db.truncateProductTable();
 
@@ -104,7 +106,9 @@ Future<void> fetchAndStoreProductUnits() async {
     // Fetch the data from the API
     List<dynamic> apiProductUnit = await apiProvider.getAPIData(Env.unitApiUrl);
     noOfUnitCItems.value = apiProductUnit.length;
-
+    if (apiProductUnit.isEmpty) {
+      throw Exception("No packaging units data found");
+    }
     // Truncate the product table before inserting new data, if needed
     // await db.truncateProductUnitTable();
 
@@ -150,6 +154,9 @@ Future<void> fetchAndStoreProductUnits() async {
       List<dynamic> apiProductPackaging = await apiProvider.getAPIData(Env.packagingApiUrl);
       noOfPPItems.value = apiProductPackaging.length;
       
+      if (apiProductPackaging.isEmpty) {
+        throw Exception("No packaging price data found");
+      }
       // print('api product packaging: $apiProducts');
 
       // Truncate the product table before inserting new data, if needed
@@ -230,10 +237,13 @@ Future<void> fetchAndStoreProductUnits() async {
       List<dynamic> apiCustomer = await apiProvider.getAPIData(Env.customerApiUrl);
       noOfCustomerItems.value = apiCustomer.length;
       
+      if (apiCustomer.isEmpty) {
+        throw Exception("No customer data found");
+      }
       // log('api customers: $apiCustomer');
 
       // Truncate the customer table before inserting new data, if needed
-      await db.truncateCustomerMst();
+      // await db.truncateCustomerMst();
  
       // Iterate over each customer and insert it into the SQLite database
       for (var data in apiCustomer) {
@@ -297,11 +307,11 @@ Future<void> fetchAndSendOrders() async
       //Show loader while loading Customers
       isSendLoading.value = true;
 
-      // Fetch the data from the API
+      // Send the order data to the API
       final apiOrders = await apiProvider.sendOrders("saveOrders");
-      log('api Orders: ${apiOrders['code']}');
+      // log('api Orders: ${apiOrders['code']}');
 
-      //if order status is 200, truncate the order table before inserting new data, if needed
+      //if order status is 200, truncate the order table and continue selling, if needed
       if (apiOrders['code'] == 200) {
         await db.truncateOrderMst();
       }
@@ -315,4 +325,5 @@ Future<void> fetchAndSendOrders() async
       isSendLoading.value = false;
     }
   }
+
 }

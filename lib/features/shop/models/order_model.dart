@@ -1,6 +1,6 @@
-import 'package:multiapp/features/shop/models/order_item_model.dart';
-import 'package:multiapp/utils/constants/enums.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/features/shop/models/order_item_model.dart';
+import 'package:easyapp/utils/constants/enums.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 class OrderModel {
     final String id;

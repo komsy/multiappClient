@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/shimmers/vertical_product_shimmer.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/shimmers/vertical_product_shimmer.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 import '../../../../common/widgets/products/sortable/sortable_products.dart';
 

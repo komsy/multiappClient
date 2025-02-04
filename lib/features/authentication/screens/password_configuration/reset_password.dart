@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/features/authentication/screens/login/login.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/features/authentication/screens/login/login.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   const ResetPasswordScreen({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/features/authentication/controllers/login/login_controller.dart';
-import 'package:multiapp/features/authentication/screens/password_configuration/forgot_password.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
-import 'package:multiapp/utils/validators/validation.dart';
+import 'package:easyapp/features/authentication/controllers/login/login_controller.dart';
+import 'package:easyapp/features/authentication/screens/password_configuration/forgot_password.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/validators/validation.dart';
 
 class MLoginForm extends StatelessWidget {
   const MLoginForm({

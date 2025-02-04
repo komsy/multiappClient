@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/common/widgets/success_screen/success_screen.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/data/repositories/order/order_repository.dart';
-import 'package:multiapp/features/personalization/controllers/user_controller.dart';
-import 'package:multiapp/features/shop/controllers/credit_customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/checkout_controller.dart';
-import 'package:multiapp/features/shop/models/order_item_model.dart';
-import 'package:multiapp/features/shop/models/order_model.dart';
-import 'package:multiapp/navigation_menu.dart';
-import 'package:multiapp/utils/constants/enums.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/common/widgets/success_screen/success_screen.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/data/repositories/order/order_repository.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
+import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
+import 'package:easyapp/features/shop/controllers/customer_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/checkout_controller.dart';
+import 'package:easyapp/features/shop/models/order_item_model.dart';
+import 'package:easyapp/features/shop/models/order_model.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'dart:developer';
 
 class OrderController extends GetxController {
@@ -43,7 +42,7 @@ Future<List<OrderModel>>fetchOrders() async {
     // Start by fetching data from the database
     final snapshot = await db.getOrders();
 
-    log('order snapshot: ${snapshot}');
+    // log('order snapshot: ${snapshot}');
     // Handle null or empty result (no categories found)
     if (snapshot == null || snapshot.isEmpty) {
       return [];
@@ -54,7 +53,7 @@ Future<List<OrderModel>>fetchOrders() async {
       // Ensure correct type casting
       return OrderModel.fromMap(data as Map<String, dynamic>);
     }).toList();
-    log('Fetched products: ${allOrders}');
+    // log('Fetched products: ${allOrders}');
     
     return allOrders;
   } catch (e) {
@@ -117,14 +116,14 @@ void processOrder(double totalAmount) async {
       // print(" cash customer ${CreditCustomerController.instance.selectedCrClient.value.phoneNumber}");
       // print(" narration: ${customerController.naration.value}");
     final order = OrderModel(
-      id: generateConcatenatedString(),
+      id: await generateConcatenatedString(),
       createdBy: userId,
       orderStatus: 'Pending',
       totalAmount: totalAmount,
       orderDate: DateTime.now().toIso8601String(),
       paymentMethod: checkoutController.selectedPaymentMethod.value.name,
       createdAt: DateTime.now().toIso8601String(),
-      locationId: '00', //pick default location
+      locationId: currentSetting['locationId'] ?? '00', //pick default location
       naration: customerController.naration.value,
       customerCode: customerController.selectedCustomer.value.cusCode,
       companyName: customerController.selectedCustomer.value.companyName, 
@@ -140,7 +139,7 @@ void processOrder(double totalAmount) async {
       final orderItem = OrderItemModel(
         defaultPricing:item.defaultPricing,
         orderId: order.id,
-        locationId: '00',
+        locationId: currentSetting['locationId'] ?? '00',
         itmCode: item.itmCode,
         longName: item.title,
         quantity: item.quantity, 
@@ -176,26 +175,26 @@ void processOrder(double totalAmount) async {
     }
   }
 
-  String generateCleanUniqueKey() {
+  generateCleanUniqueKey() async {
     String rawKey = UniqueKey().toString(); // e.g., "[#cffb2]"
     return rawKey.replaceAll(RegExp(r'[\[\]#]'), ''); // Removes '[', ']', and '#'
   }
 
 
-  String generateConcatenatedString() {
-    String cleanKey = generateCleanUniqueKey();
+   generateConcatenatedString() async {
+    String cleanKey =  await generateCleanUniqueKey();
     
     // Get current date
     DateTime now = DateTime.now();
     
     // Format date as DDMMYYYY
-    String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
-    
+    String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}${now.hour.toString().padLeft(2, '0')}${now.minute.toString().padLeft(2, '0')}${now.second.toString().padLeft(2, '0')}';
     // Assume username is fetched from a controller
     String userName = UserController.instance.user.value.userName;
 
     // Concatenate components
-    String orderKey = '$date$userName$cleanKey';
+    // String orderKey = '$date$userName$cleanKey';
+    String orderKey = '$date$userName';
 
     return orderKey;
   }

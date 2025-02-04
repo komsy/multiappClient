@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 import '../../common/widgets/loaders/animation_loader.dart';
 import '../../common/widgets/loaders/circular_loader.dart';
 import '../helpers/helper_functions.dart';

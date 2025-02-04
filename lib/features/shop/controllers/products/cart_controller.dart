@@ -1,15 +1,13 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/variation_controller.dart';
-import 'package:multiapp/features/shop/models/cart_item_model.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/models/product_packing_price.dart';
-import 'package:multiapp/utils/local_storage/storage_utility.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/variation_controller.dart';
+import 'package:easyapp/features/shop/models/cart_item_model.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/models/product_packing_price.dart';
+import 'package:easyapp/utils/local_storage/storage_utility.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 class CartController extends GetxController {
   static CartController get instance => Get.find();
@@ -69,29 +67,29 @@ class CartController extends GetxController {
     }
 
     //Out of stock status
-    final productStock =isProductOutInStock(product);
+    // final productStock =isProductOutInStock(product);
 
-    if(productStock < 0){
-    MLoaders.warningSnackBar(message: 'Product Quantity is out of stock.', title: 'Oh Snap!');
-        return;
+    // if(productStock < 0){
+    // MLoaders.warningSnackBar(message: 'Product Quantity is out of stock.', title: 'Oh Snap!');
+    //     return;
       
-    } else {
+    // } else {
       //get product currbalance minus variation qty
       if (!isQuantityPrice && product.quantityPrice != null && product.quantityPrice!.length > 1) {
         // determine variation quantity
         final variationQty = variationController.selectedVariation.value.basePackQty;
         final stock = product.currBalance - (variationQty! * productQuantityInCart.value);
-        if (stock < 1) {
-          MLoaders.warningSnackBar(message: 'Selected variation is out of stock.', title: 'Oh Snap!');
-          return;
-        }
-      } else {
-        if (product.currBalance < 1) {
-          MLoaders.warningSnackBar(message: 'Selected product is out of stock.', title: 'Oh Snap!');
-          return;
-        }
+        // if (stock < 1) {
+        //   MLoaders.warningSnackBar(message: 'Selected variation is out of stock.', title: 'Oh Snap!');
+        //   return;
+        // }
+      // } else {
+      //   if (product.currBalance < 1) {
+      //     MLoaders.warningSnackBar(message: 'Selected product is out of stock.', title: 'Oh Snap!');
+      //     return;
+      //   }
       } 
-    }
+    // }
 
     //Convert the productModel to a cartItemModel with the given quantity
     final selectedCartItem = convertToCartItem(product, productQuantityInCart.value);
@@ -145,23 +143,23 @@ class CartController extends GetxController {
       final ppQuantity = productPackaging.basePackQty! * productQuantityToCart;
       final productStock = product.currBalance - (cartqty + ppQuantity);
 
-    if (productStock < 0) {
-      // Show warning if out of stock
-      MLoaders.warningSnackBar(message: 'Product is out of stock.', title: 'Oh Snap!');
-      return;
-    }
+    // if (productStock < 0) {
+    //   // Show warning if out of stock
+    //   MLoaders.warningSnackBar(message: 'Product is out of stock.', title: 'Oh Snap!');
+    //   return;
+    // }
     cartItems[index].quantity += 1;
     addOneCartTax(item);
     updateCart();
     } else {
       // Calculate stock after adding one more unit
-      final productStock = product.currBalance - cartItems[index].quantity;
+      // final productStock = product.currBalance - cartItems[index].quantity;
       
-      if (productStock < 1) {
-        // Show warning if out of stock
-        MLoaders.warningSnackBar(message: 'Product is out of stock.', title: 'Oh Snap!');
-        return;
-      }
+      // if (productStock < 1) {
+      //   // Show warning if out of stock
+      //   MLoaders.warningSnackBar(message: 'Product is out of stock.', title: 'Oh Snap!');
+      //   return;
+      // }
       
       // Increase quantity and update cart
       cartItems[index].quantity += 1;
@@ -280,7 +278,7 @@ class CartController extends GetxController {
   return CartItemModel(
     itmCode: product.itmCode, 
     title: product.longName,
-    unit: isVariation ? variation.bulkPackUnit! : product.unit!,
+    unit: isQuantityPrice ? product.fixUnitOfSell! : isVariation ? variation.bulkPackUnit! : product.unit!,
     basicUnit: product.unit!,
     defaultPricing: isQuantityPrice ? "FUM": isRsp ? "RSP" : "QSP",
     price: price!.toDouble(),

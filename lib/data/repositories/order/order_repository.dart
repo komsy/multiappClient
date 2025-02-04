@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/features/personalization/models/Setting_model.dart';
-import 'package:multiapp/features/shop/models/order_item_model.dart';
-import 'package:multiapp/features/shop/models/order_model.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/shop/models/order_item_model.dart';
+import 'package:easyapp/features/shop/models/order_model.dart';
 
 class OrderRepository extends GetxController {
   static OrderRepository get instance => Get.find();

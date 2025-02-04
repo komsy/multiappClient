@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/custom_shapes/containers/circular_container.dart';
-import 'package:multiapp/common/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/common/widgets/custom_shapes/containers/circular_container.dart';
+import 'package:easyapp/common/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 
 class MPrimaryHeaderContainer extends StatelessWidget {
   const MPrimaryHeaderContainer({

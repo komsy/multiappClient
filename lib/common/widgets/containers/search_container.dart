@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/device/device_utility.dart';
-import 'package:multiapp/utils/helpers/helper_functions.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
+import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 import '../../../utils/constants/sizes.dart';
 

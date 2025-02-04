@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/styles/spacing_styles.dart';
-import 'package:multiapp/features/authentication/screens/login/widgets/login_form.dart';
-import 'package:multiapp/features/authentication/screens/login/widgets/login_header.dart';
+import 'package:easyapp/common/styles/spacing_styles.dart';
+import 'package:easyapp/features/authentication/screens/login/widgets/login_form.dart';
+import 'package:easyapp/features/authentication/screens/login/widgets/login_header.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

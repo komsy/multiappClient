@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/features/authentication/screens/login/login.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/features/authentication/screens/login/login.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();

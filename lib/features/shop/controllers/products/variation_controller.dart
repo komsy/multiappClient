@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/features/shop/models/product_packing_price.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/features/shop/models/product_packing_price.dart';
 
 class VariationController extends GetxController {
   static VariationController get instance => Get.find();
@@ -84,11 +84,13 @@ class VariationController extends GetxController {
   void getProductVariationStockStatus(product, variationQty) {
     final selectedProductQty = product.currBalance;
     final stock = selectedProductQty - variationQty;
-    variationStockStatus.value = stock >= 0 ? 'In Stock' : 'Out of Stock';
+    // variationStockStatus.value = stock >= 0 ? 'In Stock' : 'Out of Stock';
+    variationStockStatus.value = 'In Stock';
   }
 
   String getProductStockStatus(int stock) {
-    return stock > 0 ? 'In Stock' : 'Out of Stock';
+    // return stock > 0 ? 'In Stock' : 'Out of Stock';
+    return 'In Stock';
   }
 
   //Reset selected attributes when switching products

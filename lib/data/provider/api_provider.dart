@@ -3,12 +3,12 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:multiapp/env.dart';
-import 'package:multiapp/features/shop/models/customer_model.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/env.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 
 
 class ApiProvider {
@@ -227,7 +227,7 @@ ApiProvider() {
     try {
       // Construct the full URL to print it
       final fullUrl = '${_dio.options.baseUrl}$apiName';
-      print("Request URL: $fullUrl");
+      // print("Request URL: $fullUrl");
 
       final response = await _dio.get(apiName);
       return response.data as List;
@@ -339,6 +339,37 @@ ApiProvider() {
     // print('Fetched orders: $orders');
     final response = await _dio.post(apiName, data: orders);
     // print('order response: ${response.data}');
+    return response.data;
+  } on DioException catch (err) {
+      // Get error message from the response or set a fallback
+      final errorMessage = err.response?.data is Map<String, dynamic> 
+          ? err.response?.data['message'] ?? 'Something went wrong'
+          : 'Something went wrong.'; // Default message for unexpected response structures
+
+      // Handle specific status codes
+      if (err.response?.statusCode == 401) {
+        return Future.error(errorMessage); // Unauthorized
+      } else if (err.response?.statusCode == 403) {
+        return Future.error('Forbidden: $errorMessage'); // Forbidden
+      } else if (err.response?.statusCode == 500) {
+        return Future.error('Server Error: $errorMessage'); // Internal server error
+      } else {
+        return Future.error(errorMessage); // Generic error handler
+      }
+    }
+  }
+
+  //send user data
+   Future<Map<String, dynamic>>  checkAppUser(String userName,String email) async {
+  try {
+
+    final formData = {
+      'userName': userName,
+      'email': email,
+    };
+    
+    final response = await _dio.post("checkAppUser", data: formData);
+
     return response.data;
   } on DioException catch (err) {
       // Get error message from the response or set a fallback

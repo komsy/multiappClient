@@ -1,16 +1,16 @@
 import 'package:get/get.dart';
-import 'package:multiapp/features/authentication/screens/login/login.dart';
-import 'package:multiapp/features/authentication/screens/onboarding/onboarding.dart';
-import 'package:multiapp/features/authentication/screens/password_configuration/forgot_password.dart';
-import 'package:multiapp/features/personalization/views/profile/profile.dart';
-import 'package:multiapp/features/personalization/views/settings/settings.dart';
-import 'package:multiapp/features/shop/screens/cart/cart.dart';
-import 'package:multiapp/features/shop/screens/checkout/checkout.dart';
-import 'package:multiapp/features/shop/screens/home/home.dart';
-import 'package:multiapp/features/shop/screens/order/Order.dart';
-import 'package:multiapp/features/shop/screens/product_reviews/product_reviews.dart';
-import 'package:multiapp/features/shop/screens/wishlist/wishlist.dart';
-import 'package:multiapp/routes/routes.dart';
+import 'package:easyapp/features/authentication/screens/login/login.dart';
+import 'package:easyapp/features/authentication/screens/onboarding/onboarding.dart';
+import 'package:easyapp/features/authentication/screens/password_configuration/forgot_password.dart';
+import 'package:easyapp/features/personalization/views/profile/profile.dart';
+import 'package:easyapp/features/personalization/views/settings/settings.dart';
+import 'package:easyapp/features/shop/screens/cart/cart.dart';
+import 'package:easyapp/features/shop/screens/checkout/checkout.dart';
+import 'package:easyapp/features/shop/screens/home/home.dart';
+import 'package:easyapp/features/shop/screens/order/Order.dart';
+import 'package:easyapp/features/shop/screens/product_reviews/product_reviews.dart';
+import 'package:easyapp/features/shop/screens/wishlist/wishlist.dart';
+import 'package:easyapp/routes/routes.dart';
 
 
 class AppRoutes {

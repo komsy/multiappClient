@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 
 class MDownloadsMenuTile extends StatelessWidget {
   const MDownloadsMenuTile(

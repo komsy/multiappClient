@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/containers/search_container.dart';
-import 'package:multiapp/features/shop/controllers/customer_controller.dart';
-import 'package:multiapp/features/shop/screens/customer/widgets/customer_tile.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/helpers/cloud_helper_functions.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/containers/search_container.dart';
+import 'package:easyapp/features/shop/controllers/customer_controller.dart';
+import 'package:easyapp/features/shop/screens/customer/widgets/customer_tile.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
 
 
 class CustomerScreen extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/layouts/grid_layout.dart';
-import 'package:multiapp/common/widgets/shimmers/shimmer.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/layouts/grid_layout.dart';
+import 'package:easyapp/common/widgets/shimmers/shimmer.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
  
 class MVerticalProductShimmer extends StatelessWidget {
   const MVerticalProductShimmer({

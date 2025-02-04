@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 import '../../../../common/widgets/products/ratings/ratings_indicator.dart';
 import 'widgets/rating_progress_indicator.dart';

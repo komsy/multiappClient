@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/loaders/animation_loader.dart';
-import 'package:multiapp/features/shop/controllers/credit_customer_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:multiapp/features/shop/screens/checkout/checkout.dart';
-import 'package:multiapp/navigation_menu.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/loaders/animation_loader.dart';
+import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/features/shop/screens/checkout/checkout.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 
 import '../../../../utils/constants/text_strings.dart';
 import 'widgets/cart_items.dart';

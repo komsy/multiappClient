@@ -1,5 +1,5 @@
-import 'package:multiapp/features/shop/models/product_packing_price.dart';
-import 'package:multiapp/features/shop/models/product_unit_converter.dart';
+import 'package:easyapp/features/shop/models/product_packing_price.dart';
+import 'package:easyapp/features/shop/models/product_unit_converter.dart';
 
 
 class ProductModels {

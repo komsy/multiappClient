@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/icons/m_circular_icon.dart';
-import 'package:multiapp/common/widgets/layouts/grid_layout.dart';
-import 'package:multiapp/common/widgets/loaders/animation_loader.dart';
-import 'package:multiapp/common/widgets/products/product_cards/product_card_vertical.dart';
-import 'package:multiapp/common/widgets/shimmers/vertical_product_shimmer.dart';
-import 'package:multiapp/features/shop/controllers/products/favourites_controller.dart';
-import 'package:multiapp/features/shop/controllers/products/product_controller.dart';
-import 'package:multiapp/features/shop/screens/home/home.dart';
-import 'package:multiapp/navigation_menu.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
-import 'package:multiapp/utils/constants/sizes.dart';
-import 'package:multiapp/utils/helpers/cloud_helper_functions.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/icons/m_circular_icon.dart';
+import 'package:easyapp/common/widgets/layouts/grid_layout.dart';
+import 'package:easyapp/common/widgets/loaders/animation_loader.dart';
+import 'package:easyapp/common/widgets/products/product_cards/product_card_vertical.dart';
+import 'package:easyapp/common/widgets/shimmers/vertical_product_shimmer.dart';
+import 'package:easyapp/features/shop/controllers/products/favourites_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
+import 'package:easyapp/features/shop/screens/home/home.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
 
 class FavouriteScreen extends StatelessWidget {
   const FavouriteScreen({super.key});

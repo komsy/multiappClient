@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 
 class MProductPriceText extends StatelessWidget {
   const MProductPriceText({

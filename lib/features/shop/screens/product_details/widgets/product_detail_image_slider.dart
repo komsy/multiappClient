@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:multiapp/common/widgets/appbar/appbar.dart';
-import 'package:multiapp/common/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
-import 'package:multiapp/common/widgets/products/cart/cart_menu_icon.dart';
-import 'package:multiapp/common/widgets/products/favourite_icon/favourite_icon.dart';
-import 'package:multiapp/features/shop/models/product_model.dart';
-import 'package:multiapp/utils/constants/colors.dart';
-import 'package:multiapp/utils/constants/image_strings.dart';
+import 'package:easyapp/common/widgets/appbar/appbar.dart';
+import 'package:easyapp/common/widgets/custom_shapes/curved_edges/curved_edges_widget.dart';
+import 'package:easyapp/common/widgets/products/cart/cart_menu_icon.dart';
+import 'package:easyapp/common/widgets/products/favourite_icon/favourite_icon.dart';
+import 'package:easyapp/features/shop/models/product_model.dart';
+import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
 
 import '../../../../../common/widgets/images/m_rounded_image.dart';
 import '../../../../../utils/constants/enums.dart';

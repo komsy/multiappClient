@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
-import 'package:multiapp/SQLite/sqlite.dart';
-import 'package:multiapp/features/shop/controllers/credit_customer_controller.dart';
-import 'package:multiapp/features/shop/models/credit_customer_model.dart';
-import 'package:multiapp/features/shop/models/customer_model.dart';
-import 'package:multiapp/utils/popups/loaders.dart';
+import 'package:easyapp/SQLite/sqlite.dart';
+import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'dart:developer'; 
 import 'dart:async';
 
@@ -25,7 +24,7 @@ class CustomerController extends GetxController {
   final RxBool refreshSignal = false.obs; // Signal to refresh data
   final creditController = Get.put(CreditCustomerController());
 
-  @override
+  @override 
   void onInit() {
     // fetchFeaturedCustomers();
     fetchCustomers();
