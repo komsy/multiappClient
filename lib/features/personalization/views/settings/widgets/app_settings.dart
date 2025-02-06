@@ -19,11 +19,11 @@ class AppSettingsScreen extends StatelessWidget {
     final controller = SettingsController.instance;    
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: MColors.primary,
-        onPressed: () => Get.to(() => const AddAppSettingsScreen()),
-        child: const Icon(Iconsax.add, color: MColors.white),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: MColors.primary,
+      //   onPressed: () => Get.to(() => const AddAppSettingsScreen()),
+      //   child: const Icon(Iconsax.add, color: MColors.white),
+      // ),
       appBar: MAppBar(
           title: Text('App Settings',
               style: Theme.of(context).textTheme.headlineSmall),
@@ -72,7 +72,7 @@ class AppSettingsScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  title: 'App Key :',
+                  title: 'App Key   :',
                   icon: Iconsax.copy,
                   value: controller.setting.value.appKey,
                 ),
@@ -90,8 +90,8 @@ class AppSettingsScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    title: 'API URL :',
-                  icon: Iconsax.copy,
+                    title: 'API URL      :',
+                    icon: Iconsax.copy,
                     value: controller.setting.value.apiUrl),
 
                 // MProfileMenu(
@@ -102,15 +102,22 @@ class AppSettingsScreen extends StatelessWidget {
 
                 MProfileMenu(
                     onPressed: () {},
-                    title: 'Location :',
+                    title: 'Location    :',
                     showIcon: false,
                     value: controller.setting.value.locationId.toString()),
 
                 MProfileMenu(
                     onPressed: () {},
-                    title: 'Default Customer :',
+                    title: 'Cust Code :',
                     showIcon: false,
-                    value: controller.setting.value.defaultCustomer.toString()),
+                    value: controller.setting.value.defaultCustCode.toString()),
+                const SizedBox(height: MSizes.spaceBtwSections * 3),
+                //Change name Button
+                SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        onPressed: () => controller.createAppSettings(context),
+                        child: const Text(MTexts.changeSettings))),
               ],
             ),
           ),

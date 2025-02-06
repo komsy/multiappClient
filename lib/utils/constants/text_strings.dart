@@ -37,6 +37,7 @@ class MTexts {
   static const String signIn = "Sign In";
   static const String verify = "Verify";
   static const String changeName = "Change Name";
+  static const String changeSettings = "Change Settings";
   static const String createAccount = "Create Account";
   static const String orSignInWith = "or sign in with";
   static const String orSignUpWith = "or sign up with";

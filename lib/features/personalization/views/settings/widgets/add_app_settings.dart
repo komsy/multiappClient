@@ -31,18 +31,18 @@ class AddAppSettingsScreen extends StatelessWidget {
                 validator: (value) => MValidator.validateEmptyText('API Key', value),
                 decoration: const InputDecoration(prefixIcon: Icon(Iconsax.key), labelText: 'API Key')),
               const SizedBox(height: MSizes.spaceBtwInputFields),
-              // TextFormField( 
-              //   controller: controller.docSeries,
-              //   validator: (value) => MValidator.validateEmptyText('Document Series', value),
-              //   decoration: const InputDecoration(prefixIcon: Icon(Iconsax.document), labelText: 'Document Series')),
-              // const SizedBox(height: MSizes.spaceBtwInputFields),
+              TextFormField( 
+                controller: controller.docSeries,
+                validator: (value) => MValidator.validateEmptyText('Document Series', value),
+                decoration: const InputDecoration(prefixIcon: Icon(Iconsax.document), labelText: 'Document Series')),
+              const SizedBox(height: MSizes.spaceBtwInputFields),
               TextFormField( 
                 controller: controller.locationId,
                 validator: (value) => MValidator.validateEmptyText('Location', value),
                 decoration: const InputDecoration(prefixIcon: Icon(Iconsax.location), labelText: 'Default Location')),
               const SizedBox(height: MSizes.spaceBtwInputFields),
               TextFormField( 
-                controller: controller.defaultCustomer,
+                controller: controller.defaultCustCode,
                 validator: (value) => MValidator.validateEmptyText('Default Customer', value),
                 decoration: const InputDecoration(prefixIcon: Icon(Iconsax.user), labelText: 'Default Customer')),
               const SizedBox(height: MSizes.defaultSpace),

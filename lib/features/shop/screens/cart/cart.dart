@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
 import 'package:easyapp/common/widgets/loaders/animation_loader.dart';
-import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
 import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
 import 'package:easyapp/features/shop/screens/checkout/checkout.dart';
 import 'package:easyapp/navigation_menu.dart';

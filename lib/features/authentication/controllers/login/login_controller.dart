@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:easyapp/data/provider/api_provider.dart';
+import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/env.dart';
-import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
@@ -19,7 +20,7 @@ class LoginController extends GetxController{
   static LoginController get instance =>Get.find();
   // Initialize the database instance here
   final LocalDatabase db = LocalDatabase.instance;
-
+  final apiProvider = ApiProvider();
   //Variables
   final localStorage = GetStorage();
   final hidePassword = true.obs; //Observable for hiding/showing password
@@ -42,12 +43,6 @@ class LoginController extends GetxController{
     // Start loading
     MFullScreenLoader.openLoadingDialog('Logging you in...', MImages.docerAnimation);
 
-    // Check Internet connectivity
-    // final isConnected = await NetworkManager.instance.isConnected();
-    // if (!isConnected) {
-    //   MLoaders.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection and try again.');
-    //   return;
-    // }
 
     // Form validation
     if (!loginFormKey.currentState!.validate()) {
@@ -72,8 +67,51 @@ class LoginController extends GetxController{
 
       String storedPassword = result[0]['password'];
       bool passwordMatches = _comparePassword(password.text.trim(), storedPassword);
-
+      int userStatus = result[0]['userStatus'];
+      int licStatus = result[0]['licStatus'];
+      String username = result[0]['username'];
       if (passwordMatches) {
+        
+        // Non-admin user login logic
+        if (username != 'admin') {
+          if (licStatus == 0 ||  userStatus == 0) {
+        print("username2 $username  licstatus $licStatus  userStatus $userStatus" );
+            // Check Internet connectivity
+            final isConnected = await NetworkManager.instance.isConnected();
+            if (!isConnected) {
+              MLoaders.errorSnackBar(
+                  title: 'No Internet',
+                  message: 'Please check your internet connection and try again.');
+              return;
+            }
+            
+            // Query user status from API
+            final checkAppUser = await apiProvider.checkAppUser(username, email.text.trim());
+            print("checkAppUser $checkAppUser");
+
+            if (checkAppUser['userStatus'] == 0 || checkAppUser['licStatus'] == 0) {
+              MLoaders.errorSnackBar(
+                  title: 'Authentication Error',
+                  message: 'Account locked. Kindly connect to the internet or contact your administrator!');
+              return;
+            }
+
+            // Update local DB and proceed to login
+            final users = UserModel(
+              userName: username,
+              email: email.text.trim(),
+              password: storedPassword,
+              role: "user",
+              status: 1,
+              userStatus: (checkAppUser['userStatus'] == 1) ? 1 : 0,
+              licStatus: (checkAppUser['licStatus'] == 1) ? 1 : 0,
+              updatedAt: DateTime.now().toIso8601String(),
+              createdAt: DateTime.now().toIso8601String(),
+            );
+
+            await db.insertUser(users);
+          }
+        }
         // Prepare payload for JWT
         var payload = {
           'userId': result[0]['id'],

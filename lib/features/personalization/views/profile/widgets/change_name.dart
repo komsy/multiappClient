@@ -74,7 +74,7 @@ class ChangeName extends StatelessWidget {
             ),
           ),
           const SizedBox(height: MSizes.spaceBtwSections),
-          //Sigup Button
+          //Change name Button
           SizedBox(
               width: double.infinity,
               child: ElevatedButton(

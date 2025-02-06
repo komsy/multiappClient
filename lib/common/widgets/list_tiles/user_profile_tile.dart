@@ -21,7 +21,7 @@ class MUserProfileTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = UserController.instance;
     final apiURL = AuthenticationRepository.instance.apiURL;
-    print("apiURL ${apiURL}");
+    
     return ListTile(
       leading: const MCircularImage(
           image: MImages.user, width: 50, height: 50, padding: 0),
@@ -37,7 +37,7 @@ class MUserProfileTile extends StatelessWidget {
         style:
             Theme.of(context).textTheme.bodyMedium!.apply(color: MColors.white),
       ),
-      trailing: IconButton(
+      trailing: controller.user.value.userName == "admin" ?  IconButton(
           onPressed: () //=>Get.to(() => const ChangeName()),
               {
             if (apiURL == null || apiURL.isEmpty) {
@@ -45,16 +45,11 @@ class MUserProfileTile extends StatelessWidget {
                   title: 'Oh Snap!',
                   message: 'Kindly update update the app settings first!');
               Get.to(() => const AppSettingsScreen());
-            } else if (controller.user.value.userName == "admin") {
+            } else  {
               Get.to(() => const ChangeName());
-            } else {
-              MLoaders.successSnackBar(
-                  title: 'Congratulations',
-                  message:'Name already changed. Kindly contact your administrator!');
-              return;
-            }
+            } 
           },
-          icon: const Icon(Iconsax.edit, color: MColors.white)),
+          icon: const Icon(Iconsax.edit, color: MColors.white)): null,
     );
   }
 }

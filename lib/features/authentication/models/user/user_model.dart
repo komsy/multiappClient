@@ -6,6 +6,7 @@ class UserModel {
   int status;
   int userStatus;
   int licStatus;
+  String updatedAt;
   String createdAt;
 
 //Constructor for UserModel
@@ -17,12 +18,13 @@ class UserModel {
     required this.status,
     required this.userStatus,
     required this.licStatus,
+    required this.updatedAt,
     required this.createdAt,
   });
 
 
   //Static function to create an empty user model
-  static UserModel empty() => UserModel( userName: '', email: '', password: '', role: 'user', status: 1,userStatus: 0,licStatus: 0, createdAt: '');
+  static UserModel empty() => UserModel( userName: '', email: '', password: '', role: 'user', status: 1,userStatus: 0,licStatus: 0, updatedAt: '', createdAt: '');
 
   //Convert model to Json structure for storing data in sqlite.
   Map<String, dynamic> toJson() {
@@ -34,6 +36,7 @@ class UserModel {
       'status':status,
       'userStatus':userStatus,
       'licStatus':licStatus,
+      'updatedAt':updatedAt,
       'createdAt':createdAt,
     };
   }
@@ -48,6 +51,7 @@ class UserModel {
     status: data['status'] ?? 1,
     userStatus: data['userStatus'] ?? 0,
     licStatus: data['licStatus'] ?? 0,
+    updatedAt: data['updatedAt'] ?? '',
     createdAt: data['createdAt'] ?? '',
     );
   }

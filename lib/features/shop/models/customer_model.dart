@@ -1,5 +1,4 @@
-
-  class CustomerModel {
+class CustomerModel {
     String cusCode;
     String? accType;
     num? crLimit;

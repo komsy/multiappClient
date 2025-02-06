@@ -1,25 +1,24 @@
-
 class SettingModel {
   String appKey;
-  String androidId;
   String apiUrl;
   String apiKey;
-  String docSeries;
-  String defaultCustomer;
   String locationId;
-  int docNo;
+  String defaultCustCode;
+  String defaultPricing;
+  int routeWiseSell;
+  int editOrder;
   int isRSP;
-    String createdAt;
+  String createdAt;
 
   SettingModel({
     required this.appKey,
-    this.androidId = '',
+    this.defaultCustCode = '',
     this.apiUrl = '',
     this.apiKey = '',
-    this.docSeries = '',
-    this.defaultCustomer = 'Cash Sale',
+    this.defaultPricing = '',
+    this.routeWiseSell = 0,
     this.locationId ='00',
-    this.docNo = 0,
+    this.editOrder = 0,
     this.isRSP = 0,
     this.createdAt ='',
   });
@@ -31,13 +30,13 @@ class SettingModel {
   Map<String, dynamic> toJson() {
     return {
       'appKey': appKey,
-      'androidId': androidId,
+      'defaultCustCode': defaultCustCode,
       'APIURL': apiUrl,
       'APIKey': apiKey,
-      'docSeries': docSeries,
-      'defaultCustomer': defaultCustomer,
+      'defaultPricing': defaultPricing,
+      'routeWiseSell': routeWiseSell,
       'locationId': locationId,
-      'docNo': docNo,
+      'editOrder': editOrder,
       'IsRSP': isRSP,
       'createdAt': createdAt,
     };
@@ -47,13 +46,13 @@ class SettingModel {
   factory SettingModel.fromMap(Map<String, dynamic> data) {
     return SettingModel(
       appKey: data['appKey'] ?? '',
-      androidId: data['androidId'] ?? '',
+      defaultCustCode: data['defaultCustCode'] ?? '',
       apiUrl: data['APIURL'] ?? '',
       apiKey: data['APIKey'] ?? '',
-      docSeries: data['docSeries'] ?? '',
-      defaultCustomer: data['defaultCustomer'] ?? 'Cash Sale',
+      defaultPricing: data['defaultPricing'] ?? '',
+      routeWiseSell: data['routeWiseSell'] ?? 0,
       locationId: data['locationId'] ?? '00',
-      docNo: data['docNo'] ?? 0,
+      editOrder: data['editOrder'] ?? 0,
       isRSP: data['IsRSP'] ?? 0,
       createdAt: data['createdAt'] ?? '',
     );

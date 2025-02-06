@@ -1,3 +1,4 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/common/styles/shadows.dart';
@@ -14,6 +15,7 @@ import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/helpers/helper_functions.dart';
 
+import '../../../../features/shop/controllers/products/cart_controller.dart';
 import '../../texts/product_price_text.dart';
 import '../../texts/product_title_text.dart';
 
@@ -26,12 +28,23 @@ class MProductCardVertical extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = ProductController.instance;
+    final cartController = CartController.instance;
     final salePercentage =[]; // controller.calaculateSalePercentage(product.price, product.salePrice);
-
+    final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
 
     //Container with side paddings, color, edges, radius and shadow.
     return GestureDetector(
-      onTap: () => Get.to(() => ProductDetailScreen(product: product)),
+      onTap: ()// => Get.to(() => ProductDetailScreen(product: product)),
+      {
+        //If the product have variations then show the product details for variation selection
+        //Else add product to the cart.
+        if (!isQuantityPrice.value && product.quantityPrice != null && product.quantityPrice!.length > 1) {
+          Get.to(() => ProductDetailScreen(product: product));
+        } else {
+          final cartitem = cartController.convertToCartItem(product, 1);
+          cartController.addOneToCart(cartitem);
+        }
+      },
       child: Container(
         width: 100,
         padding: const EdgeInsets.all(1),

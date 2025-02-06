@@ -16,10 +16,11 @@ class AuthenticationRepository extends GetxController {
   RxString currentUser = ''.obs;
   RxString currentUserRole = ''.obs;
   RxString currentUserId  = ''.obs;
-  // RxString isRSP  = ''.obs;
+  RxString defaultPricing= ''.obs;
   RxBool isRetailPrice = false.obs;
   RxString appKey  = ''.obs;
   RxString apiURL  = ''.obs;
+  RxString apiKey  = ''.obs;
   RxBool isQuantityPrice  = false.obs;
   //Variables
   final deviceStorage = GetStorage();
@@ -66,7 +67,9 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   isRetailPrice.value = (isRsp == 1); // Assume 1 indicates true (retail price)
   appKey.value = setting['appKey'];
   apiURL.value = setting['APIURL'];
-
+  apiKey.value = setting['APIKey'];
+  defaultPricing.value = setting['defaultPricing'];
+print("defaultPricing ${defaultPricing.value}");
   final decodedToken = JWT.decode(jwtToken);
 
   //  Assign values to the current user variables

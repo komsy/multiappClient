@@ -1,3 +1,6 @@
+import 'package:easyapp/features/shop/models/cart_item_model.dart';
+import 'package:easyapp/features/shop/models/customer_model.dart';
+import 'package:easyapp/features/shop/screens/cart/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
@@ -26,6 +29,7 @@ class OrderController extends GetxController {
   final customerController = CustomerController.instance;
   final checkoutController = Get.put(CheckoutController());
   final orderRepository = Get.put(OrderRepository());
+  RxList<CartItemModel> cartItems = <CartItemModel>[].obs;
   // Initialize the database instance here
   final LocalDatabase db = LocalDatabase.instance;
 
@@ -54,7 +58,7 @@ Future<List<OrderModel>>fetchOrders() async {
       return OrderModel.fromMap(data as Map<String, dynamic>);
     }).toList();
     // log('Fetched products: ${allOrders}');
-    
+    isLoading.value = false;
     return allOrders;
   } catch (e) {
     // Handle and show error message
@@ -77,7 +81,7 @@ void processOrder(double totalAmount) async {
     final cusCode = customerController.selectedCustomer.value.cusCode;
     // print("cusCode $cusCode");
     if (cusCode == null || cusCode.isEmpty) {
-        throw Exception("Kindly load the Customers");
+        throw Exception("Kindly select or load the Customers");
       }
 
     // print('Processing order...$currentSetting ');
@@ -132,7 +136,7 @@ void processOrder(double totalAmount) async {
       cashPinNo:creditController.pinNo ?? '',
       cashAddress:creditController.address  ?? ''
     );
-// print("order: ${order.cashCustomerName}: ${order.cashPhoneNumber}");
+
     await orderRepository.saveOrders(order);
 
     for (var item in cartitems) {
@@ -181,7 +185,7 @@ void processOrder(double totalAmount) async {
   }
 
 
-   generateConcatenatedString() async {
+  generateConcatenatedString() async {
     String cleanKey =  await generateCleanUniqueKey();
     
     // Get current date
@@ -198,5 +202,68 @@ void processOrder(double totalAmount) async {
 
     return orderKey;
   }
+  
+  void editOrder(OrderModel order) {
+    //check if cart !empty ? return  : addtoCart
+    final cartitems = cartController.cartItems.toList();
+    print("cartitems $cartitems");
+    if (cartitems.isNotEmpty) {
+      MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
+      return;
+    }
+    editOrderDialog(order);
+  }
+void editOrderDialog(OrderModel order) async {
+  Get.defaultDialog(
+    title: 'Edit Order of Ksh ${order.totalAmount}',
+    middleText: 'Are you sure you want to edit this Order?',
+    onConfirm: () async {
+      try {
+        if (order.orderItems == null || order.orderItems!.isEmpty) {
+          MLoaders.errorSnackBar(title: 'Oh Snap!',message: "This order has no items.");
+          return;
+        }        
+
+        // Loop through order items and add each to the cart
+        for (var item in order.orderItems!) {
+          final cartItem = CartItemModel(
+            itmCode: item.itmCode,
+            title: item.longName,
+            unit: item.unit,
+            basicUnit: item.basicUnit,
+            defaultPricing: item.defaultPricing,
+            price: item.costPrice,
+            exVat: item.exVat,
+            taxAmount: item.vatAmount,
+            quantity: item.quantity,
+            vatRate: item.vatRate,
+            vatCode: item.vatCode,
+            variationId: item.unit,
+            selectedVariation: item.unit,
+          );
+
+        cartController.addOneToCart(cartItem); 
+        }
+
+        cartController.updateCart();
+
+        // Update default customer
+        // customerController.selectedOrderCustomer.value = 
+        //     customerController.featuredCustomers.firstWhere(
+        //   (customer) => customer.companyName == order.companyName,
+        //   orElse: () => CustomerModel.empty(),
+        // );
+
+        // await db.deleteOrder(order.id);
+      
+        MLoaders.customToast(message: 'Order moved to cart.');
+        AuthenticationRepository.instance.screenRedirect();
+      } catch (e) {
+        MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
+      }
+    },
+    onCancel: () => Get.back(),
+  );
+}
 
 }

@@ -1,6 +1,6 @@
 import 'package:easyapp/env.dart';
 import 'package:easyapp/features/authentication/models/user/user_model.dart';
-import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/models/credit_customer_model.dart';
 import 'package:easyapp/features/shop/models/customer_model.dart';
 import 'package:easyapp/features/shop/models/order_item_model.dart';
@@ -221,6 +221,22 @@ class LocalDatabase {
       )
     ''');
 
+    // Create the settings table
+    await db.execute('''
+      CREATE TABLE settings (
+        appKey VARCHAR(100) UNIQUE NOT NULL,
+        APIURL VARCHAR(250),
+        APIKey VARCHAR(250),
+        locationId VARCHAR(2) NOT NULL,
+        defaultCustCode VARCHAR(10),
+        defaultPricing VARCHAR(10) NOT NULL,
+        routeWiseSell INTEGER  NOT NULL,
+        editOrder INTEGER  NOT NULL,
+        IsRSP INTEGER  NOT NULL,
+        createdAt TEXT NOT NULL
+      )
+    ''');
+
     // Create the userMst table
     await db.execute('''
       CREATE TABLE userMst (
@@ -233,25 +249,11 @@ class LocalDatabase {
         licStatus INTEGER NOT NULL,
         refreshToken TEXT,
         role varchar(10) NOT NULL,
+        updatedAt TEXT NOT NULL,
         createdAt TEXT NOT NULL
       )
     ''');
 
-    // Create the settings table
-    await db.execute('''
-      CREATE TABLE settings (
-        appKey VARCHAR(100) UNIQUE NOT NULL,
-        androidId VARCHAR(200),
-        APIURL VARCHAR(250),
-        APIKey VARCHAR(250),
-        locationId VARCHAR(2) NOT NULL,
-        docSeries VARCHAR(20),
-        defaultCustomer VARCHAR(150),
-        docNo INTEGER  NOT NULL,
-        IsRSP INTEGER  NOT NULL,
-        createdAt TEXT NOT NULL
-      )
-    ''');
   }
 
   // Insert a test product into productMst table
@@ -264,70 +266,17 @@ class LocalDatabase {
     String hashedPassword = hashPassword("@Admin123");
     final appKey = createAppKey();
 
-    // await db.insert("categoryMst", {
-    //   "catCode": "01001",
-    //   "catName": "GENERAL ITEM",
-    //   "locationId": "00",
-    //   "image": "",
-    // });
-    // // Test product data
-    // Map<String, dynamic> testProduct = {
-    //   "itmCode": "070098",
-    //   "locationId": "01",
-    //   "godownName": "HO",
-    //   "longName": "Test Product",
-    //   "taxCode": "A",
-    //   "taxRate": 16,
-    //   "catCode": "01001",
-    //   "catName": "GENERAL ITEM",
-    //   "RspAmount": 15,
-    //   "unit": "PCS",
-    //   "currBalance": 20,
-    //   "wspIncVat": 13,
-    //   "isFavourite": "0",
-    //   "image": "",
-    // };
-
-    // await db.insert("productMst", testProduct,
-    //     conflictAlgorithm: ConflictAlgorithm.replace);
-
-    // // Optionally, insert data into the related tables
-    // await db.insert("ProductUnitConverter", {
-    //   "itmCode": "070098",
-    //   "locationId": "01",
-    //   "bulkPackQty": 1,
-    //   "bulkPackUnit": "PCS",
-    //   "basePackQty": 1,
-    //   "basePackUnit": "PCS",
-    // });
-
-    // await db.insert("ProductPackingPrice", {
-    //   "itmCode": "070098",
-    //   "locationId": "01",
-    //   "basePackQty": 1,
-    //   "bulkPackUPrice": 12.0,
-    //   "bulkPackUnit": "PCS",
-    //   "scanCode": "070098",
-    // });
-    // await db.insert("customerMst", {
-    //   "customerCode": "MS000001",
-    //   "companyName": "Multitech Solution ltd",
-    //   "locationId": "00",
-    //   "accType": "AC",
-    //   "crLimit": 100.0,
-    //   "currBalance": 10.0,
-    // });
     await db.insert("settings", {
       "appKey": appKey,
-      "androidId": "",
       "APIURL": "",
       "APIKey": "",
-      "docSeries": "",
-      "defaultCustomer": "Cash Sale",
       "locationId": "00",
-      "docNo": 0,
+      "defaultCustCode": "",
+      "defaultPricing": "WSP",
+      "routeWiseSell": 0,
+      "editOrder": 0,
       "IsRSP": 0,
-      "createdAt": "2024-11-20T15:20:20.621511",
+      "createdAt": createdAt,
     });
 
     await db.insert("userMst", {
@@ -339,6 +288,7 @@ class LocalDatabase {
       "status": 1,
       "userStatus": 1,
       "licStatus": 1,
+      "updatedAt": createdAt,
       "createdAt": createdAt,
     });
   }
@@ -409,7 +359,7 @@ class LocalDatabase {
     });
   }
 
-  //Save app Settings
+  //Save app CreditCustomerModel
   Future<void> saveSelectedCrClient(CreditCustomerModel customer) async {
     // print(customer.toJson());
     final db = await database;
@@ -458,7 +408,7 @@ class LocalDatabase {
   //Search specific customer
   Future<List<Map<String, dynamic>>> getCustomerSearch(keyWord) async {
     // Open the SQLite database
-    print("keyword: $keyWord");
+    // print("keyword: $keyWord");
     final db = await instance.database;
     // Fetch all customers
     final List<Map<String, dynamic>> result = await db.rawQuery(
@@ -744,7 +694,7 @@ class LocalDatabase {
 
   //Save Order
   Future<void> saveOrders(OrderModel order) async {
-    print("order: ${order.cashCustomerName}: ${order.cashPhoneNumber}");
+    // print("order: ${order.cashCustomerName}: ${order.cashPhoneNumber}");
     final db = await database;
     await db.insert(
       'orderMst',
@@ -774,7 +724,7 @@ class LocalDatabase {
       {"name": name},
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    print('Data added: $name');
+    // print('Data added: $name');
   }
 
   Future readAllData({name}) async {
@@ -785,8 +735,8 @@ class LocalDatabase {
     // final userMst =  await db.query("userMst");
     // final categoryMst =  await db.query("categoryMst");
     // final settings =  await db.query("settings");
-    log("productMst $productMst");
-    log("orderTrn $orderTrn");
+    // log("productMst $productMst");
+    // log("orderTrn $orderTrn");
     // print(userMst);
     // print(categoryMst);
     // print(settings);
@@ -803,15 +753,15 @@ class LocalDatabase {
       // Delete the database file
       String path = join(await getDatabasesPath(), fileName);
       await deleteDatabase(path);
-      print("filename $fileName");
-      print("path $path");
+      // print("filename $fileName");
+      // print("path $path");
       // Clear the instance and reinitialize
       _database = null;
       // await _initDB(fileName);
 
-      print("Database has been reset successfully.");
+      // print("Database has been reset successfully.");
     } catch (e) {
-      print("Error resetting database: $e");
+      // print("Error resetting database: $e");
     }
   }
 
@@ -819,7 +769,16 @@ class LocalDatabase {
   Future<void> deleteAllCategories() async {
     final db = await database;
     await db.delete('categoryMst');
-    print("All data from categoryMst has been deleted.");
+  }
+
+  // Delete single order
+  Future<void> deleteOrder(String orderId) async {
+    final db = await instance.database;
+    await db.delete(
+      'orderMst',
+      where: 'id = ?',
+      whereArgs: [orderId],
+    );
   }
 
   /// Function to close the database

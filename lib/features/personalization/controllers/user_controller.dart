@@ -92,6 +92,7 @@ final apiProvider = ApiProvider();
         status: 1,
         userStatus: (checkAppUser['userStatus'] == true) ? 1 : 0,
         licStatus: (checkAppUser['licStatus'] == true) ? 1 : 0,
+        updatedAt: DateTime.now().toIso8601String(),
         createdAt: DateTime.now().toIso8601String(),
       );
 

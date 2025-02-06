@@ -88,7 +88,7 @@ class LoadDataScreen extends StatelessWidget {
                         : () => apiService.fetchAndStoreProductpackaging(),
                     icon: apiService.isPPLoading.value
                         ? const CircularProgressIndicator(
-                            color: Colors.orange,
+                            color: Colors.green,
                             strokeWidth: 2,
                           )
                         : const Icon(
@@ -112,7 +112,7 @@ class LoadDataScreen extends StatelessWidget {
                         : () => apiService.fetchAndStoreProducts(),
                     icon: apiService.isProductLoading.value
                         ? const CircularProgressIndicator(
-                            color: Colors.orange,
+                            color: Colors.green,
                             strokeWidth: 2,
                           )
                         : const Icon(

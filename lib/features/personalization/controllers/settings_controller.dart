@@ -1,14 +1,20 @@
+import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:easyapp/utils/helpers/network_manager.dart';
+import 'package:easyapp/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
-import 'dart:developer'; 
+import 'dart:developer';
+
+import 'package:iconsax/iconsax.dart'; 
 
 class SettingsController extends GetxController {
   static SettingsController get instance => Get.find();
@@ -21,7 +27,7 @@ class SettingsController extends GetxController {
   final isRetailPrice = false.obs;
   Rx<SettingModel> setting =SettingModel.empty().obs; //Observable settting
   final apiUrl = TextEditingController();
-  final defaultCustomer = TextEditingController();
+  final defaultCustCode = TextEditingController();
   final apiKey = TextEditingController();
   final docSeries = TextEditingController();
   final locationId = TextEditingController();
@@ -66,6 +72,14 @@ class SettingsController extends GetxController {
       //Start loading
       MFullScreenLoader.openLoadingDialog('Storing App Settings...', MImages.docerAnimation);
 
+      
+      // Check Internet connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        MLoaders.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection and try again.');
+        return;
+      }
+
       //Form validation
       if(!settingsFormKey.currentState!.validate()){
         MFullScreenLoader.stopLoading();
@@ -76,15 +90,17 @@ class SettingsController extends GetxController {
       final settings = SettingModel(
         appKey: AuthenticationRepository.instance.appKey.value,
         apiKey: apiKey.text.trim(),
-        defaultCustomer: defaultCustomer.text.trim(),
+        defaultCustCode: setting.value.defaultCustCode,
         apiUrl: apiUrl.text.trim(),
-        docSeries: docSeries.text.trim() ,
-        locationId: locationId.text.trim(),
-        docNo:setting.value.docNo,
+        locationId: setting.value.locationId,
+        defaultPricing: setting.value.defaultPricing ,
+        routeWiseSell:setting.value.routeWiseSell,
+        editOrder:setting.value.editOrder,
         isRSP:AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
         createdAt: DateTime.now().toIso8601String(),
       );
       // print("Setting saving data ${settings.apiKey}, ${settings.apiUrl}, ${settings.docSeries}, ${settings.toJson()}");
+
 
       await db.saveAppSettings(settings);
 
@@ -131,7 +147,7 @@ class SettingsController extends GetxController {
     // final updatedSettings = SettingModel(
     //   appKey: currentSetting['appKey'],
     //   apiKey: currentSetting['APIKey'],
-    //   defaultCustomer: currentSetting['defaultCustomer'],
+    //   defaultCustCode: currentSetting['defaultCustCode'],
     //   apiUrl: currentSetting['APIURL'],
     //   docSeries: currentSetting['docSeries'],
     //   docNo: currentSetting['docNo'],
@@ -173,6 +189,55 @@ class SettingsController extends GetxController {
     apiKey.clear();
     docSeries.clear();
     settingsFormKey.currentState?.reset();
+  }
+
+    Future<dynamic> createAppSettings(BuildContext context) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return Padding(
+            // padding: MediaQuery.of(context).viewInsets,
+            padding: const EdgeInsets.all(MSizes.lg)
+                .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const MSectionHeading(
+                      title: 'Set API URL & Key',
+                      showActionButton: false),
+                  const SizedBox(height: MSizes.spaceBtwSections),
+                  Form(
+                    key: settingsFormKey,
+                    child: Column(
+                      children: [
+                        TextFormField( 
+                            controller: apiUrl,
+                            validator: (value) => MValidator.validateEmptyText('API URL', value),
+                            autovalidateMode:AutovalidateMode.onUserInteraction,
+                            decoration: const InputDecoration(prefixIcon: Icon(Iconsax.global), labelText: 'API URL')),
+                          const SizedBox(height: MSizes.spaceBtwInputFields),
+                          TextFormField( 
+                            controller: apiKey,
+                            validator: (value) => MValidator.validateEmptyText('API Key', value),
+                            autovalidateMode:AutovalidateMode.onUserInteraction,
+                            decoration: const InputDecoration(prefixIcon: Icon(Iconsax.key), labelText: 'API Key')),
+             
+
+                        const SizedBox(height: MSizes.defaultSpace),
+                        SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                                onPressed: () => addNewAppSettings(),
+                                child: const Text('Submit'))),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+          );
+        });
   }
 
 

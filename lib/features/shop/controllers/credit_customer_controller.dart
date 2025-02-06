@@ -79,7 +79,6 @@ class CreditCustomerController extends GetxController {
             // padding: MediaQuery.of(context).viewInsets,
             padding: const EdgeInsets.all(MSizes.lg)
                 .copyWith(bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Container(
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -149,7 +148,6 @@ class CreditCustomerController extends GetxController {
                   ),
                 ],
               ),
-            ),
           );
         });
   }

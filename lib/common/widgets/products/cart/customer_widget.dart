@@ -35,31 +35,30 @@ class MCustomerCode extends StatelessWidget {
                   Row(
                     children: [
                       Flexible(
-                        child: DropdownSearch<String>(
-                          popupProps: const PopupProps.menu(
-                            isFilterOnline: true,
-                            showSelectedItems: true,
-                            showSearchBox: true,
-                          ),
-                          items: customerController.featuredCustomers
-                              .map((customer) => customer.companyName)
-                              .toList(),
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: "Customer Name",
-                            ),
-                          ),
-                          onChanged: (String? newSelectedCustomer) {
-                            customerController
-                                .selectCustomer(newSelectedCustomer);
-                          },
-                          selectedItem:
-                              customerController.featuredCustomers.isNotEmpty
-                                  ? customerController
-                                      .featuredCustomers.first.companyName
-                                  : null,
-                        ),
-                      ),
+                          child: Obx(() => DropdownSearch<String>(
+                                popupProps: const PopupProps.menu(
+                                  isFilterOnline: true,
+                                  showSelectedItems: true,
+                                  showSearchBox: true,
+                                ),
+                                items: customerController.featuredCustomers
+                                    .map((customer) => customer.companyName)
+                                    .toList(),
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "Customer Name",
+                                  ),
+                                ),
+                                onChanged: (String? newSelectedCustomer) {
+                                  if (newSelectedCustomer != null) {
+                                    customerController.selectCustomer(newSelectedCustomer);
+                                  }
+                                },
+                                selectedItem: customerController.selectedCustomer.value.companyName.isNotEmpty
+                                    ? customerController.selectedCustomer.value.companyName
+                                    : null,
+                              )),
+                        )
                     ],
                   ),
                   const SizedBox(height: MSizes.spaceBtwItems / 2),

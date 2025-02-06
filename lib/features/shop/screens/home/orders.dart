@@ -21,7 +21,7 @@ class MOrderListItems extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = Get.put(OrderController());
 
-    return FutureBuilder(
+    return Obx(() => FutureBuilder(
         future: controller.fetchOrders(),
         builder: (_, snapshot) {
           //Nothing found widget
@@ -151,6 +151,6 @@ class MOrderListItems extends StatelessWidget {
                   ),
                 );
               });
-        });
+        }));
   }
 }

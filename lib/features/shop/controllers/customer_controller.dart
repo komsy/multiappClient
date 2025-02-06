@@ -57,7 +57,7 @@ class CustomerController extends GetxController {
 
     // Set the selectedCustomer based on company name with error handling
     selectedCustomer.value = allCustomers.firstWhere(
-      (customer) => customer.companyName == "Cash Sale",
+      (customer) => customer.cusCode == "C000008",
       orElse: () => CustomerModel.empty(), // Provide a default empty customer
     );
 
@@ -100,7 +100,6 @@ class CustomerController extends GetxController {
         (customer) => customer.companyName == newSelectedCustomer,
         orElse: () => CustomerModel.empty(),
       );
-      //  print(" new selected customer: ${selectedCustomer.value.crLimit}");
     } catch (e) {
      MLoaders.errorSnackBar(title: 'Error in Selection', message: e.toString());
     }

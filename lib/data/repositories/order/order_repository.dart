@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
-import 'package:easyapp/features/personalization/models/Setting_model.dart';
+import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/models/order_item_model.dart';
 import 'package:easyapp/features/shop/models/order_model.dart';
 

@@ -71,7 +71,7 @@ class SettingsScreen extends StatelessWidget {
                 MSettingsMenuTile(icon: Iconsax.document_download, title: "Load Data", subTitle: "Add Products & Customers", onTap: () => Get.to(() => const LoadDataScreen())),
                 MSettingsMenuTile(
                       icon: Iconsax.document_upload,
-                      title: "Send Data",
+                      title: "Send Order",
                       subTitle: "Send Orders to Server and clear from the App",
                       onTap: () => {},
                       trailing: Obx(() {

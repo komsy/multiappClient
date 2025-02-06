@@ -25,16 +25,16 @@ class MOrderItems extends StatelessWidget {
             child: Column(
               children: 
                 order.orderItems!.map((item) {
-              return ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: Text("${item.longName} (${item.unit})",style: Theme.of(context).textTheme.bodyMedium),
-                subtitle: Text(" Vat: ${item.vatAmount.toStringAsFixed(2)}          Qty: ${item.quantity}"),
-                // subtitle: Text(" Vat: ${item.vatAmount.toStringAsFixed(2)}          Qty: ${item.quantity}   (${item.defaultPricing})"),
-                trailing: Text(item.amount.toStringAsFixed(2),style: Theme.of(context).textTheme.bodyMedium),
-                onTap: () {},
-              );
-            }).toList(),
-              
+                  return ListTile(
+                    leading: const Icon(Icons.shopping_cart),
+                    title: Text("${item.longName} (${item.unit})",style: Theme.of(context).textTheme.bodyMedium),
+                    subtitle: Text(" Vat: ${item.vatAmount.toStringAsFixed(2)}          Qty: ${item.quantity}"),
+                    // subtitle: Text(" Vat: ${item.vatAmount.toStringAsFixed(2)}          Qty: ${item.quantity}   (${item.defaultPricing})"),
+                    trailing: Text(item.amount.toStringAsFixed(2),style: Theme.of(context).textTheme.bodyMedium),
+                    onTap: () {},
+                  );
+                }).toList(),
+                  
             ),
         ),
       ),

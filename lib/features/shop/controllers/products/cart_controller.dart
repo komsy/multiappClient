@@ -274,7 +274,7 @@ class CartController extends GetxController {
   final taxAmount = isTaxable ? quantity * ((product.taxRate * price!) / (product.taxRate+100)) : 0.0;
   final exVat =(quantity* price!) - taxAmount;
   // print("isQuantityPrice $isQuantityPrice, variation ${productPackaging.bulkPackUPrice}");
-  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount");
+  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount"); 
   return CartItemModel(
     itmCode: product.itmCode, 
     title: product.longName,
@@ -288,8 +288,6 @@ class CartController extends GetxController {
     vatRate: product.taxRate,
     vatCode: product.taxCode!,
     variationId: variation.bulkPackUnit!,
-    // image: isVariation ? variation.image : MImages.adidasLogo,
-    // brandName: product.brand != null ? product.brand!.name : '',
     selectedVariation: isVariation ? variation.bulkPackUnit : null, 
   );
 }
