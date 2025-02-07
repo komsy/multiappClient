@@ -155,7 +155,7 @@ ApiProvider() {
           handler.next(options); // Proceed with the request
         } catch (e) {
           // Log and reject if something goes wrong
-          print("Error in onRequest interceptor: $e");
+          // print("Error in onRequest interceptor: $e");
           handler.reject(
             DioException(
               requestOptions: options,

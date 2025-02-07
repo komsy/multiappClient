@@ -294,7 +294,7 @@ class LocalDatabase {
   }
 
   Future<List<Map<dynamic, dynamic>>?> login(
-      String email, String password) async {
+      String email) async {
     // Open the SQLite database
     final db = await instance.database;
     // Fetch the user by email

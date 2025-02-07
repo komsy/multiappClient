@@ -158,7 +158,7 @@ class CreditCustomerController extends GetxController {
       MFullScreenLoader.openLoadingDialog(
           'Storing Cash Customer...', MImages.docerAnimation);
 
-      print("cr customer ${creditFormKey.currentState}");
+      // print("cr customer ${creditFormKey.currentState}");
       //Form validation
       // if (creditFormKey.currentState?.validate() ?? false) {
       //   MFullScreenLoader.stopLoading();
@@ -172,7 +172,7 @@ class CreditCustomerController extends GetxController {
           address: address.text.trim(),
           selectedCrCustomer: 1);
 
-      print("cr customer ${customer.pinNo}");
+      // print("cr customer ${customer.pinNo}");
       await db.saveSelectedCrClient(customer);
       await selectedCrClient(customer);
 

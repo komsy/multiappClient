@@ -57,7 +57,7 @@ class LoginController extends GetxController{
     }
 
     // Log in the user from SQLite db
-    final result = await db.login(email.text.trim(), password.text.trim());
+    final result = await db.login(email.text.trim());
 
     if (result != null) {
       final setting = await db.getSingleAppSetting();
@@ -75,7 +75,6 @@ class LoginController extends GetxController{
         // Non-admin user login logic
         if (username != 'admin') {
           if (licStatus == 0 ||  userStatus == 0) {
-        print("username2 $username  licstatus $licStatus  userStatus $userStatus" );
             // Check Internet connectivity
             final isConnected = await NetworkManager.instance.isConnected();
             if (!isConnected) {
@@ -87,8 +86,7 @@ class LoginController extends GetxController{
             
             // Query user status from API
             final checkAppUser = await apiProvider.checkAppUser(username, email.text.trim());
-            print("checkAppUser $checkAppUser");
-
+           
             if (checkAppUser['userStatus'] == 0 || checkAppUser['licStatus'] == 0) {
               MLoaders.errorSnackBar(
                   title: 'Authentication Error',

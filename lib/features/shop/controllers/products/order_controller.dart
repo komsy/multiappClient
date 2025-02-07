@@ -69,6 +69,42 @@ Future<List<OrderModel>>fetchOrders() async {
   //   isLoading.value = false;
   }
 }
+
+ Future<Map<String, dynamic>?>  getUserId() async 
+    {
+      try {
+           // final decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+    
+          // print('Processing order... $decodedPayload');
+          // if (decodedPayload == null || decodedPayload.isEmpty) return;
+
+          // Decode and verify the JWT token
+          var decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+          if (decodedPayload == null || decodedPayload.isEmpty) {
+            // print("Token expired or invalid. Attempting to refresh the token...");
+            
+            // Try refreshing the token if it's invalid or expired
+            final newToken = await AuthenticationRepository.instance.refreshToken();
+            if (newToken == null) {
+              // throw Exception("Failed to refresh token. Please reauthenticate.");
+              await AuthenticationRepository.instance.logout();
+            }
+            
+            // Retry decoding and verifying the new token after refreshing
+            decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+            if (decodedPayload == null || decodedPayload.isEmpty) {
+              throw Exception("Failed to decode or verify the refreshed token. Please reauthenticate.");
+            }
+
+          }
+          
+          return decodedPayload;
+         } catch (e) {
+        MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+        // print('Error ack customer data: $e');
+        return null;
+      }
+    }
   // Add methods for order processing
 void processOrder(double totalAmount) async {
   try {
@@ -77,6 +113,7 @@ void processOrder(double totalAmount) async {
     if (currentSetting == null) {
       throw Exception("App Setting not found!");
     }
+
     //check if customer exists
     final cusCode = customerController.selectedCustomer.value.cusCode;
     // print("cusCode $cusCode");
@@ -86,32 +123,9 @@ void processOrder(double totalAmount) async {
 
     // print('Processing order...$currentSetting ');
     final cartitems = cartController.cartItems.toList();
-    // final decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
-    
-    // print('Processing order... $decodedPayload');
-    // if (decodedPayload == null || decodedPayload.isEmpty) return;
+    final decodedPayload = await getUserId();
+    final userId = decodedPayload?['username'].toString();
 
-    // Decode and verify the JWT token
-    var decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
-    if (decodedPayload == null || decodedPayload.isEmpty) {
-      // print("Token expired or invalid. Attempting to refresh the token...");
-      
-      // Try refreshing the token if it's invalid or expired
-      final newToken = await AuthenticationRepository.instance.refreshToken();
-      if (newToken == null) {
-        // throw Exception("Failed to refresh token. Please reauthenticate.");
-        await AuthenticationRepository.instance.logout();
-      }
-      
-      // Retry decoding and verifying the new token after refreshing
-      decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
-      if (decodedPayload == null || decodedPayload.isEmpty) {
-        throw Exception("Failed to decode or verify the refreshed token. Please reauthenticate.");
-      }
-
-    }
-    final userId = decodedPayload['username'].toString();
-    
     //check if username changed
     if(userId == 'admin'){
       throw Exception("Kindly update your Username!");
@@ -121,7 +135,7 @@ void processOrder(double totalAmount) async {
       // print(" narration: ${customerController.naration.value}");
     final order = OrderModel(
       id: await generateConcatenatedString(),
-      createdBy: userId,
+      createdBy: userId ?? 'admin',
       orderStatus: 'Pending',
       totalAmount: totalAmount,
       orderDate: DateTime.now().toIso8601String(),
@@ -155,7 +169,7 @@ void processOrder(double totalAmount) async {
         vatAmount: item.taxAmount,
         amount: item.price * item.quantity,
         costPrice: item.price,
-        createdBy: userId,
+        createdBy: userId  ?? 'admin',
         createdAt: DateTime.now().toIso8601String(),
       );
 
@@ -206,7 +220,7 @@ void processOrder(double totalAmount) async {
   void editOrder(OrderModel order) {
     //check if cart !empty ? return  : addtoCart
     final cartitems = cartController.cartItems.toList();
-    print("cartitems $cartitems");
+   
     if (cartitems.isNotEmpty) {
       MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
       return;
@@ -254,7 +268,7 @@ void editOrderDialog(OrderModel order) async {
         //   orElse: () => CustomerModel.empty(),
         // );
 
-        // await db.deleteOrder(order.id);
+        await db.deleteOrder(order.id);
       
         MLoaders.customToast(message: 'Order moved to cart.');
         AuthenticationRepository.instance.screenRedirect();

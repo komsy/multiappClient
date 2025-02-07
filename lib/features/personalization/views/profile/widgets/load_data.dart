@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
 import 'package:easyapp/common/widgets/list_tiles/downloads_menu_tile.dart';
-import 'package:easyapp/common/widgets/list_tiles/settings_menu_tile.dart';
 import 'package:easyapp/common/widgets/texts/section_heading.dart';
 import 'package:easyapp/data/services/API/api_services.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
@@ -83,7 +82,8 @@ class LoadDataScreen extends StatelessWidget {
                 onTap: () {},
                 trailing: Obx(() {
                   return IconButton(
-                    onPressed: apiService.isPPLoading.value
+                    onPressed: apiService.isCustLoading.value || apiService.isSettingsLoading.value ||
+                                apiService.isProductLoading.value || apiService.isPPLoading.value
                         ? null // Disable the button while loading
                         : () => apiService.fetchAndStoreProductpackaging(),
                     icon: apiService.isPPLoading.value
@@ -107,7 +107,8 @@ class LoadDataScreen extends StatelessWidget {
                 onTap: () {},
                 trailing: Obx(() {
                   return IconButton(
-                    onPressed: apiService.isProductLoading.value
+                    onPressed: apiService.isCustLoading.value || apiService.isSettingsLoading.value ||
+                                apiService.isProductLoading.value || apiService.isPPLoading.value
                         ? null // Disable the button while loading
                         : () => apiService.fetchAndStoreProducts(),
                     icon: apiService.isProductLoading.value
@@ -131,10 +132,35 @@ class LoadDataScreen extends StatelessWidget {
                 onTap: () {},
                 trailing: Obx(() {
                   return IconButton(
-                    onPressed: apiService.isCustLoading.value
+                    onPressed: apiService.isCustLoading.value || apiService.isSettingsLoading.value ||
+                                apiService.isProductLoading.value || apiService.isPPLoading.value
                         ? null // Disable the button while loading
                         : () => apiService.fetchAndStoreCustomer(),
                     icon: apiService.isCustLoading.value
+                        ? const CircularProgressIndicator(
+                            color: Colors.green,
+                            strokeWidth: 2,
+                          )
+                        : const Icon(
+                            Icons.cloud_download,
+                            color: Colors.orange,
+                          ),
+                  );
+                }),
+              ),),
+              Obx(() => MDownloadsMenuTile(
+                noOfItems: apiService.noOfSettingItems.value,
+                icon: Iconsax.bag_tick,
+                title: "Load App Settings",
+                subTitle: "Click the icon and wait.",
+                onTap: () {},
+                trailing: Obx(() {
+                  return IconButton(
+                    onPressed: apiService.isCustLoading.value || apiService.isSettingsLoading.value ||
+                                apiService.isProductLoading.value || apiService.isPPLoading.value
+                        ? null // Disable the button while loading
+                        : () => apiService.fetchAndStoreAppSettings(),
+                    icon: apiService.isSettingsLoading.value
                         ? const CircularProgressIndicator(
                             color: Colors.green,
                             strokeWidth: 2,

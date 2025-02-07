@@ -15,7 +15,7 @@ class OrderRepository extends GetxController {
     try{
       await db.saveOrders(order);
     } catch (e) {
-      print("eror saving order: $e");
+      // print("eror saving order: $e");
       throw 'Something went wrong while saving Order Information. Please try again later';
     }
   }
@@ -24,7 +24,7 @@ class OrderRepository extends GetxController {
     try{
       await db.saveOrderItem(orderItem);
     } catch (e) {
-      print("eror saving order: $e");
+      // print("eror saving order: $e");
       throw 'Something went wrong while saving Order Information. Please try again later';
     }
   }
@@ -33,7 +33,7 @@ class OrderRepository extends GetxController {
     try{
       await db.saveAppSettings(settings);
     } catch (e) {
-      print("eror saving SettingModel: $e");
+      // print("eror saving SettingModel: $e");
       throw 'Something went wrong while saving SettingModel Information. Please try again later';
     }
   }

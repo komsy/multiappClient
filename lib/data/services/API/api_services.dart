@@ -1,7 +1,11 @@
 // import 'dart:math';
 
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/authentication/models/user/user_model.dart';
+import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
+import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/provider/api_provider.dart';
@@ -29,6 +33,7 @@ class MAPIService extends GetxController {
   final isPPLoading = false.obs;
   final isCatLoading = false.obs;
   final isCustLoading = false.obs;
+  final isSettingsLoading = false.obs;
   List<ProductModels> products = [];
   // List<ProductUnitConverter> packagingDetail = [];
   List<ProductPackingPrice> quantityPrice = [];
@@ -37,6 +42,7 @@ class MAPIService extends GetxController {
   RxInt noOfPPItems = 0.obs;
   RxInt noOfCategoryItems = 0.obs;
   RxInt noOfCustomerItems = 0.obs;
+  RxInt noOfSettingItems = 0.obs;
 
   //Get products from api and store
   Future<void> fetchAndStoreProducts() async {
@@ -47,6 +53,7 @@ class MAPIService extends GetxController {
       isCustLoading.value = false;
       isPPLoading.value = false;
       isUnitCLoading.value = false;
+      isSettingsLoading.value = false;
       // Fetch the data from the API
       List<dynamic> apiProducts = await apiProvider.getAPIData(Env.productApiUrl);
       
@@ -104,6 +111,7 @@ Future<void> fetchAndStoreProductUnits() async {
       isCatLoading.value = false;
       isCustLoading.value = false;
       isProductLoading.value = false;
+      isSettingsLoading.value = false;
 
     // Fetch the data from the API
     List<dynamic> apiProductUnit = await apiProvider.getAPIData(Env.unitApiUrl);
@@ -149,6 +157,7 @@ Future<void> fetchAndStoreProductUnits() async {
       isCustLoading.value = false;
       isUnitCLoading.value = false;
       isProductLoading.value = false;    
+      isSettingsLoading.value = false;
       // Notify the controller to refresh
       ProductController.instance.refreshSignal.value = false;
     
@@ -233,7 +242,8 @@ Future<void> fetchAndStoreProductUnits() async {
       isPPLoading.value = false;
       isCatLoading.value = false;
       isUnitCLoading.value = false;
-      isProductLoading.value = false;    
+      isProductLoading.value = false; 
+      isSettingsLoading.value = false;   
 
       // Fetch the data from the API
       List<dynamic> apiCustomer = await apiProvider.getAPIData(Env.customerApiUrl);
@@ -270,7 +280,7 @@ Future<void> fetchAndStoreProductUnits() async {
       }
       MLoaders.successSnackBar(title: 'Customers Loaded!', message:'Customers Successfully loaded',duration: 1);
       // Notify the controller to refresh
-      CustomerController.instance.refreshSignal.value = true;
+      await CustomerController.instance.fetchCustomers();
     } catch (e) {
       MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
       // print('Error ack customer data: $e');
@@ -284,7 +294,8 @@ Future<void> fetchAndStoreProductUnits() async {
   {
     try {
       //Show loader while loading Customers
-      isCustLoading.value = true;
+      isSettingsLoading.value = true;
+      isCustLoading.value = false;
       isPPLoading.value = false;
       isCatLoading.value = false;
       isUnitCLoading.value = false;
@@ -292,8 +303,8 @@ Future<void> fetchAndStoreProductUnits() async {
 
       // Fetch the data from the API
       List<dynamic> apiSettings = await apiProvider.getAPIData("getAppSettings");
-      
-      log('api Settingss: $apiSettings');
+      noOfSettingItems.value = apiSettings.length;
+      // log('api Settingss: $apiSettings');
       if (apiSettings.isEmpty) {
         throw Exception("No Settings data found");
       }
@@ -313,26 +324,25 @@ Future<void> fetchAndStoreProductUnits() async {
           createdAt: DateTime.now().toIso8601String(),
         );
 
-        // print("setting $setting");
         // Insert setting into database
         await db.saveAppSettings(setting);
-        
-        //Update settings
       }
+        // Notify the controller to refresh
+      await  SettingsController.instance.fetchSettings();
       MLoaders.successSnackBar(title: 'Settings Loaded!', message:'Settings Successfully loaded',duration: 1);
     } catch (e) {
-      MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      MLoaders.errorSnackBar(title: 'Settings!', message: e.toString());
       // print('Error ack set data: $e');
     } finally {
       // Remove loader or stop any loading indicator
-      isCustLoading.value = false;
+      isSettingsLoading.value = false;
     }
   }
 
   Future<void> acknowledgeCustomerData(CustomerModel customer) async {
     try {
       // Fetch the data from the API
-      final ackCustomerData = await apiProvider.acknowledgeCustomerData(Env.ackCustomerApiUrl,customer);
+      await apiProvider.acknowledgeCustomerData(Env.ackCustomerApiUrl,customer);
       
       // Display the success message in a snack bar
       // MLoaders.successSnackBar(title: 'Customer Updated!', message: ackCustomerData['message'] ?? 'Operation successful');
@@ -346,7 +356,7 @@ Future<void> fetchAndStoreProductUnits() async {
   Future<void> acknowledgeProductData(ProductModels product) async {
     try {
       // Fetch the data from the API
-      final  ackProductData = await apiProvider.acknowledgeProductData(Env.ackProductApiUrl,product);
+      await apiProvider.acknowledgeProductData(Env.ackProductApiUrl,product);
       
        // Display the success message in a snack bar
       // MLoaders.successSnackBar(title: 'Customer Updated!', message: ackProductData['message'] ?? 'Operation successful');
@@ -357,29 +367,58 @@ Future<void> fetchAndStoreProductUnits() async {
   }
 
 
-  Future<void> fetchAndSendOrders() async 
-    {
-      try {
-        //Show loader while loading Customers
-        isSendLoading.value = true;
+  Future<void> fetchAndSendOrders() async {
+    try {
+      isSendLoading.value = true;
 
-        // Send the order data to the API
-        final apiOrders = await apiProvider.sendOrders("saveOrders");
-        // log('api Orders: ${apiOrders['code']}');
-
-        //if order status is 200, truncate the order table and continue selling, if needed
-        if (apiOrders['code'] == 200) {
-          await db.truncateOrderMst();
-        }
-
-        MLoaders.successSnackBar(title: 'Orders Loaded!', message: apiOrders['message']  ?? 'Orders Sent Successfully.');
-      } catch (e) {
-        MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
-        // print('Error ack customer data: $e');
-      } finally {
-        // Remove loader or stop any loading indicator
-        isSendLoading.value = false;
+      // Retrieve user information
+      final email = UserController.instance.user.value.email;
+      if (email == null || email.isEmpty) {
+        throw Exception("User email is not available.");
       }
-    }
 
+      final result = await db.login(email);
+      if (result == null || result.isEmpty) {
+        throw Exception("User login information not found.");
+      }
+
+      String username = result[0]['username'];
+
+      // Check user status via API
+      final checkAppUser = await apiProvider.checkAppUser(username, email);
+      
+
+      // Update local user in the database
+      final users = UserModel(
+        userName: username,
+        email: email,
+        password: result[0]['password'],
+        role: "user",
+        status: 1,
+        userStatus: checkAppUser['userStatus'] == 1 ? 1 : 0,
+        licStatus: checkAppUser['licStatus'] == 1 ? 1 : 0,
+        updatedAt: DateTime.now().toIso8601String(),
+        createdAt: result[0]['createdAt'],
+      );
+      await db.insertUser(users); //Update user & Lic status 
+
+      if (checkAppUser['userStatus'] == 0 || checkAppUser['licStatus'] == 0) {
+        MLoaders.errorSnackBar(title: 'Authentication Error', message: 'Account locked. Connect to the internet or contact your administrator!');
+        await AuthenticationRepository.instance.logout(); //Logout 
+        return;
+      }
+
+      // Send orders to the API if user & Lic still Active
+      final apiOrders = await apiProvider.sendOrders("saveOrders");
+      
+      if (apiOrders['code'] == 200) {
+        await db.truncateOrderMst();
+        MLoaders.successSnackBar(title: 'Orders Loaded!',message: apiOrders['message'] ?? 'Orders Sent Successfully.');
+      }
+    } catch (e) {
+      MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    } finally {
+      isSendLoading.value = false;
+    }
+  }
 }

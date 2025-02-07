@@ -17,11 +17,13 @@ class AuthenticationRepository extends GetxController {
   RxString currentUserRole = ''.obs;
   RxString currentUserId  = ''.obs;
   RxString defaultPricing= ''.obs;
+  RxString defaultCustCode= ''.obs;
   RxBool isRetailPrice = false.obs;
   RxString appKey  = ''.obs;
   RxString apiURL  = ''.obs;
   RxString apiKey  = ''.obs;
   RxBool isQuantityPrice  = false.obs;
+
   //Variables
   final deviceStorage = GetStorage();
   // final _auth = FirebaseAuth.instance;
@@ -69,7 +71,10 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   apiURL.value = setting['APIURL'];
   apiKey.value = setting['APIKey'];
   defaultPricing.value = setting['defaultPricing'];
-print("defaultPricing ${defaultPricing.value}");
+  defaultCustCode.value = setting['defaultCustCode'];
+
+  print("defaultPricing  $defaultPricing ");
+
   final decodedToken = JWT.decode(jwtToken);
 
   //  Assign values to the current user variables
