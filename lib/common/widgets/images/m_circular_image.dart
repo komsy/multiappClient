@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../../../../../../utils/constants/enums.dart';
 import '../../../utils/constants/sizes.dart';
-import '../shimmers/shimmer.dart';
 
 class MCircularImage extends StatelessWidget {
   const MCircularImage({

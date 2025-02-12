@@ -1,6 +1,4 @@
 import 'package:easyapp/features/shop/models/cart_item_model.dart';
-import 'package:easyapp/features/shop/models/customer_model.dart';
-import 'package:easyapp/features/shop/screens/cart/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
@@ -17,7 +15,6 @@ import 'package:easyapp/features/shop/models/order_model.dart';
 import 'package:easyapp/navigation_menu.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
-import 'dart:developer';
 
 class OrderController extends GetxController {
   static OrderController get instance => Get.find();
@@ -43,8 +40,9 @@ Future<List<OrderModel>>fetchOrders() async {
   try {
     //Show loader while loading products
     isLoading.value = true;
+    final orderDays = AuthenticationRepository.instance.orderDays.value;
     // Start by fetching data from the database
-    final snapshot = await db.getOrders();
+    final snapshot = await db.getOrders(orderDays);
 
     // log('order snapshot: ${snapshot}');
     // Handle null or empty result (no categories found)
@@ -58,6 +56,8 @@ Future<List<OrderModel>>fetchOrders() async {
       return OrderModel.fromMap(data as Map<String, dynamic>);
     }).toList();
     // log('Fetched products: ${allOrders}');
+    
+    //check if any order older than required days then delete 
     isLoading.value = false;
     return allOrders;
   } catch (e) {
@@ -140,7 +140,7 @@ void processOrder(double totalAmount) async {
       totalAmount: totalAmount,
       orderDate: DateTime.now().toIso8601String(),
       paymentMethod: checkoutController.selectedPaymentMethod.value.name,
-      createdAt: DateTime.now().toIso8601String(),
+      createdAt:DateTime.now().toIso8601String(),
       locationId: currentSetting['locationId'] ?? '00', //pick default location
       naration: customerController.naration.value,
       customerCode: customerController.selectedCustomer.value.cusCode,

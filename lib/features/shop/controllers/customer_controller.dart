@@ -1,9 +1,9 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
 import 'package:easyapp/features/shop/models/customer_model.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
-import 'dart:developer'; 
 import 'dart:async';
 
 
@@ -53,10 +53,10 @@ class CustomerController extends GetxController {
     final allCustomers = snapshot.map((data) {
       return CustomerModel.fromMap(data);
     }).toList();
-
+    
     // Set the selectedCustomer based on company name with error handling
     selectedCustomer.value = allCustomers.firstWhere(
-      (customer) => customer.cusCode == "C000008",
+      (customer) => customer.cusCode == AuthenticationRepository.instance.defaultCustCode.value,
       orElse: () => CustomerModel.empty(), // Provide a default empty customer
     );
 

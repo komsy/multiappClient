@@ -13,7 +13,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'dart:developer';
 import 'package:uuid/uuid.dart';
 
 // Create the categoryMst table
@@ -232,6 +231,7 @@ class LocalDatabase {
         defaultPricing VARCHAR(10) NOT NULL,
         routeWiseSell INTEGER  NOT NULL,
         editOrder INTEGER  NOT NULL,
+        orderDays INTEGER  NOT NULL,
         IsRSP INTEGER  NOT NULL,
         createdAt TEXT NOT NULL
       )
@@ -275,6 +275,7 @@ class LocalDatabase {
       "defaultPricing": "WSP",
       "routeWiseSell": 0,
       "editOrder": 0,
+      "orderDays": 1,
       "IsRSP": 0,
       "createdAt": createdAt,
     });
@@ -516,42 +517,57 @@ class LocalDatabase {
     }
   }
 
-  Future<List<Map<dynamic, dynamic>>?> getOrders() async {
-    // Open the SQLite database
-    final db = await instance.database;
-    // final tableName= Env.pr
-    // Fetch all category orders
-    List<Map<String, dynamic>> orders =
-        await db.rawQuery('SELECT * FROM orderMst');
+ Future<List<Map<dynamic, dynamic>>?> getOrders(int orderDays) async {
+  final db = await instance.database;
 
-    // Check if orders were found
-    if (orders.isNotEmpty) {
-      // Create a new list to hold updated orders with related data
-      List<Map<String, dynamic>> updatedOrders = [];
+  // Clean up old orders before fetching current ones
+  await _deleteOldOrders(db, orderDays);
 
-      // Iterate through each order and fetch related data
-      for (var order in orders) {
-        // Fetch related data from OrderItems
-        List<Map<String, dynamic>> orderItemsData = await db.rawQuery(
-          'SELECT * FROM orderTrn WHERE orderId = ?',
-          [order['id']],
-        );
+  // Fetch all remaining orders
+  List<Map<String, dynamic>> orders = await db.rawQuery('SELECT * FROM orderMst ORDER BY createdAt DESC');
 
-        // Create a new map that combines the order with related data
-        Map<String, dynamic> orderWithRelatedData = {
-          ...order, // Copy the original order fields
-          'OrderItems': orderItemsData,
-        };
+  if (orders.isNotEmpty) {
+    List<Map<String, dynamic>> updatedOrders = [];
 
-        // Add the updated order to the new list
-        updatedOrders.add(orderWithRelatedData);
-      }
+    for (var order in orders) {
+      // Fetch related order items
+      List<Map<String, dynamic>> orderItemsData = await db.rawQuery(
+        'SELECT * FROM orderTrn WHERE orderId = ?', [order['id']]
+      );
 
-      return updatedOrders; // Return the updated list of orders
-    } else {
-      return orders; // Return an empty list if no orders found
+      // Combine order details with order items
+      updatedOrders.add({
+        ...order,
+        'OrderItems': orderItemsData,
+      });
     }
+
+    return updatedOrders;
+  } else {
+    return orders; // Return empty list if no orders exist
   }
+}
+
+// Separate function to delete orders older than 3 days
+Future<void> _deleteOldOrders(Database db, int days) async {
+  // print("Delete orders older than $days days hit");
+
+  await db.transaction((txn) async {
+    await txn.rawDelete(
+      """
+      DELETE FROM orderTrn 
+      WHERE orderId IN (
+        SELECT id FROM orderMst 
+        WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')
+      )
+      """
+    );
+
+    await txn.rawDelete(
+      "DELETE FROM orderMst WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')"
+    );
+  });
+}
 
   // Get settings
   Future<Map<String, dynamic>?> getSingleAppSetting() async {

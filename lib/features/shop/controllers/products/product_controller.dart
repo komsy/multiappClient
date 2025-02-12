@@ -6,7 +6,6 @@ import 'package:easyapp/features/shop/controllers/products/favourites_controller
 import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../models/product_model.dart';
-import 'dart:developer';
 class ProductController extends GetxController {
   static ProductController get instance => Get.find();
   // Initialize the database instance here
@@ -144,9 +143,8 @@ String getProductPrice(ProductModels product) {
   double pRspIncVat = product.rspIncVat;
   String fixUnitOfSell = product.fixUnitOfSell ?? '';
   double pQspIncVat = 0.0;
-  AuthenticationRepository.instance.isQuantityPrice.value =true;
+  // AuthenticationRepository.instance.isQuantityPrice.value =true;
   
-
   // Case 1: return quantity price range if set default 
   final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
   // print("isQuantityPrice prod: ${isQuantityPrice}");

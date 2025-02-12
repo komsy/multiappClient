@@ -11,7 +11,6 @@ import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
-import 'dart:developer';
 import 'dart:async';
 
 import 'package:easyapp/utils/validators/validation.dart';
@@ -180,9 +179,7 @@ class CreditCustomerController extends GetxController {
       MFullScreenLoader.stopLoading();
 
       //Show success message
-      MLoaders.successSnackBar(
-          title: 'Congratulations',
-          message: 'Your Cash Customer has been saved successfully.');
+      MLoaders.successSnackBar(title: 'Congratulations', message: 'Your Cash Customer has been saved successfully.',duration: 1);
 
       //Reset fields
       resetFormFields();
@@ -194,8 +191,7 @@ class CreditCustomerController extends GetxController {
       MFullScreenLoader.stopLoading();
 
       //Show some generic error to the user
-      MLoaders.errorSnackBar(
-          title: 'Cash Customer not fopund', message: e.toString());
+      MLoaders.errorSnackBar(title: 'Cash Customer not fopund', message: e.toString());
     }
   }
 
@@ -217,8 +213,7 @@ class CreditCustomerController extends GetxController {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const MSectionHeading(
-                title: "Select Cash Customer", showActionButton: false),
+            const MSectionHeading(title: "Select Cash Customer", showActionButton: false),
             const SizedBox(height: MSizes.spaceBtwSections),
 
             // FutureBuilder to fetch the Cash customers
@@ -288,8 +283,7 @@ class CreditCustomerController extends GetxController {
       await db.updateSelectedField(selectedCrClient.value.customerName, 1);
       Get.back();
     } catch (e) {
-      MLoaders.errorSnackBar(
-          title: 'Error in Selection', message: e.toString());
+      MLoaders.errorSnackBar(title: 'Error in Selection', message: e.toString());
     }
   }
 
@@ -301,8 +295,7 @@ class CreditCustomerController extends GetxController {
       }
       selectedCrClient.value = CreditCustomerModel.empty();
     } catch (e) {
-      MLoaders.errorSnackBar(
-          title: 'Error in Selection', message: e.toString());
+      MLoaders.errorSnackBar(title: 'Error in Selection', message: e.toString());
     }
   }
 }

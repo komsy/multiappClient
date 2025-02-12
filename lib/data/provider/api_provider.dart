@@ -328,8 +328,9 @@ ApiProvider() {
   Future<Map<String, dynamic>>  sendOrders(String apiName) async {
   try {
     final fullUrl = '${_dio.options.baseUrl}$apiName';
+    final orderDays = AuthenticationRepository.instance.orderDays.value;
     // print("Request URL: $fullUrl");
-    final orders = await db.getOrders();
+    final orders = await db.getOrders(orderDays);
 
     // Handle null or empty result (no categories found)
     if (orders == null || orders.isEmpty) {

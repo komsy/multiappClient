@@ -1,4 +1,5 @@
 import 'package:easyapp/common/widgets/texts/section_heading.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:easyapp/utils/validators/validation.dart';
@@ -12,7 +13,6 @@ import 'package:easyapp/features/shop/controllers/products/product_controller.da
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
-import 'dart:developer';
 
 import 'package:iconsax/iconsax.dart'; 
 
@@ -96,6 +96,7 @@ class SettingsController extends GetxController {
         defaultPricing: setting.value.defaultPricing ,
         routeWiseSell:setting.value.routeWiseSell,
         editOrder:setting.value.editOrder,
+        orderDays:setting.value.orderDays,
         isRSP:AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
         createdAt: DateTime.now().toIso8601String(),
       );
@@ -103,7 +104,8 @@ class SettingsController extends GetxController {
 
 
       await db.saveAppSettings(settings);
-
+      //Clear cart to avoid different pricing
+      CartController.instance.clearCart(); 
       //Remove loader
       MFullScreenLoader.stopLoading();
 

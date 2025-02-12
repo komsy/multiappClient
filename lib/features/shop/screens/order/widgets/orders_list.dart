@@ -1,3 +1,4 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/shop/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class MOrderListItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = Get.put(OrderController());
+    final editOrder = AuthenticationRepository.instance.editOrder.value;
 
     return FutureBuilder(
         future: controller.fetchOrders(),
@@ -36,19 +38,20 @@ class MOrderListItems extends StatelessWidget {
           final response = MCloudHelperFunctions.checkMultiRecordState(
               snapshot: snapshot, nothingFound: emptyWidget);
           if (response != null) return response;
-
           //Congrats record found
           final orders = snapshot.data!;
           return ListView.separated(
               shrinkWrap: true,
               itemCount: orders.length,
               separatorBuilder: (_, __) =>
-                  const SizedBox(height: MSizes.spaceBtwItems),
+                  const SizedBox(height: MSizes.spaceBtwItems/3),
               itemBuilder: (_, index) {
                 final order = orders[index];
+                final cashCust =order.cashCustomerName;
+                // print("count ${order.orderItems!.length}");
                 return MRoundedContainer(
                   showBorder: true,
-                  padding: const EdgeInsets.all(MSizes.md),
+                  padding: const EdgeInsets.all(MSizes.sm),
                   backgroundColor: dark ? MColors.dark : MColors.light,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -65,32 +68,33 @@ class MOrderListItems extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                    "${order.companyName}  -  ${order.orderStatusText}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .apply(
-                                            color: MColors.primary,
-                                            fontWeightDelta: 1)),
-                                Text(order.formattedOrderDate,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium),
+                                  Text(order.companyName,overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.bodyMedium!
+                                        .apply(color: MColors.primary, fontWeightDelta: 1),
+                                  ),
+
+                                  Row(
+                                    children: [
+                                      if (cashCust?.isNotEmpty ?? false)
+                                      Expanded(
+                                        child: Text(
+                                          '${cashCust} '!,overflow: TextOverflow.ellipsis,style: Theme.of(context).textTheme.titleMedium,
+                                        ),
+                                      ),
+                                      Expanded(child: Text(order.formattedOrderDate, style: Theme.of(context).textTheme.titleMedium)),
+
+                                    ],
+                                  ),
                               ],
                             ),
                           ),
 
                           //Icon
-                          IconButton(
-                              onPressed: () =>
-                                  Get.to(() => MOrderItems(order: order)),
-                              icon:
-                                  const Icon(Iconsax.eye, size: MSizes.iconSm))
+                          IconButton(onPressed: () =>Get.to(() => MOrderItems(order: order)),
+                              icon:const Icon(Iconsax.arrow_right_34, size: MSizes.iconSm))
                         ],
                       ),
-                      const SizedBox(height: MSizes.spaceBtwItems / 2),
+                      // const SizedBox(height: MSizes.spaceBtwItems / 4),
                       Row(
                         children: [
                           //Status & Date
@@ -141,10 +145,30 @@ class MOrderListItems extends StatelessWidget {
                               ],
                             ),
                           ),
-                          IconButton(
-                              onPressed: () => controller.editOrder(order),
-                              icon:
-                                  const Icon(Iconsax.edit, size: MSizes.iconSm))
+                          Expanded(
+                            child: Row(
+                              children: [
+                                //Icon
+                                // const Icon(Iconsax.tag),
+                                const SizedBox(width: MSizes.spaceBtwItems * 5),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // Text('Order  (${order.defaultPricing})', style: Theme.of(context).textTheme.labelMedium),
+                                      Text(order.orderItems!.length.toString(), style: Theme.of(context).textTheme.titleMedium),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (editOrder)
+                            IconButton(
+                                onPressed: () => controller.editOrder(order),
+                              icon:const Icon(Iconsax.edit, size: MSizes.iconSm))
+                              
                         ],
                       ),
                     ],

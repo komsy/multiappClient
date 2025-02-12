@@ -2,10 +2,9 @@
 
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/authentication/models/user/user_model.dart';
-import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
 import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
-import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/provider/api_provider.dart';
@@ -16,7 +15,6 @@ import 'package:easyapp/features/shop/models/customer_model.dart';
 import 'package:easyapp/features/shop/models/product_model.dart';
 import 'package:easyapp/features/shop/models/product_packing_price.dart';
 import 'package:easyapp/features/shop/models/product_unit_converter.dart';
-import 'dart:developer';
 
 import 'package:easyapp/utils/popups/loaders.dart';
 
@@ -43,7 +41,7 @@ class MAPIService extends GetxController {
   RxInt noOfCategoryItems = 0.obs;
   RxInt noOfCustomerItems = 0.obs;
   RxInt noOfSettingItems = 0.obs;
-
+  final authInstance =AuthenticationRepository.instance;
   //Get products from api and store
   Future<void> fetchAndStoreProducts() async {
     try {
@@ -249,8 +247,6 @@ Future<void> fetchAndStoreProductUnits() async {
       List<dynamic> apiCustomer = await apiProvider.getAPIData(Env.customerApiUrl);
       noOfCustomerItems.value = apiCustomer.length;
       
-      //Update settings
-      await fetchAndStoreAppSettings();
       if (apiCustomer.isEmpty) {
         throw Exception("No customer data found");
       }
@@ -275,8 +271,6 @@ Future<void> fetchAndStoreProductUnits() async {
         // Acknowledge each customer after insertion
         await acknowledgeCustomerData(customer);
         
-        //Update settings
-        await fetchAndStoreAppSettings();
       }
       MLoaders.successSnackBar(title: 'Customers Loaded!', message:'Customers Successfully loaded',duration: 1);
       // Notify the controller to refresh
@@ -312,23 +306,29 @@ Future<void> fetchAndStoreProductUnits() async {
       // Iterate over each Settings and insert it into the SQLite database
       for (var data in apiSettings) {
         final setting = SettingModel(
-          appKey: AuthenticationRepository.instance.appKey.value,
+          appKey: authInstance.appKey.value,
           defaultCustCode: data['defaultCustCode'],
-          apiUrl: AuthenticationRepository.instance.apiURL.value,
-          apiKey:AuthenticationRepository.instance.apiKey.value,
+          apiUrl: authInstance.apiURL.value,
+          apiKey:authInstance.apiKey.value,
           defaultPricing: data['defaultPricing'],
           routeWiseSell: data['routeWiseSell'],
           locationId: data['locationId'],
           editOrder: data['editOrder'],
-          isRSP: AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
+          orderDays:data['orderDays'],
+          isRSP: authInstance.isRetailPrice.value ? 1: 0,
           createdAt: DateTime.now().toIso8601String(),
         );
 
+      // Toggle the in-memory observable value
+      authInstance.defaultPricing.value = data['defaultPricing'];
         // Insert setting into database
         await db.saveAppSettings(setting);
       }
-        // Notify the controller to refresh
-      await  SettingsController.instance.fetchSettings();
+      //Clear cart to avoid different pricing
+      CartController.instance.clearCart();
+      authInstance.logout();
+      // Notify the controller to refresh
+      // await  SettingsController.instance.fetchSettings();
       MLoaders.successSnackBar(title: 'Settings Loaded!', message:'Settings Successfully loaded',duration: 1);
     } catch (e) {
       MLoaders.errorSnackBar(title: 'Settings!', message: e.toString());
@@ -377,6 +377,7 @@ Future<void> fetchAndStoreProductUnits() async {
         throw Exception("User email is not available.");
       }
 
+      // print("older orders ${authInstance.orderDays}");
       final result = await db.login(email);
       if (result == null || result.isEmpty) {
         throw Exception("User login information not found.");
@@ -404,7 +405,7 @@ Future<void> fetchAndStoreProductUnits() async {
 
       if (checkAppUser['userStatus'] == 0 || checkAppUser['licStatus'] == 0) {
         MLoaders.errorSnackBar(title: 'Authentication Error', message: 'Account locked. Connect to the internet or contact your administrator!');
-        await AuthenticationRepository.instance.logout(); //Logout 
+        await authInstance.logout(); //Logout 
         return;
       }
 
@@ -412,7 +413,7 @@ Future<void> fetchAndStoreProductUnits() async {
       final apiOrders = await apiProvider.sendOrders("saveOrders");
       
       if (apiOrders['code'] == 200) {
-        await db.truncateOrderMst();
+        // await db.truncateOrderMst();
         MLoaders.successSnackBar(title: 'Orders Loaded!',message: apiOrders['message'] ?? 'Orders Sent Successfully.');
       }
     } catch (e) {

@@ -18,11 +18,13 @@ class AuthenticationRepository extends GetxController {
   RxString currentUserId  = ''.obs;
   RxString defaultPricing= ''.obs;
   RxString defaultCustCode= ''.obs;
+  RxBool editOrder= false.obs;
   RxBool isRetailPrice = false.obs;
   RxString appKey  = ''.obs;
   RxString apiURL  = ''.obs;
   RxString apiKey  = ''.obs;
   RxBool isQuantityPrice  = false.obs;
+  RxInt orderDays = 1.obs;
 
   //Variables
   final deviceStorage = GetStorage();
@@ -72,8 +74,10 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   apiKey.value = setting['APIKey'];
   defaultPricing.value = setting['defaultPricing'];
   defaultCustCode.value = setting['defaultCustCode'];
-
-  print("defaultPricing  $defaultPricing ");
+  isQuantityPrice.value = defaultPricing.value =='FUM' ? true : false;
+  isRetailPrice.value = defaultPricing.value =='RSP' ? true : false;
+  editOrder.value =  setting['editOrder'] == 1 ? true : false;
+  orderDays.value = setting['orderDays'];
 
   final decodedToken = JWT.decode(jwtToken);
 
@@ -91,7 +95,7 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   } on JWTExpiredException {
     // print('Token has expired.');
     // await logout();
-  } on JWTException catch (e) {
+  } on JWTException {
     // print('Invalid token: $e');
     await logout();
   } catch (e) {

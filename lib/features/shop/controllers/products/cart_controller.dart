@@ -280,7 +280,7 @@ class CartController extends GetxController {
     title: product.longName,
     unit: isQuantityPrice ? product.fixUnitOfSell! : isVariation ? variation.bulkPackUnit! : product.unit!,
     basicUnit: product.unit!,
-    defaultPricing: isQuantityPrice ? "FUM": isRsp ? "RSP" : "QSP",
+    defaultPricing: isQuantityPrice ? "FUM": isRsp ? "RSP" : "WSP",
     price: price!.toDouble(),
     exVat:double.parse(exVat.toStringAsFixed(2)),
     taxAmount: double.parse(taxAmount.toStringAsFixed(2)),
@@ -361,7 +361,7 @@ class CartController extends GetxController {
 
 
   int getVariationQuantityInCart(String itmCode, String variationId){
-    final isRSP = AuthenticationRepository.instance.isRetailPrice.value ? "RSP" : "QSP";
+    final isRSP = AuthenticationRepository.instance.isRetailPrice.value ? "RSP" : "WSP";
     final foundItem = cartItems.firstWhere((item) => item.itmCode == itmCode
       && item.defaultPricing == isRSP && item.variationId == variationId,
       orElse: () => CartItemModel.empty(),

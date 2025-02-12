@@ -60,30 +60,30 @@ class MCartItem extends StatelessWidget {
                         //     text: 'Variation : ',
                         //     style: Theme.of(context).textTheme.bodySmall),
                         TextSpan(
-                            text: '(${cartItem.defaultPricing})' ?? '',
+                            text: '(${cartItem.unit})' ?? '',
                             style: Theme.of(context).textTheme.bodySmall),
                       ]),
                     )
                   ],
                 ),
-                //Attributes 
-                if (cartItem.selectedVariation != null && cartItem.selectedVariation!.isNotEmpty)
-                Row(
-                  children: [
-                    //Extra Space
-                    // const SizedBox(width: 70),
-                    Text.rich(
-                      TextSpan(children: [
-                        // TextSpan(
-                        //     text: 'Variation : ',
-                        //     style: Theme.of(context).textTheme.bodySmall),
-                        TextSpan(
-                            text: '(${cartItem.selectedVariation})' ?? '',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ]),
-                    )
-                  ],
-                ),
+                //Attributes where there is variation but unit just shows the same
+                // if (cartItem.selectedVariation != null && cartItem.selectedVariation!.isNotEmpty)
+                // Row(
+                //   children: [
+                //     //Extra Space
+                //     // const SizedBox(width: 70),
+                //     Text.rich(
+                //       TextSpan(children: [
+                //         // TextSpan(
+                //         //     text: 'Variation : ',
+                //         //     style: Theme.of(context).textTheme.bodySmall),
+                //         TextSpan(
+                //             text: '(${cartItem.selectedVariation})' ?? '',
+                //             style: Theme.of(context).textTheme.bodyLarge),
+                //       ]),
+                //     )
+                //   ],
+                // ),
               ]),
             ],
           ),

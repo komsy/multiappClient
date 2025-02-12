@@ -15,7 +15,6 @@ import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/helpers/helper_functions.dart';
 import 'widgets/billing_amount_section.dart';
-import 'widgets/billing_payment_section.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});

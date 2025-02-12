@@ -7,6 +7,7 @@ class SettingModel {
   String defaultPricing;
   int routeWiseSell;
   int editOrder;
+  int orderDays;
   int isRSP;
   String createdAt;
 
@@ -19,6 +20,7 @@ class SettingModel {
     this.routeWiseSell = 0,
     this.locationId ='00',
     this.editOrder = 0,
+    this.orderDays = 1,
     this.isRSP = 0,
     this.createdAt ='',
   });
@@ -37,6 +39,7 @@ class SettingModel {
       'routeWiseSell': routeWiseSell,
       'locationId': locationId,
       'editOrder': editOrder,
+      'orderDays': orderDays,
       'IsRSP': isRSP,
       'createdAt': createdAt,
     };
@@ -53,6 +56,7 @@ class SettingModel {
       routeWiseSell: data['routeWiseSell'] ?? 0,
       locationId: data['locationId'] ?? '00',
       editOrder: data['editOrder'] ?? 0,
+      orderDays: data['orderDays'] ?? 1,
       isRSP: data['IsRSP'] ?? 0,
       createdAt: data['createdAt'] ?? '',
     );

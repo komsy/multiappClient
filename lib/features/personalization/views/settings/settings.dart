@@ -27,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-          //Header
+          //Header 
           MPrimaryHeaderContainer(
             child: Column(
               children: [
@@ -41,68 +41,71 @@ class SettingsScreen extends StatelessWidget {
             ),
 
           //Body
-          Padding(
-            padding: const EdgeInsets.all(MSizes.defaultSpace),
-            child: Column(
-              children: [
-                //Account Setting
-                const MSectionHeading(title: 'App Setting', showActionButton: false),
-                const SizedBox(height: MSizes.spaceBtwItems/2),
-
-                MSettingsMenuTile(icon: Iconsax.shopping_cart, title: "My Cart", subTitle: "Add & Remove Products", onTap: () => Get.to(() => const CartScreen()) ),
-                MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", 
-                onTap: () =>Get.to(() => const AppSettingsScreen())),
-                
-                // MSettingsMenuTile(
-                //     icon: Iconsax.money,
-                //     title: "Pricing",
-                //     subTitle: "Toogle between WholeSale & Retail Price",
-                //     trailing: Obx(() => Switch(
-                //           value: AuthenticationRepository.instance.isRetailPrice.value,
-                //           onChanged: (value) {
-                //             controller.updateDefaultPricing();
-                //           },
-                //         )),
-                //   ),
-                //App Setting
-                // const SizedBox(height: MSizes.spaceBtwSections/2),
-                // const MSectionHeading(title: 'App Settings', showActionButton: false),
-                // const SizedBox(height: MSizes.spaceBtwItems/2),
-                MSettingsMenuTile(icon: Iconsax.document_download, title: "Load Data", subTitle: "Add Products & Customers", onTap: () => Get.to(() => const LoadDataScreen())),
-                MSettingsMenuTile(
-                      icon: Iconsax.document_upload,
-                      title: "Send Order",
-                      subTitle: "Send Orders to Server and clear from the App",
-                      onTap: () => {},
-                      trailing: Obx(() {
-                        return IconButton(
-                            onPressed: apiService.isSendLoading.value
-                                ? null // Disable the button while loading
-                                : () => apiService.fetchAndSendOrders(),
-                            icon: apiService.isSendLoading.value
-                                ? const CircularProgressIndicator(
-                                    color: Colors.green,
-                                    strokeWidth: 2,
-                                  )
-                                : const Icon(
-                                    Icons.cloud_upload,
-                                    color: Colors.orange,
-                                  ),
-                          );
-                        }),
-                      ),
-                
-
-                //Logout Button
-                const SizedBox(height: MSizes.spaceBtwSections),
-                SizedBox(
-                  width: double.infinity,
-                  child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
-                ),
-                const SizedBox(height: MSizes.spaceBtwSections * 2.5 )
-              ],
-            ),
-            ),
+          Transform.translate(
+            offset: const Offset(0, -20), 
+            child: Padding(
+              padding: const EdgeInsets.all(MSizes.defaultSpace),
+              child: Column(
+                children: [
+                  //Account Setting
+                  const MSectionHeading(title: 'App Setting', showActionButton: false),
+                  const SizedBox(height: MSizes.spaceBtwItems/2),
+            
+                  MSettingsMenuTile(icon: Iconsax.shopping_cart, title: "My Cart", subTitle: "Add & Remove Products", onTap: () => Get.to(() => const CartScreen()) ),
+                  MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", 
+                  onTap: () =>Get.to(() => const AppSettingsScreen())),
+                  
+                  // MSettingsMenuTile(
+                  //     icon: Iconsax.money,
+                  //     title: "Pricing",
+                  //     subTitle: "Toogle between WholeSale & Retail Price",
+                  //     trailing: Obx(() => Switch(
+                  //           value: AuthenticationRepository.instance.isRetailPrice.value,
+                  //           onChanged: (value) {
+                  //             controller.updateDefaultPricing();
+                  //           },
+                  //         )),
+                  //   ),
+                  //App Setting
+                  // const SizedBox(height: MSizes.spaceBtwSections/2),
+                  // const MSectionHeading(title: 'App Settings', showActionButton: false),
+                  // const SizedBox(height: MSizes.spaceBtwItems/2),
+                  MSettingsMenuTile(icon: Iconsax.document_download, title: "Load Data", subTitle: "Add Products & Customers", onTap: () => Get.to(() => const LoadDataScreen())),
+                  MSettingsMenuTile(
+                        icon: Iconsax.document_upload,
+                        title: "Send Order",
+                        subTitle: "Send Orders to Server and clear from the App",
+                        onTap: () => {},
+                        trailing: Obx(() {
+                          return IconButton(
+                              onPressed: apiService.isSendLoading.value
+                                  ? null // Disable the button while loading
+                                  : () => apiService.fetchAndSendOrders(),
+                              icon: apiService.isSendLoading.value
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.green,
+                                      strokeWidth: 2,
+                                    )
+                                  : const Icon(
+                                      Icons.cloud_upload,
+                                      color: Colors.orange,
+                                    ),
+                            );
+                          }),
+                        ),
+                  
+            
+                  //Logout Button
+                  const SizedBox(height: MSizes.spaceBtwSections),
+                  SizedBox(
+                    width: double.infinity,
+                    child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
+                  ),
+                  const SizedBox(height: MSizes.spaceBtwSections * 2.5 )
+                ],
+              ),
+              ),
+          ),
           ],
         ),
       ),

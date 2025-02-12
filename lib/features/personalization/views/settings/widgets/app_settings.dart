@@ -94,12 +94,6 @@ class AppSettingsScreen extends StatelessWidget {
                     icon: Iconsax.copy,
                     value: controller.setting.value.apiUrl),
 
-                // MProfileMenu(
-                //     onPressed: () {},
-                //     title: 'Doc Series',
-                //     showIcon: false,
-                //     value: controller.setting.value.docSeries),
-
                 MProfileMenu(
                     onPressed: () {},
                     title: 'Location    :',
@@ -111,7 +105,17 @@ class AppSettingsScreen extends StatelessWidget {
                     title: 'Cust Code :',
                     showIcon: false,
                     value: controller.setting.value.defaultCustCode.toString()),
-                const SizedBox(height: MSizes.spaceBtwSections * 3),
+                MProfileMenu(
+                    onPressed: () {},
+                    title: 'Def Pricing :',
+                    showIcon: false,
+                    value: controller.setting.value.defaultPricing.toString()),
+                MProfileMenu(
+                    onPressed: () {},
+                    title: 'Edit Order  :',
+                    showIcon: false,
+                    value: controller.setting.value.editOrder.toString()),
+                const SizedBox(height: MSizes.spaceBtwSections ),
                 //Change name Button
                 SizedBox(
                     width: double.infinity,
