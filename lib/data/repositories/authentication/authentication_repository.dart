@@ -19,6 +19,8 @@ class AuthenticationRepository extends GetxController {
   RxString defaultPricing= ''.obs;
   RxString defaultCustCode= ''.obs;
   RxBool editOrder= false.obs;
+  RxBool editAfter= false.obs;
+  RxBool setDefaultCust= false.obs;
   RxBool isRetailPrice = false.obs;
   RxString appKey  = ''.obs;
   RxString apiURL  = ''.obs;
@@ -76,7 +78,9 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   defaultCustCode.value = setting['defaultCustCode'];
   isQuantityPrice.value = defaultPricing.value =='FUM' ? true : false;
   isRetailPrice.value = defaultPricing.value =='RSP' ? true : false;
+  setDefaultCust.value =  setting['setDefaultCust'] == 1 ? true : false;
   editOrder.value =  setting['editOrder'] == 1 ? true : false;
+  editAfter.value =  setting['editAfter'] == 1 ? true : false;
   orderDays.value = setting['orderDays'];
 
   final decodedToken = JWT.decode(jwtToken);

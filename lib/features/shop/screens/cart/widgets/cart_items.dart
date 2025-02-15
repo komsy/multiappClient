@@ -17,17 +17,18 @@ class MCartItems extends StatelessWidget {
     final cartController = CartController.instance;
     
     return Obx( 
-    () => ListView.separated(
+    () => ListView.builder(
         shrinkWrap: true,
-        separatorBuilder: (_,__) => const SizedBox(height: MSizes.spaceBtwSections), 
+        physics: const NeverScrollableScrollPhysics(),
+        // separatorBuilder: (_,__) => const SizedBox(height: MSizes.spaceBtwSections), 
         itemCount: cartController.cartItems.length,
-        itemBuilder: (_, index) => Obx(
+        itemBuilder: (_, index) => Obx( 
           () { 
             final item = cartController.cartItems[index];
             return Column(
               children: [
                 MCartItem(cartItem: item),
-                if(showAddRemoveButtons)const SizedBox(height: MSizes.spaceBtwItems),
+                if(showAddRemoveButtons)const SizedBox(height: MSizes.spaceBtwItems / 2),
         
                 if(showAddRemoveButtons)Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,9 +49,9 @@ class MCartItems extends StatelessWidget {
                     ),
         
                     MProductPriceText(price: (item.price * item.quantity).toStringAsFixed(1)),
-        
                   ],
                 ),
+                const SizedBox(height: MSizes.spaceBtwSections * 0.5)
               ],
             );
         }),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
 import 'package:easyapp/utils/constants/colors.dart';
 import 'package:easyapp/utils/device/device_utility.dart';
 import 'package:easyapp/utils/helpers/helper_functions.dart';

@@ -1,3 +1,4 @@
+
 import 'package:easyapp/features/shop/models/cart_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,8 +42,9 @@ Future<List<OrderModel>>fetchOrders() async {
     //Show loader while loading products
     isLoading.value = true;
     final orderDays = AuthenticationRepository.instance.orderDays.value;
+    const isSending=false;
     // Start by fetching data from the database
-    final snapshot = await db.getOrders(orderDays);
+    final snapshot = await db.getOrders(orderDays, isSending);
 
     // log('order snapshot: ${snapshot}');
     // Handle null or empty result (no categories found)
@@ -117,7 +119,7 @@ void processOrder(double totalAmount) async {
     //check if customer exists
     final cusCode = customerController.selectedCustomer.value.cusCode;
     // print("cusCode $cusCode");
-    if (cusCode == null || cusCode.isEmpty) {
+    if (cusCode.isEmpty) {
         throw Exception("Kindly select or load the Customers");
       }
 
@@ -135,12 +137,13 @@ void processOrder(double totalAmount) async {
       // print(" narration: ${customerController.naration.value}");
     final order = OrderModel(
       id: await generateConcatenatedString(),
+      isSent: 0,
       createdBy: userId ?? 'admin',
       orderStatus: 'Pending',
       totalAmount: totalAmount,
       orderDate: DateTime.now().toIso8601String(),
       paymentMethod: checkoutController.selectedPaymentMethod.value.name,
-      createdAt:DateTime.now().toIso8601String(),
+      createdAt: DateTime.now().toIso8601String(),//'2025-02-11T16:30:57.555826',  //
       locationId: currentSetting['locationId'] ?? '00', //pick default location
       naration: customerController.naration.value,
       customerCode: customerController.selectedCustomer.value.cusCode,

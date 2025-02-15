@@ -281,7 +281,7 @@ class CartController extends GetxController {
     unit: isQuantityPrice ? product.fixUnitOfSell! : isVariation ? variation.bulkPackUnit! : product.unit!,
     basicUnit: product.unit!,
     defaultPricing: isQuantityPrice ? "FUM": isRsp ? "RSP" : "WSP",
-    price: price!.toDouble(),
+    price: price.toDouble(),
     exVat:double.parse(exVat.toStringAsFixed(2)),
     taxAmount: double.parse(taxAmount.toStringAsFixed(2)),
     quantity: quantity,

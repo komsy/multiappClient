@@ -6,7 +6,6 @@ import 'package:easyapp/features/shop/controllers/products/cart_controller.dart'
 import 'package:easyapp/features/shop/models/product_model.dart';
 import 'package:easyapp/features/shop/screens/product_details/product_detail.dart';
 import 'package:easyapp/utils/constants/colors.dart';
-import 'package:easyapp/utils/constants/enums.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 
 class ProductCardAddToCartButton extends StatelessWidget {

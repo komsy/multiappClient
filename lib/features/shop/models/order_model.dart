@@ -21,9 +21,10 @@ class OrderModel {
     String? cashPhoneNumber;
     String? cashPinNo;
     String? cashAddress;
+    int isSent;
     final List<OrderItemModel>? orderItems;
  
-  OrderModel( {this.cashCustomerName, this.cashPhoneNumber,this.cashPinNo, this.cashAddress,this.naration,  required this.locationId,  required this.customerCode, required this.companyName, this.orderItems,required this.id, this.createdBy ='', this.orderStatus, 
+  OrderModel( {this.isSent=0,this.cashCustomerName, this.cashPhoneNumber,this.cashPinNo, this.cashAddress,this.naration,  required this.locationId,  required this.customerCode, required this.companyName, this.orderItems,required this.id, this.createdBy ='', this.orderStatus, 
   required this.totalAmount, required this.orderDate,this.paymentMethod = 'cash', this.address, this.createdAt});
 
   String get formattedOrderDate => THelperFunctions.getFormattedDate(orderDate);
@@ -54,6 +55,7 @@ class OrderModel {
       'cashPhoneNumber': cashPhoneNumber,
       'cashPinNo': cashPinNo,
       'cashAddress': cashAddress,
+      'isSent' : isSent,
       // 'address': address?.toJson(), //convert AddressModel to map
       'createdAt': createdAt,
       // 'items': orderItems.map((item) => item.toJson()).toList(), //Convert CartItemModel to map
@@ -83,6 +85,7 @@ class OrderModel {
         // orderStatus: OrderStatus.values.firstWhere((e) => e.toString() == data['orderStatus']), 
         orderStatus: data['orderStatus']as String,
         createdBy: data['createdBy'] as String, 
+        isSent: data['isSent'] ?? 0,
         // address: AddressModel.fromMap(data['address'] as Map<String, dynamic>),
         createdAt: data['createdAt']  == null ? null : data['createdAt'] as String,
         // createdAt: data['createdAt']  == null ? null : (data['createdAt'] as Timestamp).toDate(),

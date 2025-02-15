@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:easyapp/common/widgets/containers/rounded_container.dart';
-import 'package:easyapp/features/shop/controllers/credit_customer_controller.dart';
 import 'package:easyapp/features/shop/controllers/customer_controller.dart';
 import 'package:easyapp/features/shop/screens/checkout/widgets/Credit_customer_section.dart';
 import 'package:easyapp/utils/constants/colors.dart';

@@ -34,7 +34,12 @@ class OrderScreen extends StatelessWidget {
               offset: const Offset(0, -25), // Shift content 10 pixels upward
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: MSizes.defaultSpace/1.5),
-                child: MOrderListItems(),
+                child: Row(
+                  children: [
+                    Expanded(child: MOrderListItems()),
+                    SizedBox(height: MSizes.spaceBtwSections),
+                  ],
+                ),
               ),
             ),
           ],

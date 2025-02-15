@@ -1,5 +1,4 @@
 import 'package:easyapp/data/provider/api_provider.dart';
-import 'package:easyapp/data/services/API/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';

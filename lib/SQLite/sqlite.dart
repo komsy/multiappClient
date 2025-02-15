@@ -1,4 +1,3 @@
-import 'package:easyapp/env.dart';
 import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/models/credit_customer_model.dart';
@@ -192,6 +191,7 @@ class LocalDatabase {
         cashPhoneNumber VARCHAR(15),
         cashPinNo VARCHAR(12),
         cashAddress VARCHAR(50),
+        isSent INTEGER  NOT NULL,
         createdBy VARCHAR(10) NOT NULL,
         createdAt VARCHAR(30) NOT NULL
       )
@@ -231,7 +231,9 @@ class LocalDatabase {
         defaultPricing VARCHAR(10) NOT NULL,
         routeWiseSell INTEGER  NOT NULL,
         editOrder INTEGER  NOT NULL,
+        editAfter INTEGER  NOT NULL,
         orderDays INTEGER  NOT NULL,
+        setDefaultCust INTEGER  NOT NULL,
         IsRSP INTEGER  NOT NULL,
         createdAt TEXT NOT NULL
       )
@@ -274,7 +276,9 @@ class LocalDatabase {
       "defaultCustCode": "",
       "defaultPricing": "WSP",
       "routeWiseSell": 0,
+      "setDefaultCust": 0,
       "editOrder": 0,
+      "editAfter": 0,
       "orderDays": 1,
       "IsRSP": 0,
       "createdAt": createdAt,
@@ -517,15 +521,20 @@ class LocalDatabase {
     }
   }
 
- Future<List<Map<dynamic, dynamic>>?> getOrders(int orderDays) async {
+ Future<List<Map<dynamic, dynamic>>?> getOrders(int orderDays,  bool isSending) async {
   final db = await instance.database;
 
-  // Clean up old orders before fetching current ones
+   // Clean up old orders before fetching current ones
   await _deleteOldOrders(db, orderDays);
 
-  // Fetch all remaining orders
-  List<Map<String, dynamic>> orders = await db.rawQuery('SELECT * FROM orderMst ORDER BY createdAt DESC');
+  // Define the query dynamically based on isSending
+  String query = isSending 
+    ? 'SELECT * FROM orderMst WHERE isSent=0 ORDER BY createdAt DESC'
+    : 'SELECT * FROM orderMst ORDER BY createdAt DESC';
 
+  // Execute the query
+  List<Map<String, dynamic>> orders = await db.rawQuery(query);
+  
   if (orders.isNotEmpty) {
     List<Map<String, dynamic>> updatedOrders = [];
 
@@ -614,6 +623,20 @@ Future<void> _deleteOldOrders(Database db, int days) async {
       where: 'customerName = ?', // Replace with actual condition to identify the user
       whereArgs: [selectedCrClient], // Replace `userId` appropriately
     );
+  }
+  Future<void> updateSentOrders(List<dynamic> acknowledgments) async {
+    final db = await instance.database;
+
+    for (var ack in acknowledgments) {
+      final String orderId = ack['orderId']; // Extract orderId
+
+      await db.update(
+        'orderMst',
+        {'isSent': 1}, // Update isSent to 1
+        where: 'id = ?', 
+        whereArgs: [orderId], 
+      );
+    }
   }
 
   //Truncate products table after calling the API

@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
-import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:easyapp/features/authentication/screens/password_configuration/reset_password.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';

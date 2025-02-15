@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
-import 'package:easyapp/common/widgets/list_tiles/settings_menu_tile.dart';
-import 'package:easyapp/features/shop/models/order_item_model.dart';
 import 'package:easyapp/features/shop/models/order_model.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 

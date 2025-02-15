@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
 import 'package:easyapp/common/widgets/images/m_circular_image.dart';
-import 'package:easyapp/common/widgets/shimmers/shimmer.dart';
 import 'package:easyapp/common/widgets/texts/section_heading.dart';
 import 'package:easyapp/features/personalization/views/profile/widgets/change_name.dart';
 import 'package:easyapp/features/personalization/views/profile/widgets/profile_menu.dart';

@@ -41,11 +41,8 @@ class MCartItem extends StatelessWidget {
                     //Extra Space
                     const SizedBox(width: 30),
                     Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                            text: cartItem.taxAmount.toString(),
-                            style: Theme.of(context).textTheme.bodySmall),
-                      ]),
+                      TextSpan(text: cartItem.taxAmount.toString(),
+                        style: Theme.of(context).textTheme.bodySmall),
                     )
                   ],
                 ),

@@ -314,6 +314,8 @@ Future<void> fetchAndStoreProductUnits() async {
           routeWiseSell: data['routeWiseSell'],
           locationId: data['locationId'],
           editOrder: data['editOrder'],
+          editAfter: data['editAfter'],
+          setDefaultCust: data['setDefaultCust'],
           orderDays:data['orderDays'],
           isRSP: authInstance.isRetailPrice.value ? 1: 0,
           createdAt: DateTime.now().toIso8601String(),
@@ -373,7 +375,7 @@ Future<void> fetchAndStoreProductUnits() async {
 
       // Retrieve user information
       final email = UserController.instance.user.value.email;
-      if (email == null || email.isEmpty) {
+      if (email.isEmpty) {
         throw Exception("User email is not available.");
       }
 
@@ -412,8 +414,12 @@ Future<void> fetchAndStoreProductUnits() async {
       // Send orders to the API if user & Lic still Active
       final apiOrders = await apiProvider.sendOrders("saveOrders");
       
-      if (apiOrders['code'] == 200) {
+      if (apiOrders['code'] == 200 &&  apiOrders['acknowledgments'].isNotEmpty) {
         // await db.truncateOrderMst();
+        //Update order acknowledgement
+        await db.updateSentOrders(apiOrders['acknowledgments']);
+
+        //update order isSent
         MLoaders.successSnackBar(title: 'Orders Loaded!',message: apiOrders['message'] ?? 'Orders Sent Successfully.');
       }
     } catch (e) {

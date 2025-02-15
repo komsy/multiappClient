@@ -6,7 +6,6 @@ import 'package:easyapp/common/widgets/appbar/appbar.dart';
 import 'package:easyapp/common/widgets/texts/section_heading.dart';
 import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
 import 'package:easyapp/features/personalization/views/profile/widgets/profile_menu.dart';
-import 'package:easyapp/features/personalization/views/settings/widgets/add_app_settings.dart';
 import 'package:easyapp/utils/constants/colors.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
@@ -33,16 +32,6 @@ class AppSettingsScreen extends StatelessWidget {
         if (controller.isLoading.value) {
           return const Center(
             child: CircularProgressIndicator(),
-          );
-        }
-
-        // Check if data is available
-        if (controller.setting.value == null) {
-          return const Center(
-            child: Text(
-              'No Settings Found',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
           );
         }
 
@@ -114,7 +103,18 @@ class AppSettingsScreen extends StatelessWidget {
                     onPressed: () {},
                     title: 'Edit Order  :',
                     showIcon: false,
-                    value: controller.setting.value.editOrder.toString()),
+                    value: controller.setting.value.editOrder == 0 ? 'False' : 'True'),
+                MProfileMenu(
+                    onPressed: () {},
+                    title: 'Edit Order After send :',
+                    showIcon: false,
+                    value: controller.setting.value.editAfter == 0 ? 'False' : 'True'),
+
+                MProfileMenu(
+                    onPressed: () {},
+                    title: 'Keep Order in App  :',
+                    showIcon: false,
+                    value: '${controller.setting.value.orderDays.toString()} days'),
                 const SizedBox(height: MSizes.spaceBtwSections ),
                 //Change name Button
                 SizedBox(

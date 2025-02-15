@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:easyapp/env.dart';
 import 'package:easyapp/features/shop/models/customer_model.dart';
 import 'package:easyapp/features/shop/models/product_model.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
@@ -326,11 +324,13 @@ ApiProvider() {
   
 
   Future<Map<String, dynamic>>  sendOrders(String apiName) async {
-  try {
+  try { 
     final fullUrl = '${_dio.options.baseUrl}$apiName';
     final orderDays = AuthenticationRepository.instance.orderDays.value;
+    const isSending=true;
+
     // print("Request URL: $fullUrl");
-    final orders = await db.getOrders(orderDays);
+    final orders = await db.getOrders(orderDays, isSending);
 
     // Handle null or empty result (no categories found)
     if (orders == null || orders.isEmpty) {

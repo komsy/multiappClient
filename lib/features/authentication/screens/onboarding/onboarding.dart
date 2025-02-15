@@ -4,7 +4,6 @@ import 'package:easyapp/features/authentication/controllers/onboarding/onboardin
 import 'package:easyapp/features/authentication/screens/onboarding/widgets/onboarding_dot_navigation.dart';
 import 'package:easyapp/features/authentication/screens/onboarding/widgets/onboarding_next_button.dart';
 import 'package:easyapp/features/authentication/screens/onboarding/widgets/onboarding_page.dart';
-import 'package:easyapp/features/authentication/screens/onboarding/widgets/onboarding_skip.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
 

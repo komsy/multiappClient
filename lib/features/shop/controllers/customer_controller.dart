@@ -55,10 +55,14 @@ class CustomerController extends GetxController {
     }).toList();
     
     // Set the selectedCustomer based on company name with error handling
-    selectedCustomer.value = allCustomers.firstWhere(
-      (customer) => customer.cusCode == AuthenticationRepository.instance.defaultCustCode.value,
-      orElse: () => CustomerModel.empty(), // Provide a default empty customer
-    );
+    //check if setdefaultcustomer ? ok : false
+    final setDefaultCust = AuthenticationRepository.instance.setDefaultCust.value;
+    if(setDefaultCust){
+      selectedCustomer.value = allCustomers.firstWhere(
+        (customer) => customer.cusCode == AuthenticationRepository.instance.defaultCustCode.value,
+        orElse: () => CustomerModel.empty(), // Provide a default empty customer
+      );
+    }
 
     // Assign all customers to featuredCustomers
     featuredCustomers.assignAll(allCustomers);

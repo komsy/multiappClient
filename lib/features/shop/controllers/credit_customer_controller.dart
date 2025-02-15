@@ -173,13 +173,13 @@ class CreditCustomerController extends GetxController {
 
       // print("cr customer ${customer.pinNo}");
       await db.saveSelectedCrClient(customer);
-      await selectedCrClient(customer);
+      selectedCrClient(customer);
 
       //Remove loader
       MFullScreenLoader.stopLoading();
 
       //Show success message
-      MLoaders.successSnackBar(title: 'Congratulations', message: 'Your Cash Customer has been saved successfully.',duration: 1);
+      // MLoaders.successSnackBar(title: 'Congratulations', message: 'Your Cash Customer has been saved successfully.',duration: 1);
 
       //Reset fields
       resetFormFields();
@@ -223,8 +223,9 @@ class CreditCustomerController extends GetxController {
                 // Handle different states of the future (loading, error, or data)
                 final response = MCloudHelperFunctions.checkMultiRecordState(
                     snapshot: snapshot);
-                if (response != null)
+                if (response != null) {
                   return response; // Returns a loading or error widget
+                }
 
                 // If the data is available and the response is null, build the list view
                 return Expanded(

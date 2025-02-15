@@ -40,7 +40,7 @@ Future<void> fetchFeaturedProducts() async {
     // log('snapshot products: $snapshot');
 
     // Handle null or empty result (no categories found)
-    if (snapshot == null || snapshot.isEmpty) {
+    if (snapshot.isEmpty) {
       return;
     }
 
@@ -85,7 +85,7 @@ Future<void> fetchSearchProduct(String keyWord) async {
     final snapshot = await db.getProductSearch('%$keyWord%');
     // log('Snapshot: $snapshot');
 
-    if (snapshot == null || snapshot.isEmpty) {
+    if (snapshot.isEmpty) {
       // Clear and notify user if no results are found
       featuredProducts.clear();
       // MLoaders.warningSnackBar(title: 'No Results', message: 'No products found.');

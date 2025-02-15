@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/images/m_circular_image.dart';
-import 'package:easyapp/features/personalization/views/profile/profile.dart';
 import 'package:easyapp/features/personalization/views/profile/widgets/change_name.dart';
 import 'package:easyapp/utils/constants/colors.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
@@ -40,7 +39,7 @@ class MUserProfileTile extends StatelessWidget {
       trailing: controller.user.value.userName == "admin" ?  IconButton(
           onPressed: () //=>Get.to(() => const ChangeName()),
               {
-            if (apiURL == null || apiURL.isEmpty) {
+            if (apiURL.isEmpty) {
               MLoaders.warningSnackBar(
                   title: 'Oh Snap!',
                   message: 'Kindly update update the app settings first!');
