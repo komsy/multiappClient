@@ -14,7 +14,8 @@ import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
 
-import 'package:iconsax/iconsax.dart'; 
+import 'package:iconsax/iconsax.dart';
+import 'package:package_info_plus/package_info_plus.dart'; 
 
 class SettingsController extends GetxController {
   static SettingsController get instance => Get.find();
@@ -33,6 +34,7 @@ class SettingsController extends GetxController {
   final locationId = TextEditingController();
   GlobalKey<FormState> settingsFormKey = GlobalKey<FormState>();
 
+  RxString appversion = ''.obs;
 
   @override
   void onInit() {
@@ -45,6 +47,8 @@ class SettingsController extends GetxController {
       isLoading.value = true;
       // Fetch the first setting from the database
       final snapshot = await db.getSingleAppSetting();
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      appversion.value= packageInfo.version;
       
       // Handle null or empty result
       if (snapshot == null || snapshot.isEmpty) {
@@ -59,6 +63,7 @@ class SettingsController extends GetxController {
     } catch (e) {
       // Display an error message
       MLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
+      print(e.toString());
       setting(null); // Handle errors by assigning null
     } finally {
       // Remove loader or stop any loading indicator

@@ -1,7 +1,7 @@
 name: easyapp
 description: "Sales Order App."
 publish_to: 'none' 
-version: 1.1.0+1
+version: 1.2.0+1
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -68,6 +68,7 @@ dependencies:
   envied: ^0.5.4+1
   dio: ^5.7.0
   uuid: ^4.5.1
+  package_info_plus: ^8.2.1
 
 
   #--------------- ./ PACKAGES END ------------------#
@@ -101,6 +102,7 @@ flutter:
     - assets/icons/payment_methods/
     - assets/images/on_boarding_images/
     - .env
+    - shorebird.yaml
   #--------------- LOCAL FONTS ------------------#
   fonts:
     - family: Poppins
