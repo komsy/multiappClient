@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apiService = Get.put(MAPIService()); 
-    final controller = Get.put(SettingsController());
+    Get.put(SettingsController());
     
     return Scaffold(
       body: SingleChildScrollView(
@@ -106,7 +106,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: MSizes.spaceBtwSections*2),
                   Column(
                     children: [
-                      Text("Version: ${controller.appversion.value}"),
+                      Text("Version: ${AuthenticationRepository.instance.appversion.value}"),
                     ],
                   ),
                   const SizedBox(height: MSizes.spaceBtwSections * 2.5 )

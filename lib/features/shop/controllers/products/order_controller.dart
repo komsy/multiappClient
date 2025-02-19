@@ -148,8 +148,8 @@ void processOrder(double totalAmount) async {
       naration: customerController.naration.value,
       customerCode: customerController.selectedCustomer.value.cusCode,
       companyName: customerController.selectedCustomer.value.companyName, 
-      cashCustomerName: creditController.customerName  ?? '', 
-      cashPhoneNumber: creditController.phoneNumber  ?? '',
+      cashCustomerName: creditController.customerName, 
+      cashPhoneNumber: creditController.phoneNumber,
       cashPinNo:creditController.pinNo ?? '',
       cashAddress:creditController.address  ?? ''
     );
@@ -203,7 +203,7 @@ void processOrder(double totalAmount) async {
 
 
   generateConcatenatedString() async {
-    String cleanKey =  await generateCleanUniqueKey();
+    // String cleanKey =  await generateCleanUniqueKey();
     
     // Get current date
     DateTime now = DateTime.now();

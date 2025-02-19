@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:easyapp/common/widgets/texts/product_title_text.dart';
 import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
 import 'package:easyapp/features/shop/models/product_model.dart';
-import 'package:easyapp/utils/helpers/helper_functions.dart';
 
 import '../../../../../common/widgets/texts/product_price_text.dart';
 import '../../../../../utils/constants/sizes.dart';
@@ -14,7 +13,7 @@ class MProductMetaData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dark = THelperFunctions.isDarkMode(context);
+    // final dark = THelperFunctions.isDarkMode(context);
     final controller = ProductController.instance;
     // final salePercentage = controller.calaculateSalePercentage(product.price, product.salePrice);
 

@@ -7,7 +7,6 @@ import 'package:easyapp/features/shop/controllers/products/cart_controller.dart'
 import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
 import 'package:easyapp/features/shop/screens/cart/widgets/cart_items.dart';
 import 'package:easyapp/utils/constants/colors.dart';
-import 'package:easyapp/utils/helpers/pricing_calculator.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
 
 import '../../../../common/widgets/appbar/appbar.dart';
@@ -26,7 +25,7 @@ class CheckoutScreen extends StatelessWidget {
     final subTotal = controller.totalCartPrice.value;
     final orderController = Get.put(OrderController());
     // final customercontroller = Get.put(CustomerController());
-    final totalAmount = MPricingCalculator.calculateTotalPrice(subTotal,'KE');
+    // final totalAmount = MPricingCalculator.calculateTotalPrice(subTotal,'KE');
 
     return Scaffold(
       appBar: MAppBar(title: Text('Order Review', style: Theme.of(context).textTheme.headlineSmall), showBackArrow: true),

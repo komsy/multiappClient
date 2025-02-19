@@ -68,7 +68,7 @@ class OrderItemModel {
   //Create a OrderItem from Json map
   factory OrderItemModel.fromMap(Map<String, dynamic> json) {
     return OrderItemModel(
-      orderId: json['orderId'].toString() ?? '',
+      orderId: json['orderId'].toString(),
       // docNo: json['docNo'] ?? '',
       locationId: json['locationId'] ?? '',
       itmCode: json['itmCode'] ?? '',

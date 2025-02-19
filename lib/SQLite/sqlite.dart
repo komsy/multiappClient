@@ -766,21 +766,21 @@ Future<void> _deleteOldOrders(Database db, int days) async {
     // print('Data added: $name');
   }
 
-  Future readAllData({name}) async {
-    final db = await instance.database;
-    // final db = await database;
-    final productMst = await db.query("orderMst");
-    final orderTrn = await db.query("orderTrn");
-    // final userMst =  await db.query("userMst");
-    // final categoryMst =  await db.query("categoryMst");
-    // final settings =  await db.query("settings");
-    // log("productMst $productMst");
-    // log("orderTrn $orderTrn");
-    // print(userMst);
-    // print(categoryMst);
-    // print(settings);
-    return 'read';
-  }
+  // Future readAllData({name}) async {
+  //   final db = await instance.database;
+  //   // final db = await database;
+  //   // final productMst = await db.query("orderMst");
+  //   // final orderTrn = await db.query("orderTrn");
+  //   // final userMst =  await db.query("userMst");
+  //   // final categoryMst =  await db.query("categoryMst");
+  //   // final settings =  await db.query("settings");
+  //   // log("productMst $productMst");
+  //   // log("orderTrn $orderTrn");
+  //   // print(userMst);
+  //   // print(categoryMst);
+  //   // print(settings);
+  //   return 'read';
+  // }
 
   Future<void> resetDatabase() async {
     try {

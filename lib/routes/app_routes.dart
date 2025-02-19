@@ -7,7 +7,7 @@ import 'package:easyapp/features/personalization/views/settings/settings.dart';
 import 'package:easyapp/features/shop/screens/cart/cart.dart';
 import 'package:easyapp/features/shop/screens/checkout/checkout.dart';
 import 'package:easyapp/features/shop/screens/home/home.dart';
-import 'package:easyapp/features/shop/screens/order/Order.dart';
+import 'package:easyapp/features/shop/screens/order/order.dart';
 import 'package:easyapp/features/shop/screens/product_reviews/product_reviews.dart';
 import 'package:easyapp/features/shop/screens/wishlist/wishlist.dart';
 import 'package:easyapp/routes/routes.dart';

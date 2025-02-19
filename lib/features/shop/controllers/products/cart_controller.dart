@@ -352,7 +352,7 @@ class CartController extends GetxController {
         //variation qty * cart item's variation quantity
         final quantity = productPackaging.basePackQty! * variationQty;
         // Add the quantity to totalQuantity
-        totalQuantity += quantity.toInt() ?? 0; // Assuming `quantity` is nullable, default to 0 if null
+        totalQuantity += quantity.toInt(); // Assuming `quantity` is nullable, default to 0 if null
     }
 
     // print("Total quantity for product ${product.itmCode}: $totalQuantity");

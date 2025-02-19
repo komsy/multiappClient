@@ -49,7 +49,7 @@ class UpdateNameController extends GetxController{
       }
       
       //Update user's first & last name in the sqlite firestore
-      Map<String, dynamic> name = {'Firstname': userName.text.trim(),'Lastname': email.text.trim()};
+      // Map<String, dynamic> name = {'Firstname': userName.text.trim(),'Lastname': email.text.trim()};
      
       //Update the Rx user value
       userController.user.value.userName = userName.text.trim();

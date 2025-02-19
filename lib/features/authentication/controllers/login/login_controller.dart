@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
-import 'package:easyapp/env.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
@@ -151,12 +150,12 @@ class LoginController extends GetxController{
   }
 
   // Function to generate JWT
-  String _generateJWT(Map<String, dynamic> payload) {
-    final jwt = JWT(payload);
+  // String _generateJWT(Map<String, dynamic> payload) {
+  //   final jwt = JWT(payload);
 
-    // Sign the token with a secret key and set expiration to 8 hours
-    return jwt.sign(SecretKey(Env.accessToken), expiresIn: const Duration(hours: 24));
-  }
+  //   // Sign the token with a secret key and set expiration to 8 hours
+  //   return jwt.sign(SecretKey(Env.accessToken), expiresIn: const Duration(hours: 24));
+  // }
 
  hashPassword(String password) {
     var bytes = utf8.encode(password);  // Convert the password to a list of bytes

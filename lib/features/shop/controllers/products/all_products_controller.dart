@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/shop/controllers/products/product_controller.dart';
 import 'package:easyapp/features/shop/models/product_model.dart';
 
@@ -14,7 +13,7 @@ class AllProductsController extends GetxController {
 
   void sortProducts (String sortOption) {
     selectedSortOption.value = sortOption;
-    final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
+    // final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
 
     switch (sortOption){
       case 'Name' :

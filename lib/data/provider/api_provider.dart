@@ -224,7 +224,7 @@ ApiProvider() {
   Future<List<dynamic>> getAPIData(String apiName) async {
     try {
       // Construct the full URL to print it
-      final fullUrl = '${_dio.options.baseUrl}$apiName';
+      // final fullUrl = '${_dio.options.baseUrl}$apiName';
       // print("Request URL: $fullUrl");
 
       final response = await _dio.get(apiName);
@@ -251,7 +251,7 @@ ApiProvider() {
 
   Future<Map<String, dynamic>>  acknowledgeCustomerData(String apiName, CustomerModel customer) async {
   try {
-    final fullUrl = '${_dio.options.baseUrl}$apiName';
+    // final fullUrl = '${_dio.options.baseUrl}$apiName';
     // print("Request URL: $fullUrl");
 
     // Convert customer to a map and add additional fields
@@ -287,7 +287,7 @@ ApiProvider() {
 
   Future<Map<String, dynamic>> acknowledgeProductData(String apiName, ProductModels product) async {
   try {
-    final fullUrl = '${_dio.options.baseUrl}$apiName';
+    // final fullUrl = '${_dio.options.baseUrl}$apiName';
     // print("Request update URL: $fullUrl");
 
     // Convert product to a map and add additional fields
@@ -325,7 +325,7 @@ ApiProvider() {
 
   Future<Map<String, dynamic>>  sendOrders(String apiName) async {
   try { 
-    final fullUrl = '${_dio.options.baseUrl}$apiName';
+    // final fullUrl = '${_dio.options.baseUrl}$apiName';
     final orderDays = AuthenticationRepository.instance.orderDays.value;
     const isSending=true;
 

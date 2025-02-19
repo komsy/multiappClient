@@ -29,7 +29,7 @@ class MProductCardVertical extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = ProductController.instance;
     final cartController = CartController.instance;
-    final salePercentage =[]; // controller.calaculateSalePercentage(product.price, product.salePrice);
+    // final salePercentage =[]; // controller.calaculateSalePercentage(product.price, product.salePrice);
     final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
 
     //Container with side paddings, color, edges, radius and shadow.

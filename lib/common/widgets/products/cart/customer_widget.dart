@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:easyapp/common/widgets/containers/rounded_container.dart';
 import 'package:easyapp/features/shop/controllers/customer_controller.dart';
-import 'package:easyapp/features/shop/screens/checkout/widgets/Credit_customer_section.dart';
+import 'package:easyapp/features/shop/screens/checkout/widgets/credit_customer_section.dart';
 import 'package:easyapp/utils/constants/colors.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:easyapp/utils/helpers/helper_functions.dart';
@@ -78,9 +78,7 @@ class MCustomerCode extends StatelessWidget {
                   _buildKeyValueRow(
                     context,
                     key: 'Outstanding Bal:',
-                    value: (customerController
-                                    .selectedCustomer.value.currBalance ??
-                                0) >
+                    value: (customerController.selectedCustomer.value.currBalance) >
                             0
                         ? '${MTexts.currency} ${NumberFormat('#,##0.00').format(customerController.selectedCustomer.value.currBalance)}'
                         : '0.00',

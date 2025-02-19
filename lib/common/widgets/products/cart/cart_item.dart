@@ -57,7 +57,7 @@ class MCartItem extends StatelessWidget {
                         //     text: 'Variation : ',
                         //     style: Theme.of(context).textTheme.bodySmall),
                         TextSpan(
-                            text: '(${cartItem.unit})' ?? '',
+                            text: '(${cartItem.unit})',
                             style: Theme.of(context).textTheme.bodySmall),
                       ]),
                     )

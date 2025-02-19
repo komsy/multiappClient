@@ -7,6 +7,7 @@ import 'package:easyapp/features/authentication/screens/onboarding/onboarding.da
 import 'package:easyapp/navigation_menu.dart';
 import 'package:easyapp/utils/local_storage/storage_utility.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find(); 
@@ -27,6 +28,7 @@ class AuthenticationRepository extends GetxController {
   RxString apiKey  = ''.obs;
   RxBool isQuantityPrice  = false.obs;
   RxInt orderDays = 1.obs;
+  RxString appversion = ''.obs;
 
   //Variables
   final deviceStorage = GetStorage();
@@ -61,7 +63,8 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
     return null;
   }
 
-  // Retrieve the app key
+  // Retrieve the app key & version number
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
   final setting = await db.getSingleAppSetting();
   if (setting == null || setting['appKey'] == null) {
     return null;
@@ -81,7 +84,9 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   setDefaultCust.value =  setting['setDefaultCust'] == 1 ? true : false;
   editOrder.value =  setting['editOrder'] == 1 ? true : false;
   editAfter.value =  setting['editAfter'] == 1 ? true : false;
-  orderDays.value = setting['orderDays'];
+  orderDays.value = setting['orderDays'];      
+  appversion.value= packageInfo.version;
+      
 
   final decodedToken = JWT.decode(jwtToken);
 

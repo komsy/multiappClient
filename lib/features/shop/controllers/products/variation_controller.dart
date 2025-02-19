@@ -82,8 +82,8 @@ class VariationController extends GetxController {
 
   //Check product variation stock status
   void getProductVariationStockStatus(product, variationQty) {
-    final selectedProductQty = product.currBalance;
-    final stock = selectedProductQty - variationQty;
+    // final selectedProductQty = product.currBalance;
+    // final stock = selectedProductQty - variationQty;
     // variationStockStatus.value = stock >= 0 ? 'In Stock' : 'Out of Stock';
     variationStockStatus.value = 'In Stock';
   }

@@ -22,7 +22,7 @@ class MOrderListItems extends StatelessWidget {
     final controller = Get.put(OrderController());
     final editOrder = AuthenticationRepository.instance.editOrder.value;
     final editAfter = AuthenticationRepository.instance.editAfter.value;
-print("editAfter $editAfter");
+
     return FutureBuilder(
         future: controller.fetchOrders(),
         builder: (_, snapshot) {
