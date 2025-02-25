@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:easyapp/utils/constants/colors.dart';
 
 
 class MRatingBarIndicator extends StatelessWidget {
@@ -13,11 +10,12 @@ class MRatingBarIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RatingBarIndicator(
-      rating: rating,
-      itemSize: 20,
-      unratedColor: MColors.grey,
-      itemBuilder: (_,__)=> const Icon(Iconsax.star1, color: MColors.primary)
-    );
+    return const Scaffold();
+    // RatingBarIndicator(
+    //   rating: rating,
+    //   itemSize: 20,
+    //   unratedColor: MColors.grey,
+    //   itemBuilder: (_,__)=> const Icon(Iconsax.star1, color: MColors.primary)
+    // );
   }
 }

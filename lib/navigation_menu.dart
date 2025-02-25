@@ -66,7 +66,7 @@ Future<bool> _showExitDialog(BuildContext context) async {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Exit App"),
-            content: const Text("Are you sure you want to logout and exit?"),
+            content: const Text("Are you sure you want to exit?"),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
@@ -84,7 +84,7 @@ Future<bool> _showExitDialog(BuildContext context) async {
                   SystemNavigator.pop(); // Closes the app on Android
                   
                 },
-                child: const Text("Logout & Exit"),
+                child: const Text("Exit"),
               ),
             ],
           );
