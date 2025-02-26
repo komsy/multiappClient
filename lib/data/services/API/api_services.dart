@@ -83,10 +83,12 @@ class MAPIService extends GetxController {
         );  
         // Insert product into database
         await db.insertAPIProduct(product);
-        // Acknowledge each product after insertion
-        await acknowledgeProductData(product);
+        
+        // Acknowledge each product after insertion to API
+        // await acknowledgeProductData(product);
     
       }
+    
       // ProductController.instance;
       MLoaders.successSnackBar(title: 'Products Loaded!', message:'Products Successfully loaded',duration: 1);
       // await fetchAndStoreProductUnits();
@@ -183,6 +185,7 @@ Future<void> fetchAndStoreProductUnits() async {
         );
         await db.insertAPIProductPP(product);
       }
+      
       MLoaders.successSnackBar(title: 'ProductPackingPrice Loaded!', message:'ProductPackingPrice Successfully loaded',duration: 1);
         // await fetchAndStorePCategories();
       // Notify the controller to refresh
@@ -269,7 +272,7 @@ Future<void> fetchAndStoreProductUnits() async {
         await db.insertAPICustomerMst(customer);
 
         // Acknowledge each customer after insertion
-        await acknowledgeCustomerData(customer);
+        //await acknowledgeCustomerData(customer);
         
       }
       MLoaders.successSnackBar(title: 'Customers Loaded!', message:'Customers Successfully loaded',duration: 1);

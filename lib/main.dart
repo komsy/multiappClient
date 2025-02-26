@@ -20,4 +20,5 @@ Future <void> main() async{
   //   (FirebaseApp value) => Get.put(AuthenticationRepository()));
   Get.put(AuthenticationRepository());
   runApp(const App());
+  
 }

@@ -1,3 +1,4 @@
+import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -29,6 +30,9 @@ class AuthenticationRepository extends GetxController {
   RxBool isQuantityPrice  = false.obs;
   RxInt orderDays = 1.obs;
   RxString appversion = ''.obs;
+  RxInt noofProducts = 0.obs;
+  RxInt noofProductPP = 0.obs;
+  RxInt noofCustomers = 0.obs;
 
   //Variables
   final deviceStorage = GetStorage();
@@ -180,6 +184,7 @@ Future<String?> refreshToken() async {
     try {
       //Clear token
       deviceStorage.remove('jwt_token');
+      CartController.instance.clearCart();
       // deviceStorage.remove('isFirstTime');
       Get.offAll(() => const LoginScreen());
     } catch (e) {

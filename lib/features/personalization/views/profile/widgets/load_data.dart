@@ -1,3 +1,4 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
@@ -75,6 +76,7 @@ class LoadDataScreen extends StatelessWidget {
               //   )),
 
               Obx(() => MDownloadsMenuTile(
+                noOfSavedItems: AuthenticationRepository.instance.noofProductPP.value,
                 noOfItems: apiService.noOfPPItems.value,
                 icon: Iconsax.money,
                 title: "Load Product Packaging Price",
@@ -100,6 +102,7 @@ class LoadDataScreen extends StatelessWidget {
               ),),
               
               Obx(() => MDownloadsMenuTile(
+                noOfSavedItems: AuthenticationRepository.instance.noofProducts.value,
                 noOfItems: apiService.noOfProductItems.value,
                 icon: Iconsax.bag_tick,
                 title: "Load Products",
@@ -125,6 +128,7 @@ class LoadDataScreen extends StatelessWidget {
               ),
               ),
               Obx(() => MDownloadsMenuTile(
+                noOfSavedItems: AuthenticationRepository.instance.noofCustomers.value,
                 noOfItems: apiService.noOfCustomerItems.value,
                 icon: Iconsax.bag_tick,
                 title: "Load Customers",

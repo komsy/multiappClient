@@ -693,6 +693,21 @@ Future<void> _deleteOldOrders(Database db, int days) async {
     );
   }
 
+  //Get Products count
+  Future<int> getProductCount() async {
+    final db = await instance.database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM productMst'));
+    return count ?? 0;
+  }
+
+  //Get Products Packing Price count
+  Future<int> getProductPPCount() async {
+    final db = await instance.database;
+    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM ProductPackingPrice'));
+    return count ?? 0;
+  }
+
+
   //Insert products from the API
   Future<void> insertAPIProductUnitC(ProductUnitConverter product) async {
     final db = await instance.database;
@@ -808,6 +823,15 @@ Future<void> _deleteOldOrders(Database db, int days) async {
   Future<void> deleteAllCategories() async {
     final db = await database;
     await db.delete('categoryMst');
+  }
+
+   Future<void> deleteAllProducts() async {
+    final db = await database;
+    await db.delete('ProductMst');
+  }
+   Future<void> deleteAllProductsPP() async {
+    final db = await database;
+    await db.delete('ProductPackingPrice');
   }
 
   // Delete single order

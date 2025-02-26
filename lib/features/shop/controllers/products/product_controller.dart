@@ -35,15 +35,25 @@ Future<void> fetchFeaturedProducts() async {
   try {
     //Show loader while loading products
     isLoading.value = true;
+    // await db.deleteAllProducts();
+    // await db.deleteAllProductsPP();
+    
+    //get number of products saved 
+    int productCount = await db.getProductCount();
+    AuthenticationRepository.instance.noofProducts.value = productCount;
+    
+    //get number of products pp saved 
+    int productPPCount = await db.getProductPPCount();
+    AuthenticationRepository.instance.noofProductPP.value = productPPCount;
+      
     // Start by fetching data from the database
     final snapshot = await db.getProducts();
     // log('snapshot products: $snapshot');
-
     // Handle null or empty result (no categories found)
     if (snapshot.isEmpty) {
       return;
     }
-
+     
     // Map each product from the snapshot (SQLite result) to productModel
     final allProducts = snapshot.map((data) {
       // Ensure correct type casting

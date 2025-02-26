@@ -43,6 +43,8 @@ class CustomerController extends GetxController {
       // Search for customers using the keyword
       snapshot = await db.getCustomerSearch('%$searchKeyword%'); // Use wildcards for LIKE query
     }
+    
+    AuthenticationRepository.instance.noofCustomers.value = snapshot.length;
     // log('Search snapshot: $snapshot');
     // Handle null or empty result
     if (snapshot.isEmpty) {

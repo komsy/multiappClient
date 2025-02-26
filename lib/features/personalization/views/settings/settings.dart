@@ -106,10 +106,11 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: MSizes.spaceBtwSections*2),
                   Column(
                     children: [
-                      Text("Version: ${AuthenticationRepository.instance.appversion.value}"),
+                      Text("Version: ${AuthenticationRepository.instance.appversion.value}", style: Theme.of(context).textTheme.titleMedium!
+                                                    .apply(color: MColors.error, fontWeightDelta: 1)),
                     ],
                   ),
-                  const SizedBox(height: MSizes.spaceBtwSections * 2.5 )
+                  // const SizedBox(height: MSizes.spaceBtwSections)
                 ],
               ),
               ),

@@ -4,6 +4,7 @@ import 'package:easyapp/utils/constants/colors.dart';
 class MDownloadsMenuTile extends StatelessWidget {
   const MDownloadsMenuTile(
       {super.key,
+      this.noOfSavedItems,
       required this.noOfItems,
       required this.icon,
       required this.title,
@@ -11,6 +12,7 @@ class MDownloadsMenuTile extends StatelessWidget {
       this.trailing,
       this.onTap});
 
+  final int? noOfSavedItems;
   final int noOfItems;
   final IconData icon;
   final String title,subTitle;
@@ -26,7 +28,7 @@ class MDownloadsMenuTile extends StatelessWidget {
         // The main icon
         Icon(
           icon,
-          size: 38,
+          size: 45,
           color: MColors.primary,
         ),
         // Positioned badge for `noOfItems`
@@ -51,6 +53,29 @@ class MDownloadsMenuTile extends StatelessWidget {
             ),
           ),
         ),
+        // Positioned badge for `noOfItems`
+        noOfSavedItems != null  ? Positioned(
+          right: 0,
+          top: 20,
+          child: Container(
+            width: 28,
+            height: 25,
+            decoration: BoxDecoration(
+              color: MColors.success,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Center(
+              child: Text(
+                  noOfSavedItems.toString(),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .apply(color: MColors.white, fontSizeFactor: 0.8),
+                ),
+            ),
+          ),
+        )
+        : const SizedBox() 
       ],
     ),
     title: Text(
