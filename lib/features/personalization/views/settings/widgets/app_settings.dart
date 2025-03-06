@@ -42,7 +42,6 @@ class AppSettingsScreen extends StatelessWidget {
             child: Column(
               children: [
                 //Profile Information Details
-                const SizedBox(height: MSizes.spaceBtwItems / 2),
                 const Divider(),
                 const SizedBox(height: MSizes.spaceBtwItems),
                 const MSectionHeading(

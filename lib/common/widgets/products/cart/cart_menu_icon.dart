@@ -1,3 +1,4 @@
+import 'package:easyapp/features/shop/controllers/products/order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -16,6 +17,7 @@ class MCartCounterIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(CartController());
     
+    Get.put(OrderController());
     return Stack(
       children: [
         IconButton(onPressed: () => Get.to(() => const CartScreen()), icon: Icon(Iconsax.shopping_bag, color: iconColor)),

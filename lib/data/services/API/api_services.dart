@@ -319,6 +319,7 @@ Future<void> fetchAndStoreProductUnits() async {
           editOrder: data['editOrder'],
           editAfter: data['editAfter'],
           setDefaultCust: data['setDefaultCust'],
+          orderRecordDays:data['orderRecordDays'],
           orderDays:data['orderDays'],
           isRSP: authInstance.isRetailPrice.value ? 1: 0,
           createdAt: DateTime.now().toIso8601String(),
@@ -382,7 +383,6 @@ Future<void> fetchAndStoreProductUnits() async {
         throw Exception("User email is not available.");
       }
 
-      // print("older orders ${authInstance.orderDays}");
       final result = await db.login(email);
       if (result == null || result.isEmpty) {
         throw Exception("User login information not found.");

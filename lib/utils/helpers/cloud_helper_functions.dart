@@ -1,3 +1,4 @@
+import 'package:easyapp/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
 
 
@@ -39,17 +40,17 @@ class MCloudHelperFunctions {
     // print("Checking snapshot state1: ${snapshot.connectionState}");
     if (snapshot.connectionState == ConnectionState.waiting) {
       if (loader != null) return loader;
-      return const Center(child: CircularProgressIndicator());
+      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8,child: const Center(child: CircularProgressIndicator()));
     }
 
     if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
       if (nothingFound != null) return nothingFound;
-      return const Center(child: Text('No Data Found!'));
+      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8, child: const Center(child: Text('No Data Found!')));
     }
 
     if (snapshot.hasError) {
       if (error != null) return error;
-      return const Center(child: Text('Something went wrong.'));
+      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8, child: const Center(child: Text('Something went wrong.')));
     }
 
     return null;

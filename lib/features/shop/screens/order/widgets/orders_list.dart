@@ -12,6 +12,7 @@ import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/helpers/cloud_helper_functions.dart';
 import 'package:easyapp/utils/helpers/helper_functions.dart';
+import 'package:intl/intl.dart';
 
 class MOrderListItems extends StatelessWidget {
   const MOrderListItems({super.key});
@@ -19,7 +20,7 @@ class MOrderListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
-    final controller = Get.put(OrderController());
+    final controller =OrderController.instance;//OrderController.instance;// Get.put(OrderController());
     final editOrder = AuthenticationRepository.instance.editOrder.value;
     final editAfter = AuthenticationRepository.instance.editAfter.value;
 
@@ -140,7 +141,7 @@ class MOrderListItems extends StatelessWidget {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .labelMedium),
-                                        Text(order.totalAmount.toString(),
+                                        Text(NumberFormat('#,##0').format(double.parse(order.totalAmount.toStringAsFixed(2))),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headlineSmall),

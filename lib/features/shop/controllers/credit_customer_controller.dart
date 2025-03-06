@@ -115,10 +115,10 @@ class CreditCustomerController extends GetxController {
                             Expanded(
                                 child: TextFormField(
                                     controller: pinNo,
-                                    validator: (value) =>
-                                        MValidator.validatePinNo(value),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                    // validator: (value) =>
+                                    //     MValidator.validatePinNo(value),
+                                    // autovalidateMode:
+                                    //     AutovalidateMode.onUserInteraction,
                                     decoration: const InputDecoration(
                                         prefixIcon: Icon(Iconsax.building_31),
                                         labelText: 'Pin No'))),

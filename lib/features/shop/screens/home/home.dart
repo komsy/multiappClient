@@ -1,3 +1,4 @@
+import 'package:easyapp/utils/device/device_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {  
     final controller = Get.put(ProductController());
     Get.put(CustomerController()); //To review the customer data from the controller
+    
     return  Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -83,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                     if(controller.isLoading.value) return const MVerticalProductShimmer();
 
                     if(controller.featuredProducts.isEmpty){
-                      return Center(child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium));
+                      return SizedBox(height:MDeviceUtils.getScreenHeight() * 0.5, child: Center(child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium)));
                     }
                     return MGridLayout(
                       itemCount: controller.featuredProducts.length,

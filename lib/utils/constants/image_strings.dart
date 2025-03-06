@@ -5,9 +5,9 @@
 class MImages {
 
   // -- App Logos
-  static const String darkAppLogo = "assets/logos/t-store-splash-logo-black.png";
-  static const String lightAppLogo = "assets/logos/t-store-splash-logo-white.png";
-
+  static const String darkAppLogo = "assets/logos/easyapp_light.png";
+  static const String lightAppLogo = "assets/logos/easyapp_dark.png";
+ 
   // -- Category Icons
   static const String sportIcon = "assets/icons/categories/icons8-bowling-64.png";
   static const String clothIcon = "assets/icons/categories/icons8-tailors-dummy-64.png";

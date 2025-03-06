@@ -112,6 +112,17 @@ class THelperFunctions {
     return DateFormat(format).format(parsedDate);
   }
 
+    /// Helper function to format date
+  static String getOrderFormattedDate(String date) {
+    if (date.length >= 4) {
+      return '${date.substring(0, 2)}/${date.substring(2, 4)}'; // Extract "DD" and "MM"
+    }
+    return date; // Fallback in case of unexpected format
+  }
+  static String getFullOrderFormattedDate(String date) {
+    return '${date.substring(0, 2)}/${date.substring(2, 4)}/${date.substring(4, 8)}'; 
+  }
+
   static List<T> removeDuplicates<T>(List<T> list) {
     return list.toSet().toList();
   }

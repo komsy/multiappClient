@@ -48,29 +48,29 @@ class LoginController extends GetxController{
       MLoaders.errorSnackBar(title: 'Validation Error', message: 'Please enter valid credentials.');
       return;
     }
-  // Get current date
-  DateTime now = DateTime.now();
-  
-  // Format date as DDMMYYYY
-  String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
+    // Get current date
+    DateTime now = DateTime.now();
+    
+    // Format date as DDMMYYYY 
+    String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
 
-  // Save data if "remember me" is selected
-  if (rememberMe.value) {   
-    localStorage.write('REMEMBER_ME_EMAIL', email.text.trim());
-    localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
-    localStorage.write('REMEMBER_ME_DATE', date);
-  }
-
-  // Check if the saved date is more than 2 days old
-  String? savedDate = localStorage.read('REMEMBER_ME_DATE');
-  if (savedDate != null) {
-    DateTime savedDateTime = DateTime.parse('${savedDate.substring(4)}-${savedDate.substring(2, 4)}-${savedDate.substring(0, 2)}');
-    if (now.difference(savedDateTime).inDays > 2) {
-    localStorage.remove('REMEMBER_ME_EMAIL');
-    localStorage.remove('REMEMBER_ME_PASSWORD');
-    localStorage.remove('REMEMBER_ME_DATE');
+    // Save data if "remember me" is selected
+    if (rememberMe.value) {   
+      localStorage.write('REMEMBER_ME_EMAIL', email.text.trim());
+      localStorage.write('REMEMBER_ME_PASSWORD', password.text.trim());
+      localStorage.write('REMEMBER_ME_DATE', date);
     }
-  }
+
+    // Check if the saved date is more than 2 days old
+    String? savedDate = localStorage.read('REMEMBER_ME_DATE');
+    if (savedDate != null) {
+      DateTime savedDateTime = DateTime.parse('${savedDate.substring(4)}-${savedDate.substring(2, 4)}-${savedDate.substring(0, 2)}');
+      if (now.difference(savedDateTime).inDays > 2) {
+      localStorage.remove('REMEMBER_ME_EMAIL');
+      localStorage.remove('REMEMBER_ME_PASSWORD');
+      localStorage.remove('REMEMBER_ME_DATE');
+      }
+    }
 
     // Log in the user from SQLite db
     final result = await db.login(email.text.trim());

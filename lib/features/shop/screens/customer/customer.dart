@@ -1,6 +1,7 @@
 import 'package:easyapp/common/widgets/containers/rounded_container.dart';
 import 'package:easyapp/common/widgets/custom_shapes/containers/primary_header_containers.dart';
 import 'package:easyapp/utils/constants/colors.dart';
+import 'package:easyapp/utils/device/device_utility.dart';
 import 'package:easyapp/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,6 +54,7 @@ class CustomerScreen extends StatelessWidget {
                     builder: (context, snapshot) {
                       final response =MCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
                       if (response != null) return response;
+                      
 
                       final customers = snapshot.data!;
                       return ListView.builder(

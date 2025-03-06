@@ -1,3 +1,5 @@
+import 'package:easyapp/features/shop/screens/order/widgets/order_records_pie_chart.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -22,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apiService = Get.put(MAPIService()); 
+    final orderRecords = AuthenticationRepository.instance.orderRecordDays.value;
     Get.put(SettingsController());
     
     return Scaffold(
@@ -53,6 +56,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: MSizes.spaceBtwItems/2),
             
                   MSettingsMenuTile(icon: Iconsax.shopping_cart, title: "My Cart", subTitle: "Add & Remove Products", onTap: () => Get.to(() => const CartScreen()) ),
+                  MSettingsMenuTile(icon: Iconsax.shop, title: "My Orders", subTitle: "View $orderRecords days Order Records", onTap: () => Get.to(() => const MOrderRecordsPieChart()) ),
                   MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", 
                   onTap: () =>Get.to(() => const AppSettingsScreen())),
                   
@@ -106,7 +110,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: MSizes.spaceBtwSections*2),
                   Column(
                     children: [
-                      Text("Version: ${AuthenticationRepository.instance.appversion.value}", style: Theme.of(context).textTheme.titleMedium!
+                      Text(MTexts.appVersion, style: Theme.of(context).textTheme.titleMedium!
                                                     .apply(color: MColors.error, fontWeightDelta: 1)),
                     ],
                   ),

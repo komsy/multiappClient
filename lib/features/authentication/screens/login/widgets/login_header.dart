@@ -17,7 +17,7 @@ class MLoginHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image (
-        height: 150,
+        height: 120,
         image: AssetImage(dark ? MImages.lightAppLogo : MImages.darkAppLogo),
       ),
       Text(MTexts.loginTitle, style: Theme.of(context).textTheme.headlineMedium),

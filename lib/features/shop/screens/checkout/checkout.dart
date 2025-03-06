@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:easyapp/common/widgets/containers/rounded_container.dart';
 import 'package:easyapp/common/widgets/products/cart/naration_widget.dart';
 import 'package:easyapp/common/widgets/products/cart/customer_widget.dart';
@@ -23,7 +22,7 @@ class CheckoutScreen extends StatelessWidget {
     final dark = THelperFunctions.isDarkMode(context);
     final controller = CartController.instance;
     final subTotal = controller.totalCartPrice.value;
-    final orderController = Get.put(OrderController());
+    final orderController = OrderController.instance;//Get.put(OrderController());
     // final customercontroller = Get.put(CustomerController());
     // final totalAmount = MPricingCalculator.calculateTotalPrice(subTotal,'KE');
 

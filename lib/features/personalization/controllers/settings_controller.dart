@@ -99,6 +99,7 @@ class SettingsController extends GetxController {
         editOrder:setting.value.editOrder,
         editAfter:setting.value.editAfter,
         orderDays:setting.value.orderDays,
+        orderRecordDays:setting.value.orderRecordDays,
         isRSP:AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
         createdAt: DateTime.now().toIso8601String(),
       );

@@ -3,6 +3,7 @@
 class MTexts {
 
   // -- GLOBAL Texts
+  static const appVersion = "Version: 1.7.0";
   static const String currency = "Ksh ";
   static const String and = "and";
   static const String skip = "Skip";
@@ -66,7 +67,7 @@ class MTexts {
   static const String loginSubTitle = "Discover Limitless Choices and Unmatched Convenience.";
   static const String signupTitle = "Let’s create your account";
   static const String forgetPasswordTitle = "Forget password";
-  static const String forgetPasswordSubTitle = "Don’t worry sometimes people can forget too, enter the last 6 digits of your App Key and reset the password.";
+  static const String forgetPasswordSubTitle = "Don’t worry sometimes people can forget too, enter the first 6 digits of your App Key and reset the password.";
   static const String changeYourPasswordTitle = "Password Reset Successful";
   static const String changeYourPasswordSubTitle = "Your Account Security is Our Priority! We've reset your password, You may login using the new password.";
   static const String confirmEmail = "Verify your email address!";

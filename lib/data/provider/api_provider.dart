@@ -17,105 +17,7 @@ class ApiProvider {
 
   late Dio _dio; // Declare Dio here to initialize dynamically
 
-  // ApiProvider() {
-  //   // Initialize Dio instance
-  //   _dio = Dio(
-  //     BaseOptions(
-  //       baseUrl: apiURL.value, // Initially empty, will be updated dynamically
-  //       connectTimeout: const Duration(seconds: 60),
-  //       receiveTimeout: const Duration(seconds: 60),
-  //       responseType: ResponseType.json,
-  //       contentType: "application/json",
-  //     ),
-  //   );
-
-  //   // Add interceptors
-  //   _dio.interceptors.add(InterceptorsWrapper(
-  //     onRequest: (options, handler) async {
-  //       try {
-  //         // Fetch JWT token from local storage
-  //         final jwtToken = deviceStorage.read('jwt_token') ?? "";
-
-  //         // Fetch App Key and API Key from the database
-  //         final setting = await db.getSingleAppSetting();
-  //         final appKey = setting?['appKey'] ?? "";
-  //         final apiKey = setting?['APIKey'] ?? "";
-
-  //         // Dynamically update the base URL before making a request
-  //         if (apiURL.value.isNotEmpty) {
-  //           options.baseUrl = apiURL.value;
-  //         }
-
-  //         // Add headers
-  //         options.headers["Accept"] = "application/json";
-  //         options.headers["Authorization"] = 'Bearer $jwtToken';
-  //         options.headers["X-App-Key"] = appKey;
-  //         options.headers["API-Key"] = apiKey;
-
-  //         handler.next(options); // Proceed with the request
-  //       } catch (e) {
-  //         // Log and reject if something goes wrong
-  //         print("Error in onRequest interceptor: $e");
-  //         handler.reject(
-  //           DioException(
-  //             requestOptions: options,
-  //             error: "Error adding headers: $e",
-  //           ),
-  //         );
-  //       }
-  //     },
-  //     onError: (error, handler) async {
-  //       // Handle 401 Unauthorized errors
-  //       // if (error.response?.statusCode == 401) {
-  //       //   print("Token expired. Attempting to refresh...");
-
-  //       //   try {
-  //       //     // Refresh the token
-  //       //     String? newJwtToken = await AuthenticationRepository.instance.refreshToken();
-
-  //       //   print("newJwtToken $newJwtToken");
-  //       //     if (newJwtToken != null) {
-  //       //       // Update the local storage with the new token
-  //       //       await deviceStorage.write('jwt_token', newJwtToken);
-
-  //       //       // Update headers with the new token
-  //       //       _dio.options.headers["Authorization"] = 'Bearer $newJwtToken';
-
-  //       //       // Retry the failed request
-  //       //       final opts = error.requestOptions;
-  //       //       opts.headers["Authorization"] = 'Bearer $newJwtToken';
-  //       //       final response = await _dio.fetch(opts);
-
-  //       //       return handler.resolve(response);
-  //       //     } else {
-  //       //       print("Token refresh failed.");
-  //       //       return handler.reject(error); // Reject if token refresh fails
-  //       //     }
-  //       //   } catch (refreshError) {
-  //       //     print("Error during token refresh: $refreshError");
-  //       //     return handler.reject(error); // Reject if token refresh process fails
-  //       //   }
-  //       // }
-
-  //       // For other errors, pass them along
-  //       // MLoaders.errorSnackBar(
-  //       //   title: 'Oh Snap!',
-  //       //   message: 'Something went wrong. Please try again.',
-  //       // );
-  //       //  print("Api error $error");
-  //       return handler.reject(error);
-  //     },
-  //   ));
-
-  //   // Fetch and set API URL dynamically
-  //   fetchAndSetApiUrl();
-  // }
-
-  // // Expose Dio instance
-  // // Dio get dio => _dio;
-
-
-ApiProvider() {
+  ApiProvider() {
     // Initialize Dio instance
     _dio = Dio(
       BaseOptions(
@@ -198,62 +100,20 @@ ApiProvider() {
       );
     }
   }
-// }
-
-//   // Fetch and dynamically update the API URL
-//   Future<void> fetchAndSetApiUrl() async {
-//     try {
-//       final setting = await db.getSingleAppSetting();
-      
-//       if (setting != null && setting['APIURL'] != null) {
-//         apiURL.value = setting['APIURL'];
-//         // Update Dio's base URL dynamically
-//         _dio.options.baseUrl = apiURL.value;
-//       } else {
-//         throw Exception("API URL not found!");
-//       }
-//     } catch (e) {
-//       MLoaders.errorSnackBar(title: 'Error', message: e.toString());
-//     }
-//   }
-
-  
-
 
 
   Future<List<dynamic>> getAPIData(String apiName) async {
-    try {
-      // Construct the full URL to print it
-      // final fullUrl = '${_dio.options.baseUrl}$apiName';
-      // print("Request URL: $fullUrl");
-
+  try {
       final response = await _dio.get(apiName);
       return response.data as List;
     } on DioException catch (err) {
-      // Get error message from the response or set a fallback
-      final errorMessage = err.response?.data is Map<String, dynamic> 
-          ? err.response?.data['message'] ?? 'Something went wrong'
-          : 'Something went wrong.'; // Default message for unexpected response structures
-
-      // Handle specific status codes
-      if (err.response?.statusCode == 401) {
-        return Future.error(errorMessage); // Unauthorized
-      } else if (err.response?.statusCode == 403) {
-        return Future.error('Forbidden: $errorMessage'); // Forbidden
-      } else if (err.response?.statusCode == 500) {
-        return Future.error('Server Error: $errorMessage'); // Internal server error
-      } else {
-        return Future.error(errorMessage); // Generic error handler
-      }
+      return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
   
 
   Future<Map<String, dynamic>>  acknowledgeCustomerData(String apiName, CustomerModel customer) async {
   try {
-    // final fullUrl = '${_dio.options.baseUrl}$apiName';
-    // print("Request URL: $fullUrl");
-
     // Convert customer to a map and add additional fields
     final formData = {
       'status': 'success',
@@ -267,21 +127,7 @@ ApiProvider() {
 
     return response.data;
   } on DioException catch (err) {
-      // Get error message from the response or set a fallback
-      final errorMessage = err.response?.data is Map<String, dynamic> 
-          ? err.response?.data['message'] ?? 'Something went wrong'
-          : 'Something went wrong.'; // Default message for unexpected response structures
-
-      // Handle specific status codes
-      if (err.response?.statusCode == 401) {
-        return Future.error(errorMessage); // Unauthorized
-      } else if (err.response?.statusCode == 403) {
-        return Future.error('Forbidden: $errorMessage'); // Forbidden
-      } else if (err.response?.statusCode == 500) {
-        return Future.error('Server Error: $errorMessage'); // Internal server error
-      } else {
-        return Future.error(errorMessage); // Generic error handler
-      }
+      return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
 
@@ -302,21 +148,7 @@ ApiProvider() {
     final response = await _dio.post(apiName, data: formData);
     return response.data;
   } on DioException catch (err) {
-      // Get error message from the response or set a fallback
-      final errorMessage = err.response?.data is Map<String, dynamic> 
-          ? err.response?.data['message'] ?? 'Something went wrong'
-          : 'Something went wrong.'; // Default message for unexpected response structures
-
-      // Handle specific status codes
-      if (err.response?.statusCode == 401) {
-        return Future.error(errorMessage); // Unauthorized
-      } else if (err.response?.statusCode == 403) {
-        return Future.error('Forbidden: $errorMessage'); // Forbidden
-      } else if (err.response?.statusCode == 500) {
-        return Future.error('Server Error: $errorMessage'); // Internal server error
-      } else {
-        return Future.error(errorMessage); // Generic error handler
-      }
+      return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
 
@@ -325,43 +157,37 @@ ApiProvider() {
 
   Future<Map<String, dynamic>>  sendOrders(String apiName) async {
   try { 
-    // final fullUrl = '${_dio.options.baseUrl}$apiName';
     final orderDays = AuthenticationRepository.instance.orderDays.value;
+    final orderRecordDays = AuthenticationRepository.instance.orderRecordDays.value;
     const isSending=true;
 
     // print("Request URL: $fullUrl");
     final orders = await db.getOrders(orderDays, isSending);
+    // Calculate the total sum of totalAmount and no of orders
+    double totalSum = orders!.fold(0, (sum, order) => sum + (order["totalAmount"] as double));
+    final noofOrders = orders.length;
 
     // Handle null or empty result (no categories found)
-    if (orders == null || orders.isEmpty) {
+    if (orders.isEmpty) {
       return Future.error("No orders found");
     }
 
     // print('Fetched orders: $orders');
     final response = await _dio.post(apiName, data: orders);
     // print('order response: ${response.data}');
+    
+    //if successful update ordersrecord
+    if (response.data['code'] == 200 &&  response.data['acknowledgments'].isNotEmpty) {
+      await db.updateOrderRecords(noofOrders, totalSum, orderRecordDays);
+    }
     return response.data;
   } on DioException catch (err) {
-      // Get error message from the response or set a fallback
-      final errorMessage = err.response?.data is Map<String, dynamic> 
-          ? err.response?.data['message'] ?? 'Something went wrong'
-          : 'Something went wrong.'; // Default message for unexpected response structures
-
-      // Handle specific status codes
-      if (err.response?.statusCode == 401) {
-        return Future.error(errorMessage); // Unauthorized
-      } else if (err.response?.statusCode == 403) {
-        return Future.error('Forbidden: $errorMessage'); // Forbidden
-      } else if (err.response?.statusCode == 500) {
-        return Future.error('Server Error: $errorMessage'); // Internal server error
-      } else {
-        return Future.error(errorMessage); // Generic error handler
-      }
+      return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
 
   //send user data
-   Future<Map<String, dynamic>>  checkAppUser(String userName,String email) async {
+  Future<Map<String, dynamic>>  checkAppUser(String userName,String email) async {
   try {
 
     final formData = {
@@ -373,22 +199,56 @@ ApiProvider() {
 
     return response.data;
   } on DioException catch (err) {
-      // Get error message from the response or set a fallback
-      final errorMessage = err.response?.data is Map<String, dynamic> 
-          ? err.response?.data['message'] ?? 'Something went wrong'
-          : 'Something went wrong.'; // Default message for unexpected response structures
-
-      // Handle specific status codes
-      if (err.response?.statusCode == 401) {
-        return Future.error(errorMessage); // Unauthorized
-      } else if (err.response?.statusCode == 403) {
-        return Future.error('Forbidden: $errorMessage'); // Forbidden
-      } else if (err.response?.statusCode == 500) {
-        return Future.error('Server Error: $errorMessage'); // Internal server error
-      } else {
-        return Future.error(errorMessage); // Generic error handler
-      }
+      return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
+
+
+
+String handleDioError(DioException err) {
+  // Default error message
+  String errorMessage = 'Something went wrong.';
+
+  // If the response contains an error message, use it
+  if (err.response?.data is Map<String, dynamic>) {
+    errorMessage = err.response?.data['message'] ?? errorMessage;
+  }
+
+  // Handle different Dio error types
+  switch (err.type) {
+    case DioExceptionType.connectionTimeout:
+      return 'Connection timeout. Please check your internet.';
+    case DioExceptionType.receiveTimeout:
+      return 'Server took too long to respond.';
+    case DioExceptionType.badResponse:
+      if (err.response != null) {
+        switch (err.response!.statusCode) {
+          case 400:
+            return 'Bad request: $errorMessage';
+          case 401:
+            return 'Unauthorized: $errorMessage';
+          case 403:
+            return 'Forbidden: $errorMessage';
+          case 404:
+            return 'Not Found: $errorMessage';
+          case 500:
+            return 'Server Error: $errorMessage';
+          default:
+            return 'Error: $errorMessage';
+        }
+      }
+      break;
+    case DioExceptionType.cancel:
+      return 'Request was cancelled.';
+    case DioExceptionType.connectionError:
+      return 'No internet connection.';
+    case DioExceptionType.unknown:
+    default:
+      return errorMessage;
+  }
+
+  return errorMessage;
+}
+
 
 }

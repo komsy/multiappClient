@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,10 +45,12 @@ resetPassword() async {
     }
 
     String currentAppKey = setting['appKey'];
-    String lastFiveDigits = currentAppKey.substring(currentAppKey.length - 6);
-      log("Reset Password for currentAppKey: $lastFiveDigits");
-      log("Reset Password for appKey1: ${appKey.text.trim()}");
-    if (lastFiveDigits != appKey.text.trim()) {
+    // String lastFiveDigits = currentAppKey.substring(currentAppKey.length - 5);
+    String firstFiveDigits = currentAppKey.substring(0, 6);
+
+      // log("Reset Password for currentAppKey: $firstFiveDigits");
+      // log("Reset Password for appKey1: ${appKey.text.trim()}");
+    if (firstFiveDigits != appKey.text.trim()) {
       MFullScreenLoader.stopLoading();
       MLoaders.errorSnackBar(
         title: 'Invalid Input', 

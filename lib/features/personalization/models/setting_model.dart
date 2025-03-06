@@ -10,6 +10,7 @@ class SettingModel {
   int editOrder;
   int editAfter;
   int orderDays;
+  int orderRecordDays;
   int isRSP;
   String createdAt;
 
@@ -25,6 +26,7 @@ class SettingModel {
     this.editOrder = 0,
     this.editAfter = 0,
     this.orderDays = 1,
+    this.orderRecordDays = 1,
     this.isRSP = 0,
     this.createdAt ='',
   });
@@ -46,6 +48,7 @@ class SettingModel {
       'editOrder': editOrder,
       'editAfter': editAfter,
       'orderDays': orderDays,
+      'orderRecordDays': orderRecordDays,
       'IsRSP': isRSP,
       'createdAt': createdAt,
     };
@@ -65,6 +68,7 @@ class SettingModel {
       editAfter: data['editAfter'] ?? 0,
       editOrder: data['editOrder'] ?? 0,
       orderDays: data['orderDays'] ?? 1,
+      orderRecordDays: data['orderRecordDays'] ?? 7,
       isRSP: data['IsRSP'] ?? 0,
       createdAt: data['createdAt'] ?? '',
     );

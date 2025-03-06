@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/models/credit_customer_model.dart';
@@ -233,6 +235,7 @@ class LocalDatabase {
         editOrder INTEGER  NOT NULL,
         editAfter INTEGER  NOT NULL,
         orderDays INTEGER  NOT NULL,
+        orderRecordDays INTEGER  NOT NULL,
         setDefaultCust INTEGER  NOT NULL,
         IsRSP INTEGER  NOT NULL,
         createdAt TEXT NOT NULL
@@ -255,7 +258,15 @@ class LocalDatabase {
         createdAt TEXT NOT NULL
       )
     ''');
-
+    
+    // Create the orderRecords table
+    await db.execute('''
+      CREATE TABLE orderRecords (
+        noofOrders INTEGER NOT NULL,
+        total REAl NOT NULL,
+        date TEXT UNIQUE
+      )
+    ''');
   }
 
   // Insert a test product into productMst table
@@ -280,6 +291,7 @@ class LocalDatabase {
       "editOrder": 0,
       "editAfter": 0,
       "orderDays": 1,
+      "orderRecordDays": 7,
       "IsRSP": 0,
       "createdAt": createdAt,
     });
@@ -521,44 +533,77 @@ class LocalDatabase {
     }
   }
 
- Future<List<Map<dynamic, dynamic>>?> getOrders(int orderDays,  bool isSending) async {
-  final db = await instance.database;
+  Future<List<Map<dynamic, dynamic>>?> getOrders(int orderDays,  bool isSending) async {
+    final db = await instance.database;
 
-   // Clean up old orders before fetching current ones
-  await _deleteOldOrders(db, orderDays);
+    // Clean up old orders before fetching current ones
+    await _deleteOldOrders(db, orderDays);
 
-  // Define the query dynamically based on isSending
-  String query = isSending 
-    ? 'SELECT * FROM orderMst WHERE isSent=0 ORDER BY createdAt DESC'
-    : 'SELECT * FROM orderMst ORDER BY createdAt DESC';
+    // Define the query dynamically based on isSending
+    String query = isSending 
+      ? 'SELECT * FROM orderMst WHERE isSent=0 ORDER BY createdAt DESC'
+      : 'SELECT * FROM orderMst ORDER BY createdAt DESC';
 
-  // Execute the query
-  List<Map<String, dynamic>> orders = await db.rawQuery(query);
-  
-  if (orders.isNotEmpty) {
-    List<Map<String, dynamic>> updatedOrders = [];
+    // Execute the query
+    List<Map<String, dynamic>> orders = await db.rawQuery(query);
+    
+    if (orders.isNotEmpty) {
+      List<Map<String, dynamic>> updatedOrders = [];
 
-    for (var order in orders) {
-      // Fetch related order items
-      List<Map<String, dynamic>> orderItemsData = await db.rawQuery(
-        'SELECT * FROM orderTrn WHERE orderId = ?', [order['id']]
-      );
+      for (var order in orders) {
+        // Fetch related order items
+        List<Map<String, dynamic>> orderItemsData = await db.rawQuery(
+          'SELECT * FROM orderTrn WHERE orderId = ?', [order['id']]
+        );
 
-      // Combine order details with order items
-      updatedOrders.add({
-        ...order,
-        'OrderItems': orderItemsData,
-      });
+        // Combine order details with order items
+        updatedOrders.add({
+          ...order,
+          'OrderItems': orderItemsData,
+        });
+      }
+
+      return updatedOrders;
+    } else {
+      return orders; // Return empty list if no orders exist
     }
-
-    return updatedOrders;
-  } else {
-    return orders; // Return empty list if no orders exist
   }
-}
+  
+  Future<void> updateOrderRecords(int noofOrders, double totalAmount, int days) async {
+    // Get current date in DDMMYYYY format
+    DateTime now = DateTime.now();
+    String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
+  //'04032025';// 
+    try {
+      // Open the SQLite database
+      final db = await instance.database;
 
-// Separate function to delete orders older than 3 days
-Future<void> _deleteOldOrders(Database db, int days) async {
+        await db.transaction((txn) async {
+        // Delete records older than $days days
+        await txn.rawDelete('''
+          DELETE FROM orderRecords 
+          WHERE CAST(SUBSTR(date, 5, 4) || SUBSTR(date, 3, 2) || SUBSTR(date, 1, 2) AS INTEGER) 
+          <= CAST(strftime('%Y%m%d', 'now', '-$days days') AS INTEGER)
+        ''');
+
+        // Use INSERT OR REPLACE to update the record efficiently
+        await txn.rawInsert('''
+          INSERT INTO orderRecords (date, noofOrders, total)
+          VALUES (?, ?, ?)
+          ON CONFLICT(date) 
+          DO UPDATE SET 
+            noofOrders = orderRecords.noofOrders + excluded.noofOrders,
+            total = orderRecords.total + excluded.total
+        ''', [date, noofOrders, totalAmount]);
+      });
+
+    } catch (e) {
+      MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+    }
+  }
+
+  // Separate function to delete orders older than 3 days
+  Future<void> _deleteOldOrders(Database db, int days) async {
   // print("Delete orders older than $days days hit");
 
   await db.transaction((txn) async {
@@ -577,13 +622,25 @@ Future<void> _deleteOldOrders(Database db, int days) async {
     );
   });
 }
+  
+  // Get getOrderRecords
+  Future<List<Map<String, dynamic>>> getAllOrderRecords() async {
+    // Open the SQLite database
+    final db = await instance.database;
+     // Fetch all records
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM orderRecords ORDER BY date DESC',
+      );
+    return result;
+  }
+
 
   // Get settings
   Future<Map<String, dynamic>?> getSingleAppSetting() async {
     // Open the SQLite database
     final db = await instance.database;
 
-    // Fetch all customers
+    // Fetch all settings
     final List<Map<String, dynamic>> result =
         await db.rawQuery('SELECT * FROM settings');
     // Return the first row or null if no data is found
@@ -781,21 +838,21 @@ Future<void> _deleteOldOrders(Database db, int days) async {
     // print('Data added: $name');
   }
 
-  // Future readAllData({name}) async {
-  //   final db = await instance.database;
-  //   // final db = await database;
-  //   // final productMst = await db.query("orderMst");
-  //   // final orderTrn = await db.query("orderTrn");
-  //   // final userMst =  await db.query("userMst");
-  //   // final categoryMst =  await db.query("categoryMst");
-  //   // final settings =  await db.query("settings");
-  //   // log("productMst $productMst");
-  //   // log("orderTrn $orderTrn");
-  //   // print(userMst);
-  //   // print(categoryMst);
-  //   // print(settings);
-  //   return 'read';
-  // }
+  Future readAllData({name}) async {
+    final db = await instance.database;
+    // final db = await database;
+    // final productMst = await db.query("orderMst");
+    final orderTrn = await db.query("orderRecords");
+    // final userMst =  await db.query("userMst");
+    // final categoryMst =  await db.query("categoryMst");
+    // final settings =  await db.query("settings");
+    // log("productMst $productMst");
+    log("orderTrn $orderTrn");
+    // print(userMst);
+    // print(categoryMst);
+    // print(settings);
+    return 'read';
+  }
 
   Future<void> resetDatabase() async {
     try {

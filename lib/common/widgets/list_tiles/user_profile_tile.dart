@@ -42,7 +42,7 @@ class MUserProfileTile extends StatelessWidget {
             if (apiURL.isEmpty) {
               MLoaders.warningSnackBar(
                   title: 'Oh Snap!',
-                  message: 'Kindly update update the app settings first!');
+                  message: 'Kindly update the app settings first!');
               Get.to(() => const AppSettingsScreen());
             } else  {
               Get.to(() => const ChangeName());
