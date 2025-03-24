@@ -53,7 +53,7 @@ class CustomerScreen extends StatelessWidget {
                     future: controller.fetchCustomers(),
                     builder: (context, snapshot) {
                       final response =MCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
-                      if (response != null) return response;
+                      if (response != null) return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8,child: response);
                       
 
                       final customers = snapshot.data!;

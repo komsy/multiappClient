@@ -102,10 +102,10 @@ class CreditCustomerController extends GetxController {
                         const SizedBox(height: MSizes.spaceBtwInputFields),
                         TextFormField(
                             controller: phoneNumber,
-                            validator: (value) =>
-                                MValidator.validatePhoneNumber(value),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
+                            // validator: (value) =>
+                            //     MValidator.validatePhoneNumber(value),
+                            // autovalidateMode:
+                            //     AutovalidateMode.onUserInteraction,
                             decoration: const InputDecoration(
                                 prefixIcon: Icon(Iconsax.mobile),
                                 labelText: 'PhoneNumber')),

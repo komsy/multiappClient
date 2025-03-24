@@ -1,4 +1,5 @@
 import 'package:easyapp/data/provider/api_provider.dart';
+import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
@@ -71,7 +72,16 @@ final apiProvider = ApiProvider();
     try {
       //Start loading
       MFullScreenLoader.openLoadingDialog('Storing App Settings...', MImages.docerAnimation);
-
+      
+      // Check Internet connectivity
+      final isConnected = await NetworkManager.instance.isConnected();
+      if (!isConnected) {
+        //Remove loader
+        MFullScreenLoader.stopLoading();
+        MLoaders.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection and try again.');
+        return;
+      }
+      
       //Form validation
       if(!updateUserNameFormKey.currentState!.validate()){
         MFullScreenLoader.stopLoading();

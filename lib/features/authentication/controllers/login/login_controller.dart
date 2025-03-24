@@ -94,9 +94,7 @@ class LoginController extends GetxController{
             // Check Internet connectivity
             final isConnected = await NetworkManager.instance.isConnected();
             if (!isConnected) {
-              MLoaders.errorSnackBar(
-                  title: 'No Internet',
-                  message: 'Please check your internet connection and try again.');
+              MLoaders.errorSnackBar( title: 'No Internet',message: 'Please check your internet connection and try again.');
               return;
             }
             
@@ -104,9 +102,7 @@ class LoginController extends GetxController{
             final checkAppUser = await apiProvider.checkAppUser(username, email.text.trim());
            
             if (checkAppUser['userStatus'] == 0 || checkAppUser['licStatus'] == 0) {
-              MLoaders.errorSnackBar(
-                  title: 'Authentication Error',
-                  message: 'Account locked. Kindly connect to the internet or contact your administrator!');
+              MLoaders.errorSnackBar(title: 'Authentication Error',message: 'Account locked. Kindly connect to the internet or contact your administrator!');
               return;
             }
 

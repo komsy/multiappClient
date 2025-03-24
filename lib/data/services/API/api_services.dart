@@ -5,6 +5,8 @@ import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/utils/helpers/network_manager.dart';
+import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/provider/api_provider.dart';
@@ -52,6 +54,7 @@ class MAPIService extends GetxController {
       isPPLoading.value = false;
       isUnitCLoading.value = false;
       isSettingsLoading.value = false;
+
       // Fetch the data from the API
       List<dynamic> apiProducts = await apiProvider.getAPIData(Env.productApiUrl);
       
@@ -158,6 +161,7 @@ Future<void> fetchAndStoreProductUnits() async {
       isUnitCLoading.value = false;
       isProductLoading.value = false;    
       isSettingsLoading.value = false;
+
       // Notify the controller to refresh
       ProductController.instance.refreshSignal.value = false;
     
@@ -245,7 +249,10 @@ Future<void> fetchAndStoreProductUnits() async {
       isUnitCLoading.value = false;
       isProductLoading.value = false; 
       isSettingsLoading.value = false;   
-
+      
+      // Notify the controller to refresh
+      CustomerController.instance.refreshSignal.value = false;
+      
       // Fetch the data from the API
       List<dynamic> apiCustomer = await apiProvider.getAPIData(Env.customerApiUrl);
       noOfCustomerItems.value = apiCustomer.length;
@@ -277,7 +284,8 @@ Future<void> fetchAndStoreProductUnits() async {
       }
       MLoaders.successSnackBar(title: 'Customers Loaded!', message:'Customers Successfully loaded',duration: 1);
       // Notify the controller to refresh
-      await CustomerController.instance.fetchCustomers();
+      CustomerController.instance.refreshSignal.value = true;
+      // await CustomerController.instance.fetchCustomers();
     } catch (e) {
       MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
       // print('Error ack customer data: $e');

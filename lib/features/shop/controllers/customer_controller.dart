@@ -21,13 +21,15 @@ class CustomerController extends GetxController {
   RxString naration = ''.obs; // Observes changes to the naration
   Timer? _debounce; // Declare a Timer variable
   RxInt refreshData = 0.obs; // Observes changes to force FutureBuilder refresh
-  // final RxBool refreshSignal = false.obs; // Signal to refresh data
+  final RxBool refreshSignal = false.obs; // Signal to refresh data
   final creditController = Get.put(CreditCustomerController());
 
   @override 
   void onInit() {
     // fetchFeaturedCustomers();
     fetchCustomers();
+    debounce(refreshSignal, (_) => fetchCustomers(), time: const Duration(milliseconds: 300)); 
+    // debounce avoids frequent updates in case of multiple API calls.
     super.onInit();
   }
   

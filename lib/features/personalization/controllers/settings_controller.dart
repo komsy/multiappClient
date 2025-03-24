@@ -72,14 +72,6 @@ class SettingsController extends GetxController {
       //Start loading
       MFullScreenLoader.openLoadingDialog('Storing App Settings...', MImages.docerAnimation);
 
-      
-      // Check Internet connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        MLoaders.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection and try again.');
-        return;
-      }
-
       //Form validation
       if(!settingsFormKey.currentState!.validate()){
         MFullScreenLoader.stopLoading();

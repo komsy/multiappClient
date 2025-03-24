@@ -149,7 +149,7 @@ class CartController extends GetxController {
     //   return;
     // }
     cartItems[index].quantity += 1;
-    addOneCartTax(item);
+    updateOneCartTax(item);
     updateCart();
     } else {
       // Calculate stock after adding one more unit
@@ -163,7 +163,7 @@ class CartController extends GetxController {
       
       // Increase quantity and update cart
       cartItems[index].quantity += 1;
-      addOneCartTax(item);
+      updateOneCartTax(item);
       updateCart();
     }
   } else {
@@ -174,23 +174,27 @@ class CartController extends GetxController {
   }
  }
  
- void addOneCartTax(CartItemModel item) {
+ void updateOneCartTax(CartItemModel item) {
   int index = cartItems.indexWhere((cartItem) => cartItem.itmCode == item.itmCode && cartItem.defaultPricing ==item.defaultPricing && cartItem.variationId == item.variationId);
-  if (cartItems[index].vatRate > 0){
+  // if (cartItems[index].vatRate > 0){
     final taxAmount =cartItems[index].quantity * ((cartItems[index].vatRate  * cartItems[index].price) / (cartItems[index].vatRate + 100));
     final exVat =(cartItems[index].quantity * cartItems[index].price) - taxAmount;
+  // print("Add exVat: $exVat, taxAmount: $taxAmount, quantity:${cartItems[index].quantity} "); 
     cartItems[index].taxAmount = double.parse(taxAmount.toStringAsFixed(2));
     cartItems[index].exVat = double.parse(exVat.toStringAsFixed(2));
-  }
+  
  }
 
-  void removeOneCartTax(CartItemModel item) {
-  int index = cartItems.indexWhere((cartItem) => cartItem.itmCode == item.itmCode && cartItem.defaultPricing ==item.defaultPricing && cartItem.variationId == item.variationId);
-  if (cartItems[index].vatRate > 0){
-    final taxAmount =cartItems[index].quantity * ((cartItems[index].vatRate  * cartItems[index].price) / (cartItems[index].vatRate + 100));
-    cartItems[index].taxAmount = double.parse(taxAmount.toStringAsFixed(2));
-  }
- }
+//   void removeOneCartTax(CartItemModel item) {
+//   int index = cartItems.indexWhere((cartItem) => cartItem.itmCode == item.itmCode && cartItem.defaultPricing ==item.defaultPricing && cartItem.variationId == item.variationId);
+//   // if (cartItems[index].vatRate > 0){
+//     final taxAmount =cartItems[index].quantity * ((cartItems[index].vatRate  * cartItems[index].price) / (cartItems[index].vatRate + 100));
+//     final exVat =(cartItems[index].quantity * cartItems[index].price) - taxAmount;
+//     cartItems[index].taxAmount = double.parse(taxAmount.toStringAsFixed(2));
+//     cartItems[index].exVat = double.parse(exVat.toStringAsFixed(2));
+//   print("Re exVat: $exVat, taxAmount: $taxAmount, quantity:${cartItems[index].quantity} "); 
+//   // }
+//  }
  //remove one product to cart
   void removeOneToCart(CartItemModel item) {
     int index = cartItems.indexWhere((cartItem) => cartItem.itmCode == item.itmCode && cartItem.defaultPricing ==item.defaultPricing && cartItem.variationId == item.variationId);
@@ -203,7 +207,7 @@ class CartController extends GetxController {
         //Show dialog before completely removing
         cartItems[index].quantity == 1 ? removeFromCartDialog(index) : cartItems.removeAt(index);
       }
-      addOneCartTax(item);
+      updateOneCartTax(item);
       updateCart();
     }
   }
@@ -274,7 +278,7 @@ class CartController extends GetxController {
   final taxAmount = isTaxable ? quantity * ((product.taxRate * price!) / (product.taxRate+100)) : 0.0;
   final exVat =(quantity* price!) - taxAmount;
   // print("isQuantityPrice $isQuantityPrice, variation ${productPackaging.bulkPackUPrice}");
-  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount"); 
+  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount, quantity:$quantity"); 
   return CartItemModel(
     itmCode: product.itmCode, 
     title: product.longName,

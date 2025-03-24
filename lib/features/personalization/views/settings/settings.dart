@@ -107,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
                     child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
                   ),
 
-                  const SizedBox(height: MSizes.spaceBtwSections*2),
+                  const SizedBox(height: MSizes.spaceBtwSections*1.5),
                   Column(
                     children: [
                       Text(MTexts.appVersion, style: Theme.of(context).textTheme.titleMedium!

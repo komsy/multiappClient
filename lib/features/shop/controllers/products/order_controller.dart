@@ -1,6 +1,4 @@
 
-import 'dart:developer';
-
 import 'package:easyapp/features/shop/models/cart_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

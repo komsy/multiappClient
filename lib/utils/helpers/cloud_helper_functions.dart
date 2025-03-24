@@ -40,17 +40,17 @@ class MCloudHelperFunctions {
     // print("Checking snapshot state1: ${snapshot.connectionState}");
     if (snapshot.connectionState == ConnectionState.waiting) {
       if (loader != null) return loader;
-      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8,child: const Center(child: CircularProgressIndicator()));
+      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.4,child: const Center(child: CircularProgressIndicator()));
     }
 
     if (!snapshot.hasData || snapshot.data == null || snapshot.data!.isEmpty) {
       if (nothingFound != null) return nothingFound;
-      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8, child: const Center(child: Text('No Data Found!')));
+      return const Center(child: Text('No Data Found!'));
     }
 
     if (snapshot.hasError) {
       if (error != null) return error;
-      return SizedBox(height: MDeviceUtils.getScreenHeight() * 0.8, child: const Center(child: Text('Something went wrong.')));
+      return const Center(child: Text('Something went wrong.'));
     }
 
     return null;
