@@ -39,12 +39,13 @@ class MCreditCustomerSection extends StatelessWidget {
                     const SizedBox(height: MSizes.spaceBtwItems / 2),
 
                     // Phone Number Row
+                    if(controller.selectedCrClient.value.phoneNumber!.isNotEmpty)
                     Row(
                       children: [
                         const Icon(Icons.phone, color: Colors.grey, size: 16),
                         const SizedBox(width: MSizes.spaceBtwItems),
                         Text(
-                          controller.selectedCrClient.value.phoneNumber,
+                          controller.selectedCrClient.value.phoneNumber!,
                           style: theme.bodyMedium,
                         ),
                       ],
@@ -68,7 +69,7 @@ class MCreditCustomerSection extends StatelessWidget {
                     if(controller.selectedCrClient.value.address!.isNotEmpty)
                     Row(
                       children: [
-                        const Icon(Icons.key, color: Colors.grey, size: 16),
+                        const Icon(Icons.location_on, color: Colors.grey, size: 16),
                         const SizedBox(width: MSizes.spaceBtwItems),
                         Text(
                           THelperFunctions.limitWords(controller.selectedCrClient.value.address, 5), // Limit to 2 words
@@ -80,7 +81,7 @@ class MCreditCustomerSection extends StatelessWidget {
                   ],
                 )
               : Text(
-                  'Select Address',
+                  'Select or Add an Address',
                   style: theme.bodyMedium,
                 );
         }),

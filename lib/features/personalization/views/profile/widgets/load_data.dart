@@ -26,7 +26,7 @@ class LoadDataScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const MSectionHeading(title: 'Load data in the same order.', showActionButton: false),
+              const MSectionHeading(title: 'Load data in the same order below.', showActionButton: false),
               const SizedBox(height: MSizes.spaceBtwItems),
               // Obx(() => MDownloadsMenuTile(
               //   noOfItems: apiService.noOfCategoryItems.value,

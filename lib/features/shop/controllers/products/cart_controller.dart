@@ -211,6 +211,17 @@ class CartController extends GetxController {
       updateCart();
     }
   }
+  
+  void updateQtyinCart(CartItemModel item,int quantity) {
+    int index = cartItems.indexWhere((cartItem) => cartItem.itmCode == item.itmCode && cartItem.defaultPricing ==item.defaultPricing && cartItem.variationId == item.variationId);
+
+    if(index >= 0) {
+      cartItems[index].quantity = quantity;
+      
+      updateOneCartTax(item);
+      updateCart();
+    }
+  }
 
   //Remove from cart dialog
   void removeFromCartDialog(int index) {
@@ -278,14 +289,14 @@ class CartController extends GetxController {
   final taxAmount = isTaxable ? quantity * ((product.taxRate * price!) / (product.taxRate+100)) : 0.0;
   final exVat =(quantity* price!) - taxAmount;
   // print("isQuantityPrice $isQuantityPrice, variation ${productPackaging.bulkPackUPrice}");
-  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount, quantity:$quantity"); 
+  // print("price: $price, exVat: $exVat, taxAmount: $taxAmount, quantity:$quantity, exPrice:$exPrice "); 
   return CartItemModel(
     itmCode: product.itmCode, 
     title: product.longName,
     unit: isQuantityPrice ? product.fixUnitOfSell! : isVariation ? variation.bulkPackUnit! : product.unit!,
     basicUnit: product.unit!,
     defaultPricing: isQuantityPrice ? "FUM": isRsp ? "RSP" : "WSP",
-    price: price.toDouble(),
+    price: double.parse(price.toStringAsFixed(2)),
     exVat:double.parse(exVat.toStringAsFixed(2)),
     taxAmount: double.parse(taxAmount.toStringAsFixed(2)),
     quantity: quantity,

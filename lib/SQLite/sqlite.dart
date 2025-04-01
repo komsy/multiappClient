@@ -449,11 +449,11 @@ class LocalDatabase {
     //     await db.rawQuery('SELECT * FROM productMst WHERE isFavourite=1');
     // Fetch all favorite products
     List<Map<String, dynamic>> products =
-        await db.rawQuery('SELECT * FROM productMst ORDER BY isFavourite DESC LIMIT 20');
+        await db.rawQuery('SELECT * FROM productMst ORDER BY isFavourite DESC LIMIT 30');
 
     // if (products.isEmpty) {
-    //   // Fetch the top 20 products if no favorites are found
-    //   products = await db.rawQuery('SELECT * FROM productMst LIMIT 20');
+    //   // Fetch the top 30 products if no favorites are found
+    //   products = await db.rawQuery('SELECT * FROM productMst LIMIT 30');
     // }
     // Check if products were found
     if (products.isNotEmpty) {
@@ -495,7 +495,7 @@ class LocalDatabase {
 
     // Fetch all active products
     List<Map<String, dynamic>> products = await db.rawQuery(
-      'SELECT * FROM productMst WHERE longName LIKE ?  LIMIT 20',
+      'SELECT * FROM productMst WHERE longName LIKE ?  LIMIT 30',
       ['%$keyWord%'],
     );
 
@@ -672,7 +672,7 @@ class LocalDatabase {
     );
   }
 
-    Future<int> updateSelectedField(String selectedCrClient, int isActive) async {
+  Future<int> updateSelectedField(String selectedCrClient, int isActive) async {
     final db = await instance.database;
     return await db.update(
       'creditCustomer',
@@ -681,6 +681,7 @@ class LocalDatabase {
       whereArgs: [selectedCrClient], // Replace `userId` appropriately
     );
   }
+  
   Future<void> updateSentOrders(List<dynamic> acknowledgments) async {
     final db = await instance.database;
 

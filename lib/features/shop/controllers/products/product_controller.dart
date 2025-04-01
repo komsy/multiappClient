@@ -74,7 +74,7 @@ Future<void> fetchFeaturedProducts() async {
 
     // Assign the sorted products to featuredProducts, taking only the first 8
     featuredProducts.assignAll(
-      sortedProducts.take(12).toList(),
+      sortedProducts.take(30).toList(),
     );
     
   } catch (e) {
@@ -126,8 +126,8 @@ Future<void> fetchSearchProduct(String keyWord) async {
         return a.longName.compareTo(b.longName); // Alphabetical tiebreaker
       });
 
-    // Assign the sorted products to featuredProducts (limit to 12)
-    final topProducts = sortedProducts.take(12).toList();
+    // Assign the sorted products to featuredProducts (limit to 30)
+    final topProducts = sortedProducts.take(30).toList();
     if (!areListsEqual(featuredProducts.toList(), topProducts)) {
       featuredProducts.assignAll(topProducts);
     }

@@ -54,7 +54,7 @@ class MSingleCrCustomer extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      crCustomer.phoneNumber,
+                      crCustomer.phoneNumber!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

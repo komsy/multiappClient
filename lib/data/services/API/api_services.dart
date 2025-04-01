@@ -5,8 +5,6 @@ import 'package:easyapp/features/authentication/models/user/user_model.dart';
 import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
-import 'package:easyapp/utils/helpers/network_manager.dart';
-import 'package:easyapp/utils/popups/full_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/provider/api_provider.dart';
@@ -64,7 +62,7 @@ class MAPIService extends GetxController {
         throw Exception("No product data found");
       }
       // Truncate the product table before inserting new data, if needed
-      // await db.truncateProductTable();
+      await db.truncateProductTable();
 
       // Iterate over each product and insert it into the SQLite database
       for (var productData in apiProducts) {
@@ -175,7 +173,7 @@ Future<void> fetchAndStoreProductUnits() async {
       // print('api product packaging: $apiProducts');
 
       // Truncate the product table before inserting new data, if needed
-      // await db.truncateProductPackagingTable();
+      await db.truncateProductPackagingTable();
 
       // Iterate over each product and insert it into the SQLite database
       for (var data in apiProductPackaging) {
@@ -260,10 +258,11 @@ Future<void> fetchAndStoreProductUnits() async {
       if (apiCustomer.isEmpty) {
         throw Exception("No customer data found");
       }
+
       // log('api customers: $apiCustomer');
 
       // Truncate the customer table before inserting new data, if needed
-      // await db.truncateCustomerMst();
+      await db.truncateCustomerMst();
  
       // Iterate over each customer and insert it into the SQLite database
       for (var data in apiCustomer) {

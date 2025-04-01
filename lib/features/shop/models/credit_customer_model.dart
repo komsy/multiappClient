@@ -1,7 +1,7 @@
 
   class CreditCustomerModel {
     String customerName;
-    String phoneNumber;
+    String? phoneNumber;
     String? pinNo;
     String? address;
     int selectedCrCustomer;

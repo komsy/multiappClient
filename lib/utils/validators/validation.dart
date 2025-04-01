@@ -80,14 +80,15 @@ class MValidator {
   }
 
   static String? validatePhoneNumber(String? value) {
+    // Allow empty field (no validation required if empty)
     if (value == null || value.isEmpty) {
-      return 'Phone number is required.';
+      return null; // No error, since field is optional
     }
 
     // Regular expression for phone number validation (assuming a 10-digit US phone number format)
     final phoneRegExp = RegExp(r'^\d{10}$');
 
-    if (!phoneRegExp.hasMatch(value)) {
+    if (!phoneRegExp.hasMatch(value!)) {
       return 'Invalid phone number format (10 digits required).';
     }
 
@@ -110,9 +111,10 @@ class MValidator {
 
   //Customer pin validator
  static String? validatePinNo(String? value) {
-  if (value == null || value.isEmpty) {
-    return 'Pin No is required.';
-  }
+    // Allow empty field (no validation required if empty)
+    if (value == null || value.isEmpty) {
+      return null; // No error, since field is optional
+    }
 
   // Ensure the first character is an uppercase letter
   if (!RegExp(r'^[A-Z]').hasMatch(value[0])) {

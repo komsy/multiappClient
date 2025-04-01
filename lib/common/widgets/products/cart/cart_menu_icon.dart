@@ -20,12 +20,12 @@ class MCartCounterIcon extends StatelessWidget {
     Get.put(OrderController());
     return Stack(
       children: [
-        IconButton(onPressed: () => Get.to(() => const CartScreen()), icon: Icon(Iconsax.shopping_bag, color: iconColor)),
+        IconButton(onPressed: () => Get.to(() => const CartScreen()), iconSize: 40, icon: Icon(Iconsax.shopping_bag, color: iconColor)),
         Positioned(
           right: 0,
           child: Container(
-            width: 18,
-            height: 18,
+            width: 27,
+            height:25,
             decoration: BoxDecoration(
               color: MColors.black,
               borderRadius: BorderRadius.circular(100),  
@@ -36,7 +36,7 @@ class MCartCounterIcon extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge!
-                        .apply(color: MColors.white, fontSizeFactor: 0.8)),
+                        .apply(color: MColors.white, fontSizeFactor: 1)),
               ),
             ),
             ),

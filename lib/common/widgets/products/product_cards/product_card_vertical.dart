@@ -57,9 +57,9 @@ class MProductCardVertical extends StatelessWidget {
         child: Column(
           children: [
             MRoundedContainer(
-              height: 100,
+              height: 90,
               width: 180,
-              padding: const  EdgeInsets.all(MSizes.sm),
+              padding: const  EdgeInsets.all(MSizes.sm/2),
               backgroundColor: dark ? MColors.dark : MColors.light,
               child: Stack(
                 children: [
@@ -87,25 +87,25 @@ class MProductCardVertical extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: MSizes.spaceBtwItems /2),
+            // const SizedBox(height: MSizes.spaceBtwItems /2),
       
             //product Details
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: MSizes.sm),
+              padding: const EdgeInsets.symmetric(horizontal: MSizes.sm/4),
               //Only reason to use Sized box is to make column full width
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MProductTitletext(title: product.longName, smallSize: true,),
-                    const SizedBox(height: MSizes.spaceBtwItems /2),
+                    MProductTitletext(title: product.longName, smallSize: true,maxLines:3),
+                    // const SizedBox(height: MSizes.spaceBtwItems),
                     // MBrandTitleTextWithVerifiedIcon(title: product.brand != null ? product.brand!.name : 'Unknown Brand'),
                   ],
                 ),
               ),
             ),
-            // const Spacer(),
+             const Spacer(),
             
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

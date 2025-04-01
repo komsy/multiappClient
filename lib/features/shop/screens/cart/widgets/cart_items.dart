@@ -38,13 +38,16 @@ class MCartItems extends StatelessWidget {
                     Row(
                       children: [
                         //Extra Space
-                        const SizedBox(width: 70),
+                        const SizedBox(width: 10),
                         //Add remove button
                         MProductQuantityWithAddRemoveButton(
                           quantity: item.quantity, 
+                          item: item, // Pass the cart item
                           add: () => cartController.addOneToCart(item),
                           remove: () => cartController.removeOneToCart(item),
+                          update: (newQuantity) => cartController.updateQtyinCart(item, newQuantity), // Pass new quantity
                         ),
+
                       ],
                     ),
         
