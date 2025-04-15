@@ -1,0 +1,2 @@
+C:/Users/ADMIN/StudioProjects/multiapp/android/app/.cxx/Debug/w2u3mk1f/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/ADMIN/StudioProjects/multiapp/android/app/.cxx/Debug/w2u3mk1f/arm64-v8a/CMakeFiles/rebuild_cache.dir
