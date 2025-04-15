@@ -57,9 +57,9 @@ class MProductCardVertical extends StatelessWidget {
         child: Column(
           children: [
             MRoundedContainer(
-              height: 90,
+              height: 100,
               width: 180,
-              padding: const  EdgeInsets.all(MSizes.sm/2),
+              padding: const  EdgeInsets.all(MSizes.sm/4),
               backgroundColor: dark ? MColors.dark : MColors.light,
               child: Stack(
                 children: [

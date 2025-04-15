@@ -17,10 +17,8 @@ class MOrderRecordsPieChart extends StatelessWidget {
     orderController.fetchOrderRecords();
 
     return Scaffold(
-      appBar: MAppBar(
-        title: Text('Order Records', style: Theme.of(context).textTheme.headlineSmall),
-        showBackArrow: true,
-      ),
+      appBar: const MAppBar(title: Text('Order Records'), showBackArrow: true, centerTitle: true),
+
       body: Obx(() {
         final orders = orderController.orderRecords;
 

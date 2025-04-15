@@ -19,7 +19,7 @@ class LoadDataScreen extends StatelessWidget {
 
     return Scaffold(
       appBar:
-      const MAppBar(title: Text('Load Product & Customer Data'), showBackArrow: true),
+      const MAppBar(title: Text('Load Product & Customer Data'), showBackArrow: true,centerTitle: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(MSizes.defaultSpace),

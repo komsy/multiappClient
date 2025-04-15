@@ -20,6 +20,7 @@ class ProductController extends GetxController {
   final RxBool refreshSignal = false.obs; // Signal to refresh data
   final favController = Get.put(FavouritesController());
   var searchResults = [].obs; // Observable to hold search results
+  final authRepo = AuthenticationRepository.instance;
 
   @override
   void onInit() {
@@ -40,11 +41,11 @@ Future<void> fetchFeaturedProducts() async {
     
     //get number of products saved 
     int productCount = await db.getProductCount();
-    AuthenticationRepository.instance.noofProducts.value = productCount;
+    authRepo.noofProducts.value = productCount;
     
     //get number of products pp saved 
     int productPPCount = await db.getProductPPCount();
-    AuthenticationRepository.instance.noofProductPP.value = productPPCount;
+    authRepo.noofProductPP.value = productPPCount;
       
     // Start by fetching data from the database
     final snapshot = await db.getProducts();
@@ -74,7 +75,7 @@ Future<void> fetchFeaturedProducts() async {
 
     // Assign the sorted products to featuredProducts, taking only the first 8
     featuredProducts.assignAll(
-      sortedProducts.take(30).toList(),
+      sortedProducts.take(authRepo.prodNumber.value).toList(),
     );
     
   } catch (e) {
@@ -153,10 +154,10 @@ String getProductPrice(ProductModels product) {
   double pRspIncVat = product.rspIncVat;
   String fixUnitOfSell = product.fixUnitOfSell ?? '';
   double pQspIncVat = 0.0;
-  // AuthenticationRepository.instance.isQuantityPrice.value =true;
+  // authRepo.isQuantityPrice.value =true;
   
   // Case 1: return quantity price range if set default 
-  final isQuantityPrice = AuthenticationRepository.instance.isQuantityPrice;
+  final isQuantityPrice = authRepo.isQuantityPrice;
   // print("isQuantityPrice prod: ${isQuantityPrice}");
   if (isQuantityPrice.value) {
     for (var packing in product.quantityPrice!) {
@@ -180,7 +181,7 @@ String getProductPrice(ProductModels product) {
   if (product.quantityPrice != null && product.quantityPrice!.isNotEmpty) {
     for (var packing in product.quantityPrice!) {
       double priceToConsider;
-      final isRetailPrice = AuthenticationRepository.instance.isRetailPrice;
+      final isRetailPrice = authRepo.isRetailPrice;
     
       // Check if retail price is the default
       if (isRetailPrice.value) {

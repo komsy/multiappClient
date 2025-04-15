@@ -330,6 +330,12 @@ Future<void> fetchAndStoreProductUnits() async {
           orderDays:data['orderDays'],
           isRSP: authInstance.isRetailPrice.value ? 1: 0,
           createdAt: DateTime.now().toIso8601String(),
+          defaultLocation: data['defaultLocation'],
+          prodNumber: data['prodNumber'] ?? 30,
+          goLive: data['goLive'] ?? 0,
+          exField1: data['exField1'] ?? 0,
+          exField2: data['exField2'] ?? 0,
+          exField3: data['exField3'] ?? 0,
         );
 
       // Toggle the in-memory observable value
@@ -421,6 +427,9 @@ Future<void> fetchAndStoreProductUnits() async {
         return;
       }
 
+      //S4end Location data to the API
+      await apiProvider.sendLocationData('userLocationData');
+      
       // Send orders to the API if user & Lic still Active
       final apiOrders = await apiProvider.sendOrders("saveOrders");
       

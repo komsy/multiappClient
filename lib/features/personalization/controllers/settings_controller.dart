@@ -1,7 +1,6 @@
 import 'package:easyapp/common/widgets/texts/section_heading.dart';
 import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
-import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:easyapp/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -94,6 +93,12 @@ class SettingsController extends GetxController {
         orderRecordDays:setting.value.orderRecordDays,
         isRSP:AuthenticationRepository.instance.isRetailPrice.value ? 1: 0,
         createdAt: DateTime.now().toIso8601String(),
+        defaultLocation: setting.value.defaultLocation,       
+        prodNumber: setting.value.prodNumber,
+        goLive: setting.value.goLive,
+        exField1: setting.value.exField1,
+        exField2: setting.value.exField2,
+        exField3: setting.value.exField3,
       );
       // print("Setting saving data ${settings.apiKey}, ${settings.apiUrl}, ${settings.docSeries}, ${settings.toJson()}");
 
@@ -188,7 +193,7 @@ class SettingsController extends GetxController {
     settingsFormKey.currentState?.reset();
   }
 
-    Future<dynamic> createAppSettings(BuildContext context) {
+  Future<dynamic> createAppSettings(BuildContext context) {
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,

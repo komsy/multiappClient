@@ -24,10 +24,10 @@ class CheckoutScreen extends StatelessWidget {
     final subTotal = controller.totalCartPrice.value;
     final orderController = OrderController.instance;//Get.put(OrderController());
     // final customercontroller = Get.put(CustomerController());
-    // final totalAmount = MPricingCalculator.calculateTotalPrice(subTotal,'KE');
-
+    // final totalAmount = MPricingCalculator.calculateTotalPrice(subTotal,'KE');    
+    
     return Scaffold(
-      appBar: MAppBar(title: Text('Order Review', style: Theme.of(context).textTheme.headlineSmall), showBackArrow: true),
+      appBar: const MAppBar(title:  Text('Order Review'), showBackArrow: true, centerTitle: true,),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(MSizes.defaultSpace),

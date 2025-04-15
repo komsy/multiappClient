@@ -1,9 +1,14 @@
-
+import 'package:easyapp/common/widgets/success_screen/success_screen.dart';
+import 'package:easyapp/features/personalization/controllers/location_controller.dart';
+import 'package:easyapp/features/personalization/models/location_model.dart';
 import 'package:easyapp/features/shop/models/cart_item_model.dart';
+import 'package:easyapp/navigation_menu.dart';
+import 'package:easyapp/utils/constants/image_strings.dart';
+import 'package:easyapp/utils/helpers/network_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
-import 'package:easyapp/common/widgets/success_screen/success_screen.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/data/repositories/order/order_repository.dart';
 import 'package:easyapp/features/personalization/controllers/user_controller.dart';
@@ -13,8 +18,6 @@ import 'package:easyapp/features/shop/controllers/products/cart_controller.dart'
 import 'package:easyapp/features/shop/controllers/products/checkout_controller.dart';
 import 'package:easyapp/features/shop/models/order_item_model.dart';
 import 'package:easyapp/features/shop/models/order_model.dart';
-import 'package:easyapp/navigation_menu.dart';
-import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
 
 class OrderController extends GetxController {
@@ -26,16 +29,19 @@ class OrderController extends GetxController {
   final cartController = CartController.instance;
   final customerController = CustomerController.instance;
   final checkoutController = Get.put(CheckoutController());
+  final locationController = Get.put(LocationController());
   final orderRepository = Get.put(OrderRepository());
   RxList<CartItemModel> cartItems = <CartItemModel>[].obs;
   // Initialize the database instance here
   final LocalDatabase db = LocalDatabase.instance;
   // Empty List for orderRecords
   final RxList<Map<String, dynamic>> orderRecords = <Map<String, dynamic>>[].obs;
-
+  final authRepo = AuthenticationRepository.instance;
   @override
   void onInit() {
     fetchOrders();
+    // print("authRepo.goLive.value ${authRepo.goLive.value}");
+    if (authRepo.goLive.value) getCurrLocation();
     super.onInit();
   }
   //Fetch order history
@@ -43,7 +49,7 @@ class OrderController extends GetxController {
     try {
       //Show loader while loading products
       isLoading.value = true;
-      final orderDays = AuthenticationRepository.instance.orderDays.value;
+      final orderDays = authRepo.orderDays.value;
       const isSending=false;
       // Start by fetching data from the database
       final snapshot = await db.getOrders(orderDays, isSending);
@@ -89,25 +95,25 @@ class OrderController extends GetxController {
   Future<Map<String, dynamic>?>  getUserId() async 
       {
         try {
-            // final decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+            // final decodedPayload = await authRepo.decodeAndVerifyToken();
       
             // print('Processing order... $decodedPayload');
             // if (decodedPayload == null || decodedPayload.isEmpty) return;
 
             // Decode and verify the JWT token
-            var decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+            var decodedPayload = await authRepo.decodeAndVerifyToken();
             if (decodedPayload == null || decodedPayload.isEmpty) {
               // print("Token expired or invalid. Attempting to refresh the token...");
               
               // Try refreshing the token if it's invalid or expired
-              final newToken = await AuthenticationRepository.instance.refreshToken();
+              final newToken = await authRepo.refreshToken();
               if (newToken == null) {
                 // throw Exception("Failed to refresh token. Please reauthenticate.");
-                await AuthenticationRepository.instance.logout();
+                await authRepo.logout();
               }
               
               // Retry decoding and verifying the new token after refreshing
-              decodedPayload = await AuthenticationRepository.instance.decodeAndVerifyToken();
+              decodedPayload = await authRepo.decodeAndVerifyToken();
               if (decodedPayload == null || decodedPayload.isEmpty) {
                 throw Exception("Failed to decode or verify the refreshed token. Please reauthenticate.");
               }
@@ -125,6 +131,14 @@ class OrderController extends GetxController {
   // Add methods for order processing
   void processOrder(double totalAmount) async {
     try {
+      // if live Check Internet connectivity
+      if(authRepo.goLive.value){
+        final isConnected = await NetworkManager.instance.isConnected();
+        if (!isConnected) {
+          MLoaders.errorSnackBar( title: 'No Internet',message: 'Please check your internet connection and try again. You are on Live mode!');
+          return;
+        }
+      }
       // Fetch the current settings
       final currentSetting = await db.getSingleAppSetting();
       if (currentSetting == null) {
@@ -191,9 +205,26 @@ class OrderController extends GetxController {
           createdAt: DateTime.now().toIso8601String(),
         );
 
-      await orderRepository.saveOrderItems(orderItem); // Inserts all items
+        await orderRepository.saveOrderItems(orderItem); // Inserts all items
       }
       
+      //save current location latitude and longitude
+      final snippet = customerController.selectedCustomer.value.companyName.contains('Cash') ? 'Cash Account For: ${creditController.customerName}' : customerController.selectedCustomer.value.companyName;
+      final title = authRepo.currLocationAddress.value.isNotEmpty ? authRepo.currLocationAddress.value : 'Default Location';
+      final locationdata = LocationModel(
+        makerId: order.id,
+        title: title,
+        snippet: snippet,
+        location:  authRepo.currLocation.value,
+        date: DateTime.now().toIso8601String(),
+      );
+
+// print("location data: ${locationdata.toJson()}");
+      // Save the location data to the database if the user is in live mode
+      if(authRepo.goLive.value) await db.saveCurrlocationdata(locationdata);
+      // final loc = await db.getCurrLocation();
+      // print("location data: ${loc}");
+
       //Clear cart items
       cartController.clearCart();
 
@@ -210,6 +241,27 @@ class OrderController extends GetxController {
         MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
       }
     }
+  Future<String?> getCurrLocation() async {
+    try {
+      final location = await locationController.getUserLocation();
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(location.latitude, location.longitude);
+      Placemark place = placemarks.reversed.last;
+
+      String formattedAddress = '${place.thoroughfare?.isNotEmpty == true ? '${place.thoroughfare}, ' : ''}'
+          '${place.locality}, ${place.administrativeArea}, ${place.country}';
+
+      authRepo.currLocation = '${location.latitude}, ${location.longitude}'.obs;
+      authRepo.currLocationAddress = formattedAddress.obs;
+
+      return formattedAddress;
+    } catch (e) {
+      // print('Error getting location: $e');
+      MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      return null;
+    }
+  }
+
 
   generateCleanUniqueKey() async {
     String rawKey = UniqueKey().toString(); // e.g., "[#cffb2]"
@@ -245,6 +297,33 @@ class OrderController extends GetxController {
     }
     editOrderDialog(order);
   }
+  
+  
+  void deleteOrderDialog(OrderModel order) async {
+    Get.defaultDialog(
+      title: 'Delete Order of Ksh ${order.totalAmount}',
+      middleText: 'Are you sure you want to delete this Order?',
+      // buttonColor: Colors.red,
+      onConfirm: () async {
+        try {
+          if (order.orderItems == null || order.orderItems!.isEmpty) {
+            MLoaders.errorSnackBar(title: 'Oh Snap!',message: "This order has no items.");
+            return;
+          }        
+
+          await db.deleteOrder(order.id);
+        
+          authRepo.screenRedirect();
+        } catch (e) {
+          MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
+        }
+      },
+      onCancel: () => Get.back(),
+    );
+  }
+
+
+  
   void editOrderDialog(OrderModel order) async {
     Get.defaultDialog(
       title: 'Edit Order of Ksh ${order.totalAmount}',
@@ -289,7 +368,7 @@ class OrderController extends GetxController {
           await db.deleteOrder(order.id);
         
           MLoaders.customToast(message: 'Order moved to cart.');
-          AuthenticationRepository.instance.screenRedirect();
+          authRepo.screenRedirect();
         } catch (e) {
           MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
         }

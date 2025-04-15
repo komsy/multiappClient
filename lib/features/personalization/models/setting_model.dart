@@ -4,6 +4,7 @@ class SettingModel {
   String apiKey;
   String locationId;
   String defaultCustCode;
+  String defaultLocation;
   String defaultPricing;
   int routeWiseSell;
   int setDefaultCust;
@@ -12,11 +13,18 @@ class SettingModel {
   int orderDays;
   int orderRecordDays;
   int isRSP;
+  int prodNumber;
+  int goLive;
+  int exField1;
+  int exField2;
+  int exField3;
   String createdAt;
+  
 
   SettingModel({
     required this.appKey,
     this.defaultCustCode = '',
+    this.defaultLocation = '',
     this.apiUrl = '',
     this.apiKey = '',
     this.defaultPricing = '',
@@ -28,6 +36,11 @@ class SettingModel {
     this.orderDays = 1,
     this.orderRecordDays = 1,
     this.isRSP = 0,
+    this.prodNumber = 30,
+    this.goLive = 0,
+    this.exField1 = 0,
+    this.exField2 = 0,
+    this.exField3 = 0,
     this.createdAt ='',
   });
 
@@ -39,6 +52,7 @@ class SettingModel {
     return {
       'appKey': appKey,
       'defaultCustCode': defaultCustCode,
+      'defaultLocation': defaultLocation,
       'APIURL': apiUrl,
       'APIKey': apiKey,
       'defaultPricing': defaultPricing,
@@ -50,6 +64,11 @@ class SettingModel {
       'orderDays': orderDays,
       'orderRecordDays': orderRecordDays,
       'IsRSP': isRSP,
+      'prodNumber': prodNumber,
+      'goLive': goLive,
+      'exField1': exField1,
+      'exField2': exField2,
+      'exField3': exField3,
       'createdAt': createdAt,
     };
   }
@@ -59,6 +78,7 @@ class SettingModel {
     return SettingModel(
       appKey: data['appKey'] ?? '',
       defaultCustCode: data['defaultCustCode'] ?? '',
+      defaultLocation: data['defaultLocation'] ?? '',
       apiUrl: data['APIURL'] ?? '',
       apiKey: data['APIKey'] ?? '',
       defaultPricing: data['defaultPricing'] ?? '',
@@ -70,7 +90,12 @@ class SettingModel {
       orderDays: data['orderDays'] ?? 1,
       orderRecordDays: data['orderRecordDays'] ?? 7,
       isRSP: data['IsRSP'] ?? 0,
+      prodNumber: data['prodNumber'] ?? 30,
+      goLive: data['goLive'] ?? 0,
+      exField1: data['exField1'] ?? 0,
+      exField2: data['exField2'] ?? 0,
+      exField3: data['exField3'] ?? 0,
       createdAt: data['createdAt'] ?? '',
-    );
+    ); 
   }
 }
