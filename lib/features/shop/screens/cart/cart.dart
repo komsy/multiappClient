@@ -20,9 +20,8 @@ class CartScreen extends StatelessWidget {
 
 
     return Scaffold(
-      appBar: MAppBar(
-          title: Text('Cart', style: Theme.of(context).textTheme.headlineSmall),
-          showBackArrow: true),
+      appBar: const MAppBar(title: Text('Cart'),showBackArrow: true,centerTitle: true),
+      
       body: Obx(() {
         //Nothing found widgetr
         final emptyWidget = MAnimationLoaderWidget(

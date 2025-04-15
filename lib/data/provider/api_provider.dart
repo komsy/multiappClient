@@ -185,7 +185,26 @@ class ApiProvider {
       return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
+  Future<Map<String, dynamic>>  sendLocationData(String apiName) async {
+  try { 
+ 
+    // print("Request URL: $fullUrl");
+    final location = await db.getCurrLocation();
 
+    // Handle null or empty result (no categories found)
+    if (location.isEmpty) {
+      return Future.error("No location found");
+    }
+
+    // print('Fetched location: $location');
+    final response = await _dio.post(apiName, data: location);
+    // print('order response: ${response.data}');
+    
+    return response.data;
+  } on DioException catch (err) {
+      return Future.error(handleDioError(err));  // Using the reusable function
+    }
+  }
   //send user data
   Future<Map<String, dynamic>>  checkAppUser(String userName,String email) async {
   try {

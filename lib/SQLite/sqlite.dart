@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/authentication/models/user/user_model.dart';
+import 'package:easyapp/features/personalization/models/location_model.dart';
 import 'package:easyapp/features/personalization/models/setting_model.dart';
 import 'package:easyapp/features/shop/models/credit_customer_model.dart';
 import 'package:easyapp/features/shop/models/customer_model.dart';
@@ -47,8 +49,7 @@ class LocalDatabase {
 
   /// Hashes a password using SHA-256
   String hashPassword(String password) {
-    var bytes =
-        utf8.encode(password); // Convert the password to a list of bytes
+    var bytes = utf8.encode(password); // Convert the password to a list of bytes
     var digest = sha256.convert(bytes); // Hash using SHA-256
     return digest.toString(); // Convert hash to a hex string
   }
@@ -238,6 +239,12 @@ class LocalDatabase {
         orderRecordDays INTEGER  NOT NULL,
         setDefaultCust INTEGER  NOT NULL,
         IsRSP INTEGER  NOT NULL,
+        prodNumber INTEGER  NOT NULL,
+        goLive INTEGER  NOT NULL,
+        exField1 INTEGER  NOT NULL,
+        exField2 INTEGER  NOT NULL,
+        exField3 INTEGER  NOT NULL,
+        defaultLocation TEXT NOT NULL,
         createdAt TEXT NOT NULL
       )
     ''');
@@ -267,6 +274,18 @@ class LocalDatabase {
         date TEXT UNIQUE
       )
     ''');
+    //Create Location data table
+        // locationId INTEGER UNIQUE NOT NULL,
+    await db.execute('''
+      CREATE TABLE locationData (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        makerId INTEGER UNIQUE NOT NULL,
+        title TEXT NOT NULL,
+        snippet VARCHAR(150) NOT NULL,
+        location TEXT NOT NULL,
+        date TEXT UNIQUE
+      )
+    ''');
   }
 
   // Insert a test product into productMst table
@@ -293,6 +312,12 @@ class LocalDatabase {
       "orderDays": 1,
       "orderRecordDays": 7,
       "IsRSP": 0,
+      "prodNumber": 30,
+      "goLive": 0,
+      "exField1": 1,
+      "exField2": 0,
+      "exField3": 0,
+      "defaultLocation": "-0.10574318693269198, 34.752951179237115",
       "createdAt": createdAt,
     });
 
@@ -386,6 +411,18 @@ class LocalDatabase {
       conflictAlgorithm: ConflictAlgorithm.replace, // Prevent overwriting
     );
   }
+  
+  Future<void> saveCurrlocationdata(LocationModel location) async {
+    // print(location.toJson());
+    final db = await database;
+    await db.insert(
+      'locationData',
+      location.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace, // Prevent overwriting
+    );
+    // Clean up old locationdata before saving current ones
+    await _deleteOldlocationdata(db);
+  }
 
   //Save app Settings
   Future<void> saveAppSettings(SettingModel settings) async {
@@ -443,13 +480,13 @@ class LocalDatabase {
   Future<List<Map<String, dynamic>>> getProducts() async {
     // Open the SQLite database
     final db = await instance.database;
-
+    final productNo = AuthenticationRepository.instance.prodNumber.value;
     // Fetch all active products
     // List<Map<String, dynamic>> products =
     //     await db.rawQuery('SELECT * FROM productMst WHERE isFavourite=1');
     // Fetch all favorite products
     List<Map<String, dynamic>> products =
-        await db.rawQuery('SELECT * FROM productMst ORDER BY isFavourite DESC LIMIT 30');
+        await db.rawQuery('SELECT * FROM productMst ORDER BY isFavourite DESC LIMIT $productNo');
 
     // if (products.isEmpty) {
     //   // Fetch the top 30 products if no favorites are found
@@ -492,10 +529,11 @@ class LocalDatabase {
   Future<List<Map<String, dynamic>>> getProductSearch(keyWord) async {
     // Open the SQLite database
     final db = await instance.database;
+    final productNo = AuthenticationRepository.instance.prodNumber.value;
 
     // Fetch all active products
     List<Map<String, dynamic>> products = await db.rawQuery(
-      'SELECT * FROM productMst WHERE longName LIKE ?  LIMIT 30',
+      'SELECT * FROM productMst WHERE longName LIKE ?  LIMIT $productNo',
       ['%$keyWord%'],
     );
 
@@ -602,6 +640,17 @@ class LocalDatabase {
     }
   }
 
+  Future<void> _deleteOldlocationdata(Database db) async {
+    // print("Delete old location data hit");
+
+    await db.transaction((txn) async {
+      await txn.rawDelete(
+        // "DELETE FROM locationData WHERE date <= DATE('now', '-1 days')"
+         "DELETE FROM locationData WHERE date(date) = date('now', '-1 day')"
+      );
+    });
+  }
+
   // Separate function to delete orders older than 3 days
   Future<void> _deleteOldOrders(Database db, int days) async {
   // print("Delete orders older than $days days hit");
@@ -630,6 +679,16 @@ class LocalDatabase {
      // Fetch all records
       final List<Map<String, dynamic>> result = await db.rawQuery(
         'SELECT * FROM orderRecords ORDER BY date DESC',
+      );
+    return result;
+  }
+  
+  Future<List<Map<String, dynamic>>> getCurrLocation() async {
+    // Open the SQLite database
+    final db = await instance.database;
+     // Fetch all records
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM locationData ORDER BY date DESC',
       );
     return result;
   }

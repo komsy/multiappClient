@@ -97,7 +97,7 @@ class MOrderListItems extends StatelessWidget {
                   
                             //Icon
                             IconButton(onPressed: () =>Get.to(() => MOrderItems(order: order)),
-                                icon:const Icon(Iconsax.arrow_right_34, size: MSizes.iconSm))
+                                icon:const Icon(Iconsax.arrow_right_34, size: MSizes.iconSm *1.3))
                           ],
                         ),
                         // const SizedBox(height: MSizes.spaceBtwItems / 4),
@@ -173,12 +173,14 @@ class MOrderListItems extends StatelessWidget {
                           editOrder && order.isSent == 0 
                             ? IconButton(
                                 onPressed: () => controller.editOrder(order),
-                              icon:const Icon(Iconsax.edit, size: MSizes.iconSm))
+                              icon:const Icon(Iconsax.edit, size: MSizes.iconSm  *1.2))
                             : editAfter && order.isSent == 1  
                               ?  IconButton(onPressed: () => controller.editOrder(order),
-                                icon:const Icon(Iconsax.edit, size: MSizes.iconSm))
-                              : const SizedBox.shrink(), // Hides the button by rendering an empty widget
+                                icon:const Icon(Iconsax.edit, size: MSizes.iconSm  *1.2))
+                              : IconButton(onPressed: () => controller.deleteOrderDialog(order),
+                                icon:const Icon(Iconsax.trash, size: MSizes.iconSm  *1.3, color: MColors.error,)), //const SizedBox.shrink(), // Hides the button by rendering an empty widget
                           ],
+                                  
                         ),
                       ],
                       

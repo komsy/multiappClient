@@ -1,3 +1,5 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
@@ -16,20 +18,29 @@ class MHomeAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // final controller = UserController.instance;
   final controller =Get.put(UserController());
+  final authRepo = AuthenticationRepository.instance;
 
     return MAppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(MTexts.homeAppbarTitle, style: Theme.of(context).textTheme.labelMedium!.apply(color: MColors.grey)),
-          Obx(() {
-            if(controller.profileLoading.value){
-              //Display a shimmer loader while user profile is being loaded
-              return const MShimmerEffect(width: 80, height: 15);
-            } else{
-              return Text(controller.user.value.userName, style: Theme.of(context).textTheme.headlineSmall!.apply(color: MColors.white));
-            }
-          }),
+          Row(
+            children: [   
+              authRepo.goLive.value ? const Icon(Icons.location_on, color: Color.fromARGB(255, 11, 197, 20), size: 15) : const Icon(Icons.location_off_sharp, color: Color.fromARGB(255, 233, 10, 10), size: 15)  ,
+              
+              const SizedBox(width: MSizes.defaultSpace/2),
+              Obx(() {
+                if(controller.profileLoading.value){
+                  //Display a shimmer loader while user profile is being loaded
+                  return const MShimmerEffect(width: 80, height: 15);
+                } else{
+                  return Text(controller.user.value.userName, style: Theme.of(context).textTheme.headlineSmall!.apply(color: MColors.white));
+                }
+              }),
+           
+            ],
+          ),
         ],
       ),
       actions: const [

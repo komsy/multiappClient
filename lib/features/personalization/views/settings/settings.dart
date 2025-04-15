@@ -1,3 +1,4 @@
+import 'package:easyapp/features/personalization/views/location/location.dart';
 import 'package:easyapp/features/shop/screens/order/widgets/order_records_pie_chart.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,13 @@ class SettingsScreen extends StatelessWidget {
           children: [
           //Header 
           MPrimaryHeaderContainer(
-            child: Column(
+            child: Column( 
               children: [
-                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white),),),
+                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white),),
+                actions:  [
+                  IconButton(onPressed: () =>AuthenticationRepository.instance.logout(),
+                            icon:const Icon(Iconsax.logout, size: MSizes.iconMd * 1.2, color: MColors.white,))
+                ],),
 
                 //User profile card
                 const MUserProfileTile(),
@@ -99,6 +104,7 @@ class SettingsScreen extends StatelessWidget {
                           }),
                         ),
                   
+                  MSettingsMenuTile(icon: Iconsax.location, title: "Location Data", subTitle: "Show my Location data", onTap: () => Get.to(() => const MLocation())),
             
                   //Logout Button
                   const SizedBox(height: MSizes.spaceBtwSections),

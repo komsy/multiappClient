@@ -33,6 +33,14 @@ class AuthenticationRepository extends GetxController {
   RxInt noofProducts = 0.obs;
   RxInt noofProductPP = 0.obs;
   RxInt noofCustomers = 0.obs;
+  RxString currLocation = ''.obs;
+  RxInt prodNumber = 30.obs;
+  RxBool goLive= false.obs;
+  RxInt exField1 = 1.obs;
+  RxInt exField2 = 0.obs;
+  RxInt exField3 = 0.obs;
+  RxString currLocationAddress = ''.obs;
+  RxString defaultLocation ='-0.10574318693269198, 34.752951179237115'.obs;
 
   //Variables
   final deviceStorage = GetStorage();
@@ -90,6 +98,12 @@ Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
   editAfter.value =  setting['editAfter'] == 1 ? true : false;
   orderDays.value = setting['orderDays'];      
   orderRecordDays.value = setting['orderRecordDays'];      
+  prodNumber.value = setting['prodNumber'] ?? 30; // Default to 30 if null
+  goLive.value = setting['goLive'] == 1 ? true : false;
+  exField1.value =  setting['exField1'] ?? 0;
+  exField2.value =  setting['exField2'] ?? 0; 
+  exField3.value =  setting['exField3'] ?? 0; 
+  defaultLocation.value = setting['defaultLocation'] ?? '-0.10574318693269198, 34.752951179237115';
   // appversion.value= packageInfo.version;
       
 
@@ -169,8 +183,7 @@ Future<String?> refreshToken() async {
       //If the user's email is verified, navigate to the main navigation menu
       Get.offAll(() => const NavigationMenu());
     } else {
-    //   Get.offAll(
-    //       const OnBoardingScreen()); //Redirect to Onboarding screen if it's the first time
+    //   Get.offAll(const OnBoardingScreen()); //Redirect to Onboarding screen if it's the first time
     // }
     
       deviceStorage.writeIfNull('isFirstTime', true);

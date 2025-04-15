@@ -28,8 +28,7 @@ class CustomerScreen extends StatelessWidget {
               MPrimaryHeaderContainer(
                   child: Column(
                     children: [
-                      MAppBar(title: Text('Customers',style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white)),),
-
+                      MAppBar(title: Text('Customers',style: Theme.of(context).textTheme.headlineSmall!.apply(color: MColors.white)),),
                       // Search Bar
                       MSearchContainer(
                         text: "Search Customer",

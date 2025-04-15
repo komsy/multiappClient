@@ -23,10 +23,8 @@ class AppSettingsScreen extends StatelessWidget {
       //   onPressed: () => Get.to(() => const AddAppSettingsScreen()),
       //   child: const Icon(Iconsax.add, color: MColors.white),
       // ),
-      appBar: MAppBar(
-          title: Text('App Settings',
-              style: Theme.of(context).textTheme.headlineSmall),
-          showBackArrow: true),
+      appBar: const MAppBar(title: Text('App Settings'),showBackArrow: true,centerTitle: true),
+          
       body: Obx(() {
         // Check if the data is being loaded or is empty
         if (controller.isLoading.value) {
@@ -42,11 +40,11 @@ class AppSettingsScreen extends StatelessWidget {
             child: Column(
               children: [
                 //Profile Information Details
-                const Divider(),
-                const SizedBox(height: MSizes.spaceBtwItems),
-                const MSectionHeading(
-                    title: MTexts.appSettings, showActionButton: false),
-                const SizedBox(height: MSizes.spaceBtwItems),
+                // const SizedBox(height: MSizes.spaceBtwItems),
+                // const MSectionHeading(
+                //     title: MTexts.appSettings, showActionButton: false),
+                // const Divider(thickness: 2, color: Colors.black),
+                // const SizedBox(height: MSizes.spaceBtwItems),
                 MProfileMenu(
                   onPressed: () {
                     // Copy the app key to the clipboard
