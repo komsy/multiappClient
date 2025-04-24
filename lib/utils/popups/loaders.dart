@@ -21,7 +21,7 @@ class MLoaders {
           margin: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: THelperFunctions.isDarkMode(Get.context!) ? MColors.darkerGrey.withOpacity(0.9) : MColors.grey.withOpacity(0.9),
+            color: THelperFunctions.isDarkMode(Get.context!) ? MColors.darkerGrey.withValues(alpha:0.9) : MColors.grey.withValues(alpha:0.9),
           ),
           child: Center(child: Text(message, style: Theme.of(Get.context!).textTheme.labelLarge)),
         ),

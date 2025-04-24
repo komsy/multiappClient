@@ -11,6 +11,7 @@ import 'package:easyapp/features/shop/models/order_model.dart';
 import 'package:easyapp/features/shop/models/product_model.dart';
 import 'package:easyapp/features/shop/models/product_packing_price.dart';
 import 'package:easyapp/features/shop/models/product_unit_converter.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -18,7 +19,6 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:uuid/uuid.dart';
 
-// Create the categoryMst table
 class LocalDatabase {
   static String fileName = "multitech_data.db";
   // Singleton instance
@@ -94,16 +94,16 @@ class LocalDatabase {
 
 // Function to create tables in the database
   static Future<void> _createDB(Database db, int version) async {
-    // Create the categoryMst table
-    await db.execute('''
-      CREATE TABLE categoryMst (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        catCode VARCHAR(30) UNIQUE NOT NULL,
-        locationId VARCHAR(2) NOT NULL,
-        catName VARCHAR(150) NOT NULL,
-        image VARCHAR(250)
-      )
-    ''');
+    // // Create the categoryMst table
+    // await db.execute('''
+    //   CREATE TABLE categoryMst (
+    //     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    //     catCode VARCHAR(30) UNIQUE NOT NULL,
+    //     locationId VARCHAR(2) NOT NULL,
+    //     catName VARCHAR(150) NOT NULL,
+    //     image VARCHAR(250)
+    //   )
+    // ''');
     // Create the productMst table
     await db.execute('''
       CREATE TABLE productMst (
@@ -245,7 +245,9 @@ class LocalDatabase {
         exField2 INTEGER  NOT NULL,
         exField3 INTEGER  NOT NULL,
         defaultLocation TEXT NOT NULL,
-        createdAt TEXT NOT NULL
+        createdAt TEXT NOT NULL,
+        supportEmail VARCHAR(30) NOT NULL,
+        supportPhone VARCHAR(15) NOT NULL
       )
     ''');
 
@@ -295,7 +297,7 @@ class LocalDatabase {
     // Get the current Unix timestamp
     int createdAt = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     // Hash the password before storing it in the database
-    String hashedPassword = hashPassword("@Admin123");
+    String hashedPassword = hashPassword(MTexts.defaultPassword);
     final appKey = createAppKey();
 
     await db.insert("settings", {
@@ -319,11 +321,13 @@ class LocalDatabase {
       "exField3": 0,
       "defaultLocation": "-0.10574318693269198, 34.752951179237115",
       "createdAt": createdAt,
+      "supportEmail": MTexts.emailusername,
+      "supportPhone": MTexts.supportPhone,
     });
 
     await db.insert("userMst", {
       "username": "admin",
-      "email": "admin@multitech.co.ke",
+      "email": MTexts.defaultEmail,
       "password": hashedPassword,
       "refreshToken": "",
       "role": "user",
@@ -361,18 +365,18 @@ class LocalDatabase {
     return result.isNotEmpty ? result.first : null;
   }
 
-  Future<List<Map<dynamic, dynamic>>?> getCategories() async {
-    // Open the SQLite database
-    final db = await instance.database;
-    // Fetch all categories
-    List<Map> result = await db.rawQuery('SELECT * FROM categoryMst');
+  // Future<List<Map<dynamic, dynamic>>?> getCategories() async {
+  //   // Open the SQLite database
+  //   final db = await instance.database;
+  //   // Fetch all categories
+  //   List<Map> result = await db.rawQuery('SELECT * FROM categoryMst');
 
-    if (result.isNotEmpty) {
-      return result; // Return categories data if found
-    } else {
-      return null; // Return null if no categories is found
-    }
-  }
+  //   if (result.isNotEmpty) {
+  //     return result; // Return categories data if found
+  //   } else {
+  //     return null; // Return null if no categories is found
+  //   }
+  // }
 
   Future<List<Map<dynamic, dynamic>>?> getCategoryProducts(
       String categoryId) async {
@@ -415,13 +419,13 @@ class LocalDatabase {
   Future<void> saveCurrlocationdata(LocationModel location) async {
     // print(location.toJson());
     final db = await database;
+    // Clean up old locationdata before saving current ones
+    await deleteOldlocationdata(1);
     await db.insert(
       'locationData',
       location.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace, // Prevent overwriting
     );
-    // Clean up old locationdata before saving current ones
-    await _deleteOldlocationdata(db);
   }
 
   //Save app Settings
@@ -640,14 +644,21 @@ class LocalDatabase {
     }
   }
 
-  Future<void> _deleteOldlocationdata(Database db) async {
+  Future<void> deleteOldlocationdata(markerId) async {
     // print("Delete old location data hit");
+    final db = await instance.database;
 
     await db.transaction((txn) async {
-      await txn.rawDelete(
-        // "DELETE FROM locationData WHERE date <= DATE('now', '-1 days')"
-         "DELETE FROM locationData WHERE date(date) = date('now', '-1 day')"
-      );
+      if (markerId == 1) {
+        // Delete all location data older than 1 day
+        await txn.rawDelete(
+          // "DELETE FROM locationData WHERE date <= DATE('now', '-1 days')"
+          "DELETE FROM locationData WHERE date(date) = date('now', '-1 day')"
+        );
+      } else {
+        // Delete specific location data based on markerId
+        await txn.rawDelete("DELETE FROM locationData WHERE makerId = ?", [markerId]);
+      }
     });
   }
 
@@ -655,22 +666,22 @@ class LocalDatabase {
   Future<void> _deleteOldOrders(Database db, int days) async {
   // print("Delete orders older than $days days hit");
 
-  await db.transaction((txn) async {
-    await txn.rawDelete(
-      """
-      DELETE FROM orderTrn 
-      WHERE orderId IN (
-        SELECT id FROM orderMst 
-        WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')
-      )
-      """
-    );
+    await db.transaction((txn) async {
+      await txn.rawDelete(
+        """
+        DELETE FROM orderTrn 
+        WHERE orderId IN (
+          SELECT id FROM orderMst 
+          WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')
+        )
+        """
+      );
 
-    await txn.rawDelete(
-      "DELETE FROM orderMst WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')"
-    );
-  });
-}
+      await txn.rawDelete(
+        "DELETE FROM orderMst WHERE SUBSTR(createdAt, 1, 10) <= DATE('now', '-$days days')"
+      );
+    });
+  }
   
   // Get getOrderRecords
   Future<List<Map<String, dynamic>>> getAllOrderRecords() async {
@@ -767,20 +778,9 @@ class LocalDatabase {
     await db.delete('orderMst');
   }
 
-  Future<void> truncateCategoryMst() async {
-    final db = await instance.database;
-    await db.delete('categoryMst');
-  }
-
   Future<void> truncateCustomerMst() async {
     final db = await instance.database;
     await db.delete('customerMst');
-  }
-
-  //Truncate products table after calling the API
-  Future<void> truncateProductUnitTable() async {
-    final db = await instance.database;
-    await db.delete('ProductUnitConverter');
   }
 
   //Truncate products table after calling the API
@@ -844,15 +844,6 @@ class LocalDatabase {
       conflictAlgorithm: ConflictAlgorithm.replace, // Optional: to handle duplicate entries
     );
   }
-
-  // Future<void> insertAPICategoryMst(CategoryModel category) async {
-  //   final db = await instance.database;
-  //   await db.insert(
-  //     'categoryMst',
-  //     category.toJson(),
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  // }
 
   Future<void> insertAPICustomerMst(CustomerModel customer) async {
     final db = await instance.database;
@@ -936,17 +927,22 @@ class LocalDatabase {
     }
   }
 
-  // Example function to delete all categories
-  Future<void> deleteAllCategories() async {
+  Future<void> resetdb() async {
     final db = await database;
-    await db.delete('categoryMst');
+    await db.delete('ProductMst');
+    await db.delete('ProductPackingPrice');
+    await db.delete('customerMst');
+    await db.delete('userMst');
+    await db.delete('settings');
   }
 
-   Future<void> deleteAllProducts() async {
+  // Delete all products
+  Future<void> deleteAllProducts() async {
     final db = await database;
     await db.delete('ProductMst');
   }
-   Future<void> deleteAllProductsPP() async {
+
+  Future<void> deleteAllProductsPP() async {
     final db = await database;
     await db.delete('ProductPackingPrice');
   }

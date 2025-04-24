@@ -1,6 +1,9 @@
+import 'package:easyapp/features/personalization/controllers/update_controller.dart';
+import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/views/location/location.dart';
 import 'package:easyapp/features/shop/screens/order/widgets/order_records_pie_chart.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -14,6 +17,7 @@ import 'package:easyapp/features/personalization/views/settings/widgets/app_sett
 import 'package:easyapp/features/shop/screens/cart/cart.dart';
 import 'package:easyapp/utils/constants/colors.dart';
 import 'package:easyapp/utils/constants/sizes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/widgets/list_tiles/user_profile_tile.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
@@ -25,8 +29,10 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final apiService = Get.put(MAPIService()); 
-    final orderRecords = AuthenticationRepository.instance.orderRecordDays.value;
     Get.put(SettingsController());
+    Get.put(UpdateController());
+    final controller = UserController.instance;
+    final authRepo = AuthenticationRepository.instance;
     
     return Scaffold(
       body: SingleChildScrollView(
@@ -34,12 +40,14 @@ class SettingsScreen extends StatelessWidget {
           children: [
           //Header 
           MPrimaryHeaderContainer(
-            child: Column( 
+            child: Column(
               children: [
-                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white),),
-                actions:  [
-                  IconButton(onPressed: () =>AuthenticationRepository.instance.logout(),
-                            icon:const Icon(Iconsax.logout, size: MSizes.iconMd * 1.2, color: MColors.white,))
+                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white)),
+                actions: [
+                  IconButton(
+                    onPressed: () => AuthenticationRepository.instance.logout(),
+                    icon: const Icon(Iconsax.logout, color: MColors.white, size: MSizes.iconMd * 1.2),
+                  )
                 ],),
 
                 //User profile card
@@ -61,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
                   const SizedBox(height: MSizes.spaceBtwItems/2),
             
                   MSettingsMenuTile(icon: Iconsax.shopping_cart, title: "My Cart", subTitle: "Add & Remove Products", onTap: () => Get.to(() => const CartScreen()) ),
-                  MSettingsMenuTile(icon: Iconsax.shop, title: "My Orders", subTitle: "View $orderRecords days Order Records", onTap: () => Get.to(() => const MOrderRecordsPieChart()) ),
+                  MSettingsMenuTile(icon: Iconsax.shop, title: "My Orders", subTitle: "View ${authRepo.orderRecordDays.value} days Order Records", onTap: () => Get.to(() => const MOrderRecordsPieChart()) ),
                   MSettingsMenuTile(icon: Iconsax.setting, title: "Settings", subTitle: "Set App Configs", 
                   onTap: () =>Get.to(() => const AppSettingsScreen())),
                   
@@ -81,10 +89,13 @@ class SettingsScreen extends StatelessWidget {
                   // const MSectionHeading(title: 'App Settings', showActionButton: false),
                   // const SizedBox(height: MSizes.spaceBtwItems/2),
                   MSettingsMenuTile(icon: Iconsax.document_download, title: "Load Data", subTitle: "Add Products & Customers", onTap: () => Get.to(() => const LoadDataScreen())),
+                  
+                  MSettingsMenuTile(icon: Iconsax.location, title: "Location Data", subTitle: "Show my Location data", onTap: () => Get.to(() => const MLocation())),
+                  
                   MSettingsMenuTile(
                         icon: Iconsax.document_upload,
                         title: "Send Order",
-                        subTitle: "Send Orders to Server and clear from the App",
+                        subTitle: "Send Orders to Server",
                         onTap: () => {},
                         trailing: Obx(() {
                           return IconButton(
@@ -104,15 +115,82 @@ class SettingsScreen extends StatelessWidget {
                           }),
                         ),
                   
-                  MSettingsMenuTile(icon: Iconsax.location, title: "Location Data", subTitle: "Show my Location data", onTap: () => Get.to(() => const MLocation())),
+                  
+                  MSettingsMenuTile(
+                    icon: Iconsax.support, 
+                    title: "Contact Support",
+                    subTitle: "Tap to Call or Email for Support", 
+                    trailing: IconButton(
+                          onPressed: () async {
+                            String? encodeQueryParameters(
+                              Map<String, String> params) {
+                                return params.entries
+                                    .map((MapEntry<String, String> e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                                    .join('&');
+                              }
+                            
+                            final Uri emailLaunchUri = Uri(
+                              scheme: 'mailto', 
+                              path: authRepo.supportEmail.toString(),
+                              query: encodeQueryParameters(<String, String>{
+                                'subject': 'Support Request',
+                                'body': 'Hello, I need help with...',
+                              }),
+                            );
+                            
+                            try {
+                              // Attempt to launch the email app
+                              await launchUrl(emailLaunchUri);
+                            } catch (e) {
+                              // Handle any errors that occur during the launch
+                              MLoaders.errorSnackBar(title: 'Could not launch email app', message: e.toString());
+                            } 
+                          },
+                          icon:  const Icon(Icons.email,color: Colors.orange),
+                        ),
+                    onTap: () {
+                      final Uri phoneLaunchUri = Uri(
+                        scheme: 'tel',
+                        path: authRepo.supportPhone.toString(),
+                      );
+                      try {
+                        // Attempt to launch the phone dialer
+                        launchUrl(phoneLaunchUri);
+                      } catch (e) {
+                        // Handle any errors that occur during the launch
+                        MLoaders.errorSnackBar(title: 'Could not launch phone dialer', message: e.toString());
+                      } 
+                    }
+                    ),
             
                   //Logout Button
-                  const SizedBox(height: MSizes.spaceBtwSections),
-                  SizedBox(
-                    width: double.infinity,
-                    child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
-                  ),
+                  // const SizedBox(height: MSizes.spaceBtwSections),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
+                  // ),
 
+                  controller.user.value.userName != "admin"
+                  ? Column(
+                      children: [
+                        const SizedBox(height: MSizes.spaceBtwSections *1.5 ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: () => controller.deleteAccDialog(),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              side: const BorderSide(color: Colors.red),
+                              backgroundColor: Colors.red,
+                            ),
+                            child: const Text('Delete Account'),
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
+
+    
                   const SizedBox(height: MSizes.spaceBtwSections*1.5),
                   Column(
                     children: [

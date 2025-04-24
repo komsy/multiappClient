@@ -20,12 +20,16 @@ class NavigationMenu extends StatelessWidget {
     
     return PopScope(
       canPop: false,
-      onPopInvoked: (didpop){
-        if (didpop){
-          return;
-        }
-        _showExitDialog(context);
-      },
+      // onPopInvoked: (didpop){
+      //   if (didpop){
+      //     return;
+      //   }
+      //   _showExitDialog(context);
+      // },
+       onPopInvokedWithResult: (bool didPop, dynamic result) {
+          if (didPop) return;
+          _showExitDialog(context);
+        },
       child: Scaffold(
         bottomNavigationBar: Obx(
           () => NavigationBar(
@@ -34,7 +38,7 @@ class NavigationMenu extends StatelessWidget {
               selectedIndex: controller.selectedIndex.value,
               onDestinationSelected: (index) => controller.selectedIndex.value =index,
               backgroundColor: darkmode ? MColors.black: Colors.white,
-              indicatorColor: darkmode ? MColors.white.withOpacity(0.1): MColors.black.withOpacity(0.1),
+              indicatorColor: darkmode ? MColors.white.withValues(alpha:0.1): MColors.black.withValues(alpha:0.1),
       
               destinations: const  [
                 NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),

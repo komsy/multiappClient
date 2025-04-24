@@ -59,7 +59,7 @@ class MRoundedContainer extends StatelessWidget {
           boxShadow: [
             if (showShadow)
               BoxShadow(
-                color: MColors.grey.withOpacity(0.1),
+                color: MColors.grey.withValues(alpha:0.1),
                 spreadRadius: 5,
                 blurRadius: 8,
                 offset: const Offset(0, 3),

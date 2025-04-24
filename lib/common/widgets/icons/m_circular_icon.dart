@@ -37,8 +37,8 @@ class MCircularIcon extends StatelessWidget {
         color: backgroundColor != null
             ? backgroundColor!
             : THelperFunctions.isDarkMode(context)
-                ? MColors.black.withOpacity(0.9)
-                : MColors.white.withOpacity(0.9),
+                ? MColors.black.withValues(alpha:0.9)
+                : MColors.white.withValues(alpha:0.9),
         borderRadius: BorderRadius.circular(100),
       ),
       child: IconButton(onPressed: onPressed, icon: Icon(icon, color: color, size: size)),

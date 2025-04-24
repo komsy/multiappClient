@@ -1,7 +1,7 @@
 name: easyapp
 description: "Sales Order App."
 publish_to: 'none' 
-version: 1.7.0+1
+version: 1.8.0+1
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
@@ -67,13 +67,16 @@ dependencies:
   envied: ^0.5.4+1
   dio: ^5.7.0
   uuid: ^4.5.1
-  shorebird_code_push: ^1.1.6
+  shorebird_code_push: ^2.0.3
   fl_chart: ^0.63.0
 
   # Maps & Location
   google_maps_flutter: ^2.10.1
   geolocator: ^13.0.4
   geocoding: ^3.0.0
+
+  # Sending Emails
+  mailer: ^6.4.1
   
   #--------------- ./ PACKAGES END ------------------#
 

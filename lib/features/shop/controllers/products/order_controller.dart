@@ -37,11 +37,12 @@ class OrderController extends GetxController {
   // Empty List for orderRecords
   final RxList<Map<String, dynamic>> orderRecords = <Map<String, dynamic>>[].obs;
   final authRepo = AuthenticationRepository.instance;
+
+
   @override
   void onInit() {
     fetchOrders();
     // print("authRepo.goLive.value ${authRepo.goLive.value}");
-    if (authRepo.goLive.value) getCurrLocation();
     super.onInit();
   }
   //Fetch order history
@@ -93,40 +94,40 @@ class OrderController extends GetxController {
 
 
   Future<Map<String, dynamic>?>  getUserId() async 
-      {
-        try {
-            // final decodedPayload = await authRepo.decodeAndVerifyToken();
-      
-            // print('Processing order... $decodedPayload');
-            // if (decodedPayload == null || decodedPayload.isEmpty) return;
+    {
+      try {
+          // final decodedPayload = await authRepo.decodeAndVerifyToken();
+    
+          // print('Processing order... $decodedPayload');
+          // if (decodedPayload == null || decodedPayload.isEmpty) return;
 
-            // Decode and verify the JWT token
-            var decodedPayload = await authRepo.decodeAndVerifyToken();
-            if (decodedPayload == null || decodedPayload.isEmpty) {
-              // print("Token expired or invalid. Attempting to refresh the token...");
-              
-              // Try refreshing the token if it's invalid or expired
-              final newToken = await authRepo.refreshToken();
-              if (newToken == null) {
-                // throw Exception("Failed to refresh token. Please reauthenticate.");
-                await authRepo.logout();
-              }
-              
-              // Retry decoding and verifying the new token after refreshing
-              decodedPayload = await authRepo.decodeAndVerifyToken();
-              if (decodedPayload == null || decodedPayload.isEmpty) {
-                throw Exception("Failed to decode or verify the refreshed token. Please reauthenticate.");
-              }
-
+          // Decode and verify the JWT token
+          var decodedPayload = await authRepo.decodeAndVerifyToken();
+          if (decodedPayload == null || decodedPayload.isEmpty) {
+            // print("Token expired or invalid. Attempting to refresh the token...");
+            
+            // Try refreshing the token if it's invalid or expired
+            final newToken = await authRepo.refreshToken();
+            if (newToken == null) {
+              // throw Exception("Failed to refresh token. Please reauthenticate.");
+              await authRepo.logout();
             }
             
-            return decodedPayload;
-          } catch (e) {
-          MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
-          // print('Error ack customer data: $e');
-          return null;
-        }
+            // Retry decoding and verifying the new token after refreshing
+            decodedPayload = await authRepo.decodeAndVerifyToken();
+            if (decodedPayload == null || decodedPayload.isEmpty) {
+              throw Exception("Failed to decode or verify the refreshed token. Please reauthenticate.");
+            }
+
+          }
+          
+          return decodedPayload;
+        } catch (e) {
+        MLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+        // print('Error ack customer data: $e');
+        return null;
       }
+    }
   
   // Add methods for order processing
   void processOrder(double totalAmount) async {
@@ -138,7 +139,17 @@ class OrderController extends GetxController {
           MLoaders.errorSnackBar( title: 'No Internet',message: 'Please check your internet connection and try again. You are on Live mode!');
           return;
         }
+        // Get the current location
+        await getCurrLocation();
+        
+        //Ensure location is not empty
+        final location = authRepo.currLocation.value;
+        if (location.isEmpty) {
+          MLoaders.errorSnackBar(title: 'Location Error', message: 'Unable to fetch current location. Please try again.');
+          return;
+        }
       }
+
       // Fetch the current settings
       final currentSetting = await db.getSingleAppSetting();
       if (currentSetting == null) {
@@ -149,8 +160,8 @@ class OrderController extends GetxController {
       final cusCode = customerController.selectedCustomer.value.cusCode;
       // print("cusCode $cusCode");
       if (cusCode.isEmpty) {
-          throw Exception("Kindly select or load the Customers");
-        }
+        throw Exception("Kindly select or load the Customers");
+      }
 
       // print('Processing order...$currentSetting ');
       final cartitems = cartController.cartItems.toList();
@@ -215,11 +226,11 @@ class OrderController extends GetxController {
         makerId: order.id,
         title: title,
         snippet: snippet,
-        location:  authRepo.currLocation.value,
+        location:  authRepo.currLocation.value,//'-0.1021454590958954, 34.76275434432298',
         date: DateTime.now().toIso8601String(),
       );
 
-// print("location data: ${locationdata.toJson()}");
+      // print("location data: ${locationdata.toJson()}");
       // Save the location data to the database if the user is in live mode
       if(authRepo.goLive.value) await db.saveCurrlocationdata(locationdata);
       // final loc = await db.getCurrLocation();
@@ -365,8 +376,10 @@ class OrderController extends GetxController {
           //   orElse: () => CustomerModel.empty(),
           // );
 
+          
+          await db.deleteOldlocationdata(order.id);//delete location data for the specified order
           await db.deleteOrder(order.id);
-        
+          await getUserId(); //  refresh token incase it has expired
           MLoaders.customToast(message: 'Order moved to cart.');
           authRepo.screenRedirect();
         } catch (e) {

@@ -1,3 +1,4 @@
+import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,7 +9,6 @@ class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
   // Initialize the database instance here
   final LocalDatabase db = LocalDatabase.instance;
-  final localStorage = GetStorage();
 
   //variables
   final pageController = PageController();
@@ -19,21 +19,14 @@ class OnBoardingController extends GetxController {
     // Now call the async method to insert test product
     _initProductData();
   }
-
+  
   Future<void> _initProductData() async {
     await db.resetDatabase();
     await db.insertTestProduct();
-    
-    // Get current date
-    DateTime now = DateTime.now();
-    
-    // Format date as DDMMYYYY 
-    String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
-    
-    // Save credentials for first time users
-    localStorage.write('REMEMBER_ME_EMAIL', 'admin@multitech.co.ke');
-    localStorage.write('REMEMBER_ME_PASSWORD', '@Admin123');
-    localStorage.write('REMEMBER_ME_DATE', date);
+
+    //Initialize default user
+    await AuthenticationRepository.instance.rememberUser();
+      
     //  await db.readAllData();
     // print('Test product inserted successfully');
   }

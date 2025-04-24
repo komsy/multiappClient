@@ -1,4 +1,5 @@
 import 'package:easyapp/features/shop/controllers/products/cart_controller.dart';
+import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -41,6 +42,8 @@ class AuthenticationRepository extends GetxController {
   RxInt exField3 = 0.obs;
   RxString currLocationAddress = ''.obs;
   RxString defaultLocation ='-0.10574318693269198, 34.752951179237115'.obs;
+  RxString supportEmail= MTexts.emailusername.obs;
+  RxString supportPhone = MTexts.supportPhone.obs;
 
   //Variables
   final deviceStorage = GetStorage();
@@ -67,105 +70,107 @@ class AuthenticationRepository extends GetxController {
   // }
 
  
-Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
-  // Retrieve the JWT token from local storage
-  final jwtToken = deviceStorage.read('jwt_token') ?? "";
-  if (jwtToken.isEmpty) {
-    // print("No JWT token found in local storage.");
-    return null;
-  }
+  Future<Map<String, dynamic>?> decodeAndVerifyToken() async {
+    // Retrieve the JWT token from local storage
+    final jwtToken = deviceStorage.read('jwt_token') ?? "";
+    if (jwtToken.isEmpty) {
+      // print("No JWT token found in local storage.");
+      return null;
+    }
 
-  // Retrieve the app key & version number
-  // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  final setting = await db.getSingleAppSetting();
-  if (setting == null || setting['appKey'] == null) {
-    return null;
-  }
-  // Check if the setting exists and contains the 'IsRSP' field
-  final isRsp = setting['IsRSP'] ?? 0; // Default to 0 if null
-
-  // Update the observable value based on the 'IsRSP' field
-  isRetailPrice.value = (isRsp == 1); // Assume 1 indicates true (retail price)
-  appKey.value = setting['appKey'];
-  apiURL.value = setting['APIURL'];
-  apiKey.value = setting['APIKey'];
-  defaultPricing.value = setting['defaultPricing'];
-  defaultCustCode.value = setting['defaultCustCode'];
-  isQuantityPrice.value = defaultPricing.value =='FUM' ? true : false;
-  isRetailPrice.value = defaultPricing.value =='RSP' ? true : false;
-  setDefaultCust.value =  setting['setDefaultCust'] == 1 ? true : false;
-  editOrder.value =  setting['editOrder'] == 1 ? true : false;
-  editAfter.value =  setting['editAfter'] == 1 ? true : false;
-  orderDays.value = setting['orderDays'];      
-  orderRecordDays.value = setting['orderRecordDays'];      
-  prodNumber.value = setting['prodNumber'] ?? 30; // Default to 30 if null
-  goLive.value = setting['goLive'] == 1 ? true : false;
-  exField1.value =  setting['exField1'] ?? 0;
-  exField2.value =  setting['exField2'] ?? 0; 
-  exField3.value =  setting['exField3'] ?? 0; 
-  defaultLocation.value = setting['defaultLocation'] ?? '-0.10574318693269198, 34.752951179237115';
-  // appversion.value= packageInfo.version;
-      
-
-  final decodedToken = JWT.decode(jwtToken);
-
-  //  Assign values to the current user variables
-  currentUser.value = decodedToken.payload['username'];
-  currentUserId.value = decodedToken.payload['userId'].toString();
-  currentUserRole.value = decodedToken.payload['role'];
-  try {
-    // Verify the token using the secret key
-    final jwt = JWT.verify(jwtToken, SecretKey(appKey.value));
-
-    // Token is valid, extract the payload
-    // print("Token is valid. Payload: ${jwt.payload}");
-    return jwt.payload;
-  } on JWTExpiredException {
-    // print('Token has expired.');
-    // await logout();
-  } on JWTException {
-    // print('Invalid token: $e');
-    await logout();
-  } catch (e) {
-    // print('Unexpected error during token verification: $e');
-    await logout();
-  }
-
-  return null;
-}
-
-Future<String?> refreshToken() async {
-  try {
-    // Prepare payload for the new token
-    final payload = {
-      'userId': currentUserId.value,
-      'username': currentUser.value,
-      'role': currentUserRole.value,
-    };
-    
-    // Fetch the App Key from the database
+    // Retrieve the app key & version number
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final setting = await db.getSingleAppSetting();
     if (setting == null || setting['appKey'] == null) {
       return null;
     }
-    final appKey = setting['appKey'];
+    // Check if the setting exists and contains the 'IsRSP' field
+    final isRsp = setting['IsRSP'] ?? 0; // Default to 0 if null
 
-    // Generate a new JWT token
-    final jwt = JWT(payload);
-    final newJwtToken = jwt.sign(SecretKey(appKey), expiresIn: const Duration(minutes: 2));
+    // Update the observable value based on the 'IsRSP' field
+    isRetailPrice.value = (isRsp == 1); // Assume 1 indicates true (retail price)
+    appKey.value = setting['appKey'];
+    apiURL.value = setting['APIURL'];
+    apiKey.value = setting['APIKey'];
+    defaultPricing.value = setting['defaultPricing'];
+    defaultCustCode.value = setting['defaultCustCode'];
+    isQuantityPrice.value = defaultPricing.value =='FUM' ? true : false;
+    isRetailPrice.value = defaultPricing.value =='RSP' ? true : false;
+    setDefaultCust.value =  setting['setDefaultCust'] == 1 ? true : false;
+    editOrder.value =  setting['editOrder'] == 1 ? true : false;
+    editAfter.value =  setting['editAfter'] == 1 ? true : false;
+    orderDays.value = setting['orderDays'];      
+    orderRecordDays.value = setting['orderRecordDays'];      
+    prodNumber.value = setting['prodNumber'] ?? 30; // Default to 30 if null
+    goLive.value = setting['goLive'] == 1 ? true : false;
+    exField1.value =  setting['exField1'] ?? 0;
+    exField2.value =  setting['exField2'] ?? 0; 
+    exField3.value =  setting['exField3'] ?? 0; 
+    defaultLocation.value = setting['defaultLocation'] ?? '-0.10574318693269198, 34.752951179237115';
+    // appversion.value= packageInfo.version;
+    supportPhone.value =  setting['supportPhone']; 
+    supportEmail.value =  setting['supportEmail']; 
+        
 
-    // Save the new token to local storage
-    deviceStorage.write('jwt_token', newJwtToken);
+    final decodedToken = JWT.decode(jwtToken);
 
-    return newJwtToken;
-  } on JWTExpiredException {
-    // print("Token refresh failed due to expired token.");
-    return null;
-  } catch (e) {
-    // print("Unexpected error while refreshing token: $e");
+    //  Assign values to the current user variables
+    currentUser.value = decodedToken.payload['username'];
+    currentUserId.value = decodedToken.payload['userId'].toString();
+    currentUserRole.value = decodedToken.payload['role'];
+    try {
+      // Verify the token using the secret key
+      final jwt = JWT.verify(jwtToken, SecretKey(appKey.value));
+
+      // Token is valid, extract the payload
+      // print("Token is valid. Payload: ${jwt.payload}");
+      return jwt.payload;
+    } on JWTExpiredException {
+      // print('Token has expired.');
+      // await logout();
+    } on JWTException {
+      // print('Invalid token: $e');
+      await logout();
+    } catch (e) {
+      // print('Unexpected error during token verification: $e');
+      await logout();
+    }
+
     return null;
   }
-}
+
+  Future<String?> refreshToken() async {
+    try {
+      // Prepare payload for the new token
+      final payload = {
+        'userId': currentUserId.value,
+        'username': currentUser.value,
+        'role': currentUserRole.value,
+      };
+      
+      // Fetch the App Key from the database
+      final setting = await db.getSingleAppSetting();
+      if (setting == null || setting['appKey'] == null) {
+        return null;
+      }
+      final appKey = setting['appKey'];
+
+      // Generate a new JWT token
+      final jwt = JWT(payload);
+      final newJwtToken = jwt.sign(SecretKey(appKey), expiresIn: const Duration(minutes: 2));
+
+      // Save the new token to local storage
+      deviceStorage.write('jwt_token', newJwtToken);
+
+      return newJwtToken;
+    } on JWTExpiredException {
+      // print("Token refresh failed due to expired token.");
+      return null;
+    } catch (e) {
+      // print("Unexpected error while refreshing token: $e");
+      return null;
+    }
+  }
 
   //Fn to show relevant screen
   screenRedirect() async {
@@ -201,6 +206,24 @@ Future<String?> refreshToken() async {
       CartController.instance.clearCart();
       // deviceStorage.remove('isFirstTime');
       Get.offAll(() => const LoginScreen());
+    } catch (e) {
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+
+  Future <void> rememberUser() async {
+    try{
+    // Get current date
+      DateTime now = DateTime.now();
+    
+    // Format date as DDMMYYYY 
+      String date = '${now.day.toString().padLeft(2, '0')}${now.month.toString().padLeft(2, '0')}${now.year}';
+
+    // Save data if "remember me" is selected
+      deviceStorage.write('REMEMBER_ME_EMAIL', MTexts.defaultEmail);
+      deviceStorage.write('REMEMBER_ME_PASSWORD', MTexts.defaultPassword);
+      deviceStorage.write('REMEMBER_ME_DATE', date);
     } catch (e) {
       throw 'Something went wrong. Please try again';
     }

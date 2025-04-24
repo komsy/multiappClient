@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/personalization/controllers/location_controller.dart';
-import 'package:easyapp/utils/constants/colors.dart';
-import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MLocation extends StatefulWidget {

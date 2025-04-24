@@ -42,6 +42,11 @@ class MAPIService extends GetxController {
   RxInt noOfCustomerItems = 0.obs;
   RxInt noOfSettingItems = 0.obs;
   final authInstance =AuthenticationRepository.instance;
+  final cartController = CartController.instance;
+
+
+
+
   //Get products from api and store
   Future<void> fetchAndStoreProducts() async {
     try {
@@ -52,7 +57,14 @@ class MAPIService extends GetxController {
       isPPLoading.value = false;
       isUnitCLoading.value = false;
       isSettingsLoading.value = false;
-
+      
+      //check if cart !empty ? return  : addtoCart
+      final cartitems = cartController.cartItems.toList();
+    
+      if (cartitems.isNotEmpty) {
+        MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
+        return;
+      }
       // Fetch the data from the API
       List<dynamic> apiProducts = await apiProvider.getAPIData(Env.productApiUrl);
       
@@ -151,7 +163,7 @@ Future<void> fetchAndStoreProductUnits() async {
 
 //Get products from api and store
   Future<void> fetchAndStoreProductpackaging() async {
-    try {
+    try { 
       //Show loader while loading products Packaging Price
       isPPLoading.value = true;
       isCatLoading.value = false;
@@ -160,6 +172,13 @@ Future<void> fetchAndStoreProductUnits() async {
       isProductLoading.value = false;    
       isSettingsLoading.value = false;
 
+      //check if cart !empty ? return  : addtoCart
+      final cartitems = cartController.cartItems.toList();
+    
+      if (cartitems.isNotEmpty) {
+        MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Empty your cart and try again!");
+        return;
+      }
       // Notify the controller to refresh
       ProductController.instance.refreshSignal.value = false;
     
@@ -336,6 +355,8 @@ Future<void> fetchAndStoreProductUnits() async {
           exField1: data['exField1'] ?? 0,
           exField2: data['exField2'] ?? 0,
           exField3: data['exField3'] ?? 0,
+          supportEmail: data['supportEmail'],
+          supportPhone: data['supportPhone'],
         );
 
       // Toggle the in-memory observable value
@@ -344,7 +365,7 @@ Future<void> fetchAndStoreProductUnits() async {
         await db.saveAppSettings(setting);
       }
       //Clear cart to avoid different pricing
-      CartController.instance.clearCart();
+      cartController.clearCart();
       authInstance.logout();
       // Notify the controller to refresh
       // await  SettingsController.instance.fetchSettings();

@@ -99,6 +99,8 @@ class SettingsController extends GetxController {
         exField1: setting.value.exField1,
         exField2: setting.value.exField2,
         exField3: setting.value.exField3,
+        supportEmail: setting.value.supportEmail,
+        supportPhone: setting.value.supportPhone,
       );
       // print("Setting saving data ${settings.apiKey}, ${settings.apiUrl}, ${settings.docSeries}, ${settings.toJson()}");
 

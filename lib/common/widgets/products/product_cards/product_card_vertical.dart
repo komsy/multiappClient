@@ -72,7 +72,7 @@ class MProductCardVertical extends StatelessWidget {
                   //   top: 12,
                   //   child: MRoundedContainer(
                   //     radius: MSizes.sm,
-                  //     backgroundColor: MColors.secondary.withOpacity(0.8),
+                  //     backgroundColor: MColors.secondary.withValues(alpha:0.8),
                   //     padding: const EdgeInsets.symmetric(horizontal: MSizes.sm, vertical: MSizes.xs),
                   //     child: Text('$salePercentage%', style: Theme.of(context).textTheme.labelLarge!.apply(color: MColors.black)),
                   //   ),

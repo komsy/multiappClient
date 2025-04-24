@@ -29,7 +29,7 @@ class MSingleCrCustomer extends StatelessWidget {
           showBorder: true,
           padding: const EdgeInsets.all(MSizes.md),
           width: double.infinity,
-          backgroundColor: selectedCrCustomer ? MColors.primary.withOpacity(0.5) : Colors.transparent,
+          backgroundColor: selectedCrCustomer ? MColors.primary.withValues(alpha:0.5) : Colors.transparent,
           borderColor: selectedCrCustomer ? Colors.transparent : dark ? MColors.darkerGrey : MColors.grey,
           margin: const EdgeInsets.only(bottom: MSizes.spaceBtwItems),
           child: Stack(

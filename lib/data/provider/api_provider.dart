@@ -221,7 +221,21 @@ class ApiProvider {
       return Future.error(handleDioError(err));  // Using the reusable function
     }
   }
+  
+  Future<Map<String, dynamic>>  deleteUserAccount(String email) async {
+  try {
 
+    final formData = {
+      'email': email,
+    };
+    
+    final response = await _dio.post("deleteUserAccount", data: formData);
+
+    return response.data;
+  } on DioException catch (err) {
+      return Future.error(handleDioError(err));  // Using the reusable function
+    }
+  }
 
 
 String handleDioError(DioException err) {

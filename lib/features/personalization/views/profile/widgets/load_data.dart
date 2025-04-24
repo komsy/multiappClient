@@ -1,4 +1,6 @@
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
+import 'package:easyapp/features/personalization/controllers/update_controller.dart';
+import 'package:easyapp/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
@@ -16,6 +18,7 @@ class LoadDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // final controller = BannerController.instance;
     final apiService = MAPIService.instance;
+    final controller = UpdateController.instance;
 
     return Scaffold(
       appBar:
@@ -181,6 +184,23 @@ class LoadDataScreen extends StatelessWidget {
           ),
         ),
       ),
+      
+      floatingActionButton: Obx(
+        () => FloatingActionButton(
+          onPressed: controller.isCheckingForUpdates.value
+              ? null
+              : controller.checkForUpdate,
+          tooltip: 'Check for update',
+          backgroundColor: MColors.primary,
+          child: controller.isCheckingForUpdates.value
+              ? const CircularProgressIndicator(
+                  color: Colors.yellow,
+                  strokeWidth: 2,
+                )
+              : const Icon(Icons.refresh),
+        ),
+      ),
+
     );
   }
 }

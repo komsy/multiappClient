@@ -3,7 +3,7 @@
 class MTexts {
 
   // -- GLOBAL Texts
-  static const appVersion = "Version: 1.7.0";
+  static const appVersion = "Version: 1.8.0";
   static const String currency = "Ksh ";
   static const String and = "and";
   static const String skip = "Skip";
@@ -87,5 +87,11 @@ class MTexts {
   // --Settings
   static const String appSettings = "App Information";
 
+
+  static const defaultEmail = "admin@multitech.co.ke";
+  static const defaultPassword = "@Admin123";
+  static const supportPhone = "+254 704 081 087";
+  static const emailusername = "morriskoome.mk@gmail.com";
+  static const emailPassword = "xsxo ljdy ejfc swsh";
 }
 

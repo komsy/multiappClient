@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:easyapp/common/widgets/appbar/appbar.dart';
-import 'package:easyapp/common/widgets/texts/section_heading.dart';
 import 'package:easyapp/features/personalization/controllers/settings_controller.dart';
 import 'package:easyapp/features/personalization/views/profile/widgets/profile_menu.dart';
 import 'package:easyapp/utils/constants/colors.dart';

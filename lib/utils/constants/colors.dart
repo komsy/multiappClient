@@ -18,7 +18,7 @@ class MColors {
 
   // Background Container colors
   static const Color lightContainer = Color(0xFFF6F6F6);
-  static Color darkContainer = MColors.white.withOpacity(0.1);
+  static Color darkContainer = MColors.white.withValues(alpha:0.1);
 
   // Button colors
   static const Color buttonPrimary = Color(0xFF4b68ff);

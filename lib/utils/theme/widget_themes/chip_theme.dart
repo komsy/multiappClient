@@ -5,7 +5,7 @@ class MChipTheme {
   MChipTheme._();
 
   static ChipThemeData lightChipTheme = ChipThemeData(
-    disabledColor: MColors.grey.withOpacity(0.4),
+    disabledColor: MColors.grey.withValues(alpha:0.4),
     labelStyle: const TextStyle(color: MColors.black),
     selectedColor: MColors.primary,
     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12),

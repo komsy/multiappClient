@@ -19,6 +19,8 @@ class SettingModel {
   int exField2;
   int exField3;
   String createdAt;
+  String supportEmail;
+  String supportPhone;
   
 
   SettingModel({
@@ -42,6 +44,8 @@ class SettingModel {
     this.exField2 = 0,
     this.exField3 = 0,
     this.createdAt ='',
+    this.supportEmail ='',
+    this.supportPhone ='',
   });
 
   // Empty helper function
@@ -70,6 +74,8 @@ class SettingModel {
       'exField2': exField2,
       'exField3': exField3,
       'createdAt': createdAt,
+      'supportEmail': supportEmail,
+      'supportPhone': supportPhone,
     };
   }
 
@@ -96,6 +102,8 @@ class SettingModel {
       exField2: data['exField2'] ?? 0,
       exField3: data['exField3'] ?? 0,
       createdAt: data['createdAt'] ?? '',
+      supportEmail: data['supportEmail'] ?? '',
+      supportPhone: data['supportPhone'] ?? '',
     ); 
   }
 }
