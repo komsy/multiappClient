@@ -194,6 +194,21 @@ class OrderController extends GetxController {
         cashAddress:creditController.address  ?? ''
       );
 
+      //save current location latitude and longitude
+      final snippet = customerController.selectedCustomer.value.companyName.contains('Cash') ? 'Cash Account For: ${creditController.customerName}' : customerController.selectedCustomer.value.companyName;
+      final title = authRepo.currLocationAddress.value.isNotEmpty ? authRepo.currLocationAddress.value : 'Default Location';
+      final locationdata = LocationModel(
+        makerId: order.id,
+        title: title,
+        snippet: snippet,
+        location: authRepo.currLocation.value,
+        date: DateTime.now().toIso8601String(),
+      );
+
+      // Save the location data to the database if the user is in live mode
+      if(authRepo.goLive.value) await db.saveCurrlocationdata(locationdata);
+      
+      // Save the order to the database
       await orderRepository.saveOrders(order);
 
       for (var item in cartitems) {
@@ -219,33 +234,18 @@ class OrderController extends GetxController {
         await orderRepository.saveOrderItems(orderItem); // Inserts all items
       }
       
-      //save current location latitude and longitude
-      final snippet = customerController.selectedCustomer.value.companyName.contains('Cash') ? 'Cash Account For: ${creditController.customerName}' : customerController.selectedCustomer.value.companyName;
-      final title = authRepo.currLocationAddress.value.isNotEmpty ? authRepo.currLocationAddress.value : 'Default Location';
-      final locationdata = LocationModel(
-        makerId: order.id,
-        title: title,
-        snippet: snippet,
-        location:  authRepo.currLocation.value,//'-0.1021454590958954, 34.76275434432298',
-        date: DateTime.now().toIso8601String(),
-      );
-
-      // print("location data: ${locationdata.toJson()}");
-      // Save the location data to the database if the user is in live mode
-      if(authRepo.goLive.value) await db.saveCurrlocationdata(locationdata);
-      // final loc = await db.getCurrLocation();
-      // print("location data: ${loc}");
-
       //Clear cart items
       cartController.clearCart();
 
       await CreditCustomerController.instance.clearCashCustomer(); // Clear the cash customer details from db and observable if any exists.
-
+      final locationInfo = authRepo.goLive.value
+        ? 'at ${authRepo.currLocationAddress.value}'
+        : '';
       // Show success screen
       Get.off(() => SuccessScreen(
           image: MImages.successfulPaymentIcon,
           title: 'Order Success!',
-          subtitle: 'Thank you for shopping with us!',
+          subtitle: 'Thank you for placing the order $locationInfo!',
           onPressed: () => Get.offAll(() => const NavigationMenu()),
         )); 
       } catch (e) { 

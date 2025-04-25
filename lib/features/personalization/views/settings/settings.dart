@@ -1,5 +1,4 @@
 import 'package:easyapp/features/personalization/controllers/update_controller.dart';
-import 'package:easyapp/features/personalization/controllers/user_controller.dart';
 import 'package:easyapp/features/personalization/views/location/location.dart';
 import 'package:easyapp/features/shop/screens/order/widgets/order_records_pie_chart.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
@@ -31,7 +30,6 @@ class SettingsScreen extends StatelessWidget {
     final apiService = Get.put(MAPIService()); 
     Get.put(SettingsController());
     Get.put(UpdateController());
-    final controller = UserController.instance;
     final authRepo = AuthenticationRepository.instance;
     
     return Scaffold(
@@ -42,13 +40,13 @@ class SettingsScreen extends StatelessWidget {
           MPrimaryHeaderContainer(
             child: Column(
               children: [
-                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white)),
-                actions: [
-                  IconButton(
-                    onPressed: () => AuthenticationRepository.instance.logout(),
-                    icon: const Icon(Iconsax.logout, color: MColors.white, size: MSizes.iconMd * 1.2),
-                  )
-                ],),
+                MAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: MColors.white)),),
+                // actions: [
+                //   IconButton(
+                //     onPressed: () => AuthenticationRepository.instance.logout(),
+                //     icon: const Icon(Iconsax.logout, color: MColors.white, size: MSizes.iconMd * 1.2),
+                //   )
+                // ],),
 
                 //User profile card
                 const MUserProfileTile(),
@@ -164,32 +162,11 @@ class SettingsScreen extends StatelessWidget {
                     ),
             
                   //Logout Button
-                  // const SizedBox(height: MSizes.spaceBtwSections),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
-                  // ),
-
-                  controller.user.value.userName != "admin"
-                  ? Column(
-                      children: [
-                        const SizedBox(height: MSizes.spaceBtwSections *1.5 ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton(
-                            onPressed: () => controller.deleteAccDialog(),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: const BorderSide(color: Colors.red),
-                              backgroundColor: Colors.red,
-                            ),
-                            child: const Text('Delete Account'),
-                          ),
-                        ),
-                      ],
-                    )
-                  : const SizedBox(),
-
+                  const SizedBox(height: MSizes.spaceBtwSections * 1.5),
+                  SizedBox(
+                    width: double.infinity,
+                    child:  OutlinedButton(onPressed: () =>AuthenticationRepository.instance.logout(), child: const Text('Logout')),
+                  ),
     
                   const SizedBox(height: MSizes.spaceBtwSections*1.5),
                   Column(

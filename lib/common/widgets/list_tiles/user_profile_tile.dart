@@ -1,5 +1,6 @@
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/features/personalization/views/settings/widgets/app_settings.dart';
+import 'package:easyapp/utils/constants/sizes.dart';
 import 'package:easyapp/utils/popups/loaders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,9 @@ class MUserProfileTile extends StatelessWidget {
               Get.to(() => const ChangeName());
             } 
           },
-          icon: const Icon(Iconsax.edit, color: MColors.white)): null,
+          icon: const Icon(Iconsax.edit, color: MColors.white)): IconButton(
+          onPressed: () => controller.deleteAccDialog(),
+          icon: const Icon(Iconsax.trash, size: MSizes.iconMd  *1.2, color: MColors.error,)),
     );
   }
 }

@@ -1,13 +1,16 @@
 import 'package:easyapp/data/provider/api_provider.dart';
+import 'package:easyapp/features/authentication/controllers/login/login_controller.dart';
 import 'package:easyapp/utils/constants/text_strings.dart';
 import 'package:easyapp/utils/helpers/network_manager.dart';
+import 'package:easyapp/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:easyapp/SQLite/sqlite.dart';
 import 'package:easyapp/data/repositories/authentication/authentication_repository.dart';
 import 'package:easyapp/utils/constants/image_strings.dart';
 import 'package:easyapp/utils/popups/full_screen_loader.dart';
-import 'package:easyapp/utils/popups/loaders.dart';import 'package:mailer/mailer.dart';
+import 'package:easyapp/utils/popups/loaders.dart';
+import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 import '../../authentication/models/user/user_model.dart';
@@ -166,42 +169,70 @@ final apiProvider = ApiProvider();
   }
 
   void deleteAccDialog() async {
-    Get.defaultDialog(
-      title: 'Delete Account',
-      middleText: 'Are you sure you want to delete your account?',
-      // buttonColor: Colors.red,
-      onConfirm: () async {
-        try {     
-          await deleteAccount();
-        } catch (e) {
-          MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Something went wrong!");
-        }
-      },
-      onCancel: () => Get.back(),
-    );
+    String password = '';
+      Get.defaultDialog(
+        title: 'Delete Account',
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Are you sure you want to delete your account?'),
+            const SizedBox(height: 20),
+            TextFormField(
+              obscureText: true,
+              onChanged: (value) => password = value,
+              validator: (value) => MValidator.validateEmptyText('Password',value),
+              decoration: const InputDecoration(
+                labelText: 'Enter your password',
+                border: OutlineInputBorder(),
+              ),  
+            ),
+          ],
+        ),
+        textConfirm: 'Delete',
+        textCancel: 'Cancel',
+        confirmTextColor: Colors.white,
+        buttonColor: Colors.red,
+        onConfirm: () async {
+          if (password.isEmpty) {
+            Get.snackbar('Error', 'Please enter your password.',snackPosition: SnackPosition.BOTTOM);
+            return;
+          }
+
+          await deleteAccount(password);
+        },
+        onCancel: () => Get.back(),
+      );
   }
 
-    Future<void> deleteAccount() async {
+    Future<void> deleteAccount(password) async {
     try {
       //Call API to update user settings
       final email = UserController.instance.user.value.email;
       if (email.isEmpty) {
         throw Exception("User email is not available.");
       }
-      // Call the API to delete the user account
-      await ApiProvider().deleteUserAccount(email);
+      //get password from the db
+      final result = await db.login(email);
+      String storedPassword = result![0]['password'];
+      bool passwordMatches = LoginController().comparePassword(password, storedPassword);
+      if (passwordMatches) {
+        // Call the API to delete the user account
+        await ApiProvider().deleteUserAccount(email);
 
-      //Reset the database
-      await db.resetDatabase();
-      await db.insertTestProduct();
+        // //Reset the database
+        await db.resetDatabase();
+        await db.insertTestProduct();
 
-      //Initialize default user
-      await authRepo.rememberUser();
+        // //Initialize default user
+        await authRepo.rememberUser();
 
-      //Clear token & logout
-      await authRepo.logout();
-      MLoaders.successSnackBar(title: 'Account Deleted!',message: 'Your account has been deleted Successfully.');
-      
+        //Clear token & logout
+        await authRepo.logout();
+        MLoaders.successSnackBar(title: 'Account Deleted!',message: 'Your account has been deleted Successfully.');
+      }else {
+        MLoaders.errorSnackBar(title: 'Verification Failed', message: 'Incorrect Password.');
+      }
     } catch (e) {
       // throw 'Something went wrong. Please try again error: $e.';
           MLoaders.errorSnackBar(title: 'Oh Snap!', message: "Something went wrong! ${e.toString()}");

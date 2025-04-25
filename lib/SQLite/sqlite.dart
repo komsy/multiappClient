@@ -645,7 +645,6 @@ class LocalDatabase {
   }
 
   Future<void> deleteOldlocationdata(markerId) async {
-    // print("Delete old location data hit");
     final db = await instance.database;
 
     await db.transaction((txn) async {

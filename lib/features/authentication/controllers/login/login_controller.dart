@@ -82,7 +82,7 @@ class LoginController extends GetxController{
       }
 
       String storedPassword = result[0]['password'];
-      bool passwordMatches = _comparePassword(password.text.trim(), storedPassword);
+      bool passwordMatches = comparePassword(password.text.trim(), storedPassword);
       int userStatus = result[0]['userStatus'];
       int licStatus = result[0]['licStatus'];
       String username = result[0]['username'];
@@ -154,7 +154,7 @@ class LoginController extends GetxController{
 }
 
   // Function to compare password
-  bool _comparePassword(String inputPassword, String storedPassword) {
+  bool comparePassword(String inputPassword, String storedPassword) {
     // Hash the input password
     String hashedInputPassword = hashPassword(inputPassword);
 
